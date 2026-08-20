@@ -9,10 +9,13 @@ Built to run inside **4 GB of VRAM** on a GTX 1650 Ti — speech recognition, a
 language model, speech synthesis and voice activity detection all loaded at
 once — with a **510 ms** median response time.
 
-<!-- Add a screenshot at docs/screenshot.png, then delete this comment and
-     uncomment the line below.
-![The interview view](docs/screenshot.png)
--->
+![Interview setup screen: fifteen topics with live question counts, a level toggle, and interview length](assets/ss1.png)
+
+*Setup — every topic shows how many questions back it, so you can see what you are choosing.*
+
+![A live interview: the neumorphic orb showing state, the current question captioned in sync with the spoken audio, and the running transcript below](assets/ss2.png)
+
+*Live interview — the caption is driven by the audio clock, not a timer, so it stays word-aligned with the voice.*
 
 ---
 
