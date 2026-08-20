@@ -5,10 +5,6 @@ no API keys, no cloud, no data leaving the machine. You speak, it listens, grade
 what you actually said against a rubric, tells you what you missed, and decides
 how hard to push next.
 
-Built around the **Amazon Applied Scientist** loop: ML breadth and depth,
-statistics and experimentation, NLP, generative AI, retrieval and RAG, model
-evaluation, ML system design, coding, and behavioural.
-
 Built to run inside **4 GB of VRAM** on a GTX 1650 Ti — speech recognition, a
 language model, speech synthesis and voice activity detection all loaded at
 once — with a **510 ms** median response time.
