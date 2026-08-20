@@ -127,12 +127,31 @@ h1{font-size:31px;font-weight:600;letter-spacing:-.02em;margin-bottom:6px}
 #setup{justify-content:center;padding:44px 24px;overflow-y:auto}
 .head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
 
+/* Length: presets and a free number, side by side, because "how long do you
+   want this to be" has no good fixed answer. */
+.lenrow{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.custom{display:inline-flex;align-items:center;gap:10px;padding:8px 8px 8px 18px;
+        border-radius:999px;box-shadow:var(--in);background:var(--bg)}
+.custom span{font-size:13px;color:var(--dim)}
+.custom input{
+  width:76px;border:0;outline:0;background:var(--bg);color:var(--text);
+  font-family:inherit;font-size:14px;font-weight:600;text-align:center;
+  border-radius:999px;padding:9px 4px;box-shadow:var(--out-sm);
+  -moz-appearance:textfield;
+}
+.custom input::-webkit-outer-spin-button,
+.custom input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.custom input:focus{box-shadow:var(--in);color:var(--accent)}
+.hint{font-size:12.5px;color:var(--faint);margin-top:12px;min-height:18px}
+.btn.small{padding:10px 22px;font-size:13.5px}
+
 /* ------------------------------------------------------------ interview */
 #live{justify-content:space-between;padding:20px 24px 26px;gap:18px}
 .topbar{width:100%;max-width:880px;display:flex;justify-content:space-between;
         align-items:center;gap:12px}
 .pill{border-radius:999px;padding:8px 16px;font-size:12.5px;color:var(--dim);
-      box-shadow:var(--in);background:var(--bg);white-space:nowrap}
+      box-shadow:var(--in);background:var(--bg);white-space:nowrap;
+      overflow:hidden;text-overflow:ellipsis;max-width:44vw}
 .pill b{color:var(--text);font-weight:600}
 .topbar .left,.topbar .right{display:flex;gap:10px;align-items:center}
 
@@ -171,6 +190,10 @@ canvas{width:196px;height:196px;display:block}
 
 /* --------------------------------------------------------------- report */
 #report,#history{padding:44px 24px;overflow-y:auto}
+/* The way home has to be at the top. It used to be only at the very bottom,
+   under every question of the report, which on an eight-question session meant
+   scrolling past the whole thing to find it. */
+#report .head,#history .head{align-items:center;margin-bottom:6px}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));
        gap:18px;margin-bottom:34px}
 .stat{border-radius:var(--r);box-shadow:var(--out);padding:20px}
@@ -243,7 +266,15 @@ canvas{width:196px;height:196px;display:block}
 
       <div class="block">
         <div class="label">Length</div>
-        <div class="seg" id="length"></div>
+        <div class="lenrow">
+          <div class="seg" id="length"></div>
+          <label class="custom" id="customWrap">
+            <span>Custom</span>
+            <input id="customLen" type="number" min="3" max="60" step="1"
+                   inputmode="numeric" placeholder="—">
+          </label>
+        </div>
+        <p class="hint" id="lenHint"></p>
       </div>
 
       <div class="actions">
@@ -277,13 +308,17 @@ canvas{width:196px;height:196px;display:block}
     <div class="transcript" id="transcript"></div>
     <div class="controls">
       <button class="btn ghost" id="end">End interview</button>
+      <button class="btn ghost" id="liveHome">Home</button>
     </div>
   </section>
 
   <!-- ============================ REPORT ============================ -->
   <section id="report" class="view">
     <div class="wrap">
-      <h1>Session report</h1>
+      <div class="head">
+        <h1>Session report</h1>
+        <button class="btn ghost small" id="reportHome">Home</button>
+      </div>
       <p class="sub" id="reportSub"></p>
       <div class="stats" id="stats"></div>
       <div class="label">Question by question</div>
@@ -298,14 +333,17 @@ canvas{width:196px;height:196px;display:block}
   <!-- =========================== HISTORY ============================ -->
   <section id="history" class="view">
     <div class="wrap">
-      <h1>Progress</h1>
+      <div class="head">
+        <h1>Progress</h1>
+        <button class="btn ghost small" id="histHome">Home</button>
+      </div>
       <p class="sub" id="histSub"></p>
       <div class="stats" id="histStats"></div>
       <div class="label">By topic — weakest first</div>
       <div id="histTopics" style="margin-bottom:32px"></div>
       <div class="label">Past sessions</div>
       <div id="histSessions"></div>
-      <div class="actions"><button class="btn primary" id="backToSetup">Back</button></div>
+      <div class="actions"><button class="btn primary" id="backToSetup">Back to setup</button></div>
     </div>
   </section>
 </div>
@@ -318,7 +356,8 @@ const show = (id) => document.querySelectorAll(".view")
 
 let ws, ctx, mic, stream, playhead = 0;
 let state = "idle", amp = 0, running = false;
-const sel = { topics: new Set(), difficulty: 3, length: 8 };
+const sel = { topics: new Set(), difficulty: 3, length: 10 };
+let MAX_LEN = 60, AVAILABLE = {};
 let blueprint = null, turns = [], lastQuestion = null;
 
 // ----------------------------------------------------------- theme + orb
@@ -518,12 +557,21 @@ async function loadTopics() {
       sel.topics.has(t.key) ? sel.topics.delete(t.key) : sel.topics.add(t.key);
       b.setAttribute("aria-pressed", String(sel.topics.has(t.key)));
       $("go").disabled = sel.topics.size === 0;
+      lengthHint();
     };
     $("topics").append(b);
   }
   $("go").disabled = sel.topics.size === 0;
+  // The chosen level may no longer be offered (Senior was removed), so fall
+  // back to the first option rather than leaving nothing selected.
+  const levels = d.difficulties.map(x => x.value);
+  if (!levels.includes(sel.difficulty)) sel.difficulty = levels[0];
   seg("difficulty", d.difficulties.map(x => [x.value, x.label]), sel.difficulty);
-  seg("length", d.lengths.map(n => [n, `${n} questions`]), sel.length);
+  seg("length", d.lengths.map(n => [n, `${n}`]), sel.length);
+  MAX_LEN = d.max_length || 60;
+  $("customLen").max = MAX_LEN;
+  AVAILABLE = Object.fromEntries(d.topics.map(t => [t.key, t.available]));
+  lengthHint();
 
   const total = Object.values(d.coverage).reduce((a, c) => a + c.count, 0);
   $("note").textContent = total
@@ -531,6 +579,42 @@ async function loadTopics() {
       + `Interviews start easy and get harder as you do well.`
     : "The question bank is empty. Run scripts/generate_bank.py first.";
 }
+
+// The interview is as long as you say it is. A preset or a typed number both
+// feed `sel.length`; the typed one wins while it holds a valid value.
+function chosenLength() {
+  const raw = parseInt($("customLen").value, 10);
+  if (Number.isFinite(raw)) return Math.max(3, Math.min(MAX_LEN, raw));
+  return sel.length;
+}
+
+// How many questions the selected topics can actually supply. Asking for forty
+// on a topic holding thirty is not an error — the plan just comes back short —
+// but silently getting fewer than you asked for is confusing, so say it up
+// front rather than after the interview has started.
+function poolSize() {
+  const keys = sel.topics.size ? [...sel.topics] : Object.keys(AVAILABLE);
+  return keys.reduce((n, k) => n + (AVAILABLE[k] || 0), 0);
+}
+
+function lengthHint() {
+  const want = chosenLength(), have = poolSize();
+  const el = $("lenHint");
+  if (!sel.topics.size) { el.textContent = ""; return; }
+  el.textContent = want > have
+    ? `Only ${have} questions available for these topics — the interview will be `
+      + `${have} long. Pick more topics for a longer one.`
+    : `${want} questions, roughly ${Math.round(want * 1.6)} minutes. `
+      + `${have} available for these topics.`;
+}
+
+$("customLen").oninput = () => {
+  const raw = $("customLen").value.trim();
+  // Typing a custom number deselects the presets, so only one reads as chosen.
+  [...$("length").children].forEach(c =>
+    c.setAttribute("aria-pressed", String(!raw && +c.textContent === sel.length)));
+  lengthHint();
+};
 
 function seg(id, opts, initial) {
   sel[id] = initial;
@@ -543,6 +627,7 @@ function seg(id, opts, initial) {
       sel[id] = val;
       [...$(id).children].forEach(c =>
         c.setAttribute("aria-pressed", String(c === b)));
+      if (id === "length") { $("customLen").value = ""; lengthHint(); }
     };
     $(id).append(b);
   }
@@ -641,6 +726,11 @@ function onMessage(e) {
 
     case "finished":
       renderReport(m.summary);
+      break;
+
+    case "notice":
+      // Not a failure — the interview is running, just shorter than asked for.
+      error(m.message);
       break;
 
     case "error":
@@ -749,7 +839,7 @@ async function begin(mixed) {
   caption("");
   ws.send(JSON.stringify({
     type:"start", mixed,
-    topics:[...sel.topics], length:sel.length, difficulty:sel.difficulty,
+    topics:[...sel.topics], length:chosenLength(), difficulty:sel.difficulty,
   }));
 }
 
@@ -799,12 +889,25 @@ async function loadHistory() {
   }).join("") || `<p class="note">No finished sessions yet.</p>`;
 }
 
+// One way home from everywhere. Reachable from the top of the report and of
+// progress, and from the interview itself — ending mid-session still saves what
+// was answered, because the server persists on disconnect as well as on finish.
+function goHome() {
+  if (running) { try { ws.send(JSON.stringify({type:"end"})); } catch {} }
+  stopMic();
+  show("setup");
+  loadTopics();
+}
+$("reportHome").onclick = goHome;
+$("histHome").onclick   = goHome;
+$("liveHome").onclick   = goHome;
+
 $("viewHistory").onclick  = loadHistory;
-$("backToSetup").onclick  = () => { show("setup"); loadTopics(); };
+$("backToSetup").onclick  = goHome;
 $("go").onclick     = () => begin(false);
 $("random").onclick = () => begin(true);
 $("end").onclick    = () => ws.send(JSON.stringify({type:"end"}));
-$("again").onclick  = () => { show("setup"); loadTopics(); };
+$("again").onclick  = goHome;
 $("reportHistory").onclick = loadHistory;
 
 connect();

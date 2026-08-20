@@ -1,0 +1,296 @@
+[
+  {
+    "topic": "ml_design",
+    "difficulty": 2,
+    "mode": "open_ended",
+    "text": "A product manager asks you to reduce customer churn. How do you start?",
+    "reference_answer": "The first move is turning a business goal into a prediction problem with a decision attached. What counts as churn and over what horizon, what action follows a prediction, and whether the model is even the constraint. A perfect churn model is worthless if there is no retention lever to pull.",
+    "expected_points": [
+      "defined churn precisely, with a time horizon",
+      "identified the action a prediction triggers",
+      "questioned whether prediction is the actual bottleneck",
+      "chose a metric tied to business value, not model accuracy"
+    ],
+    "follow_up_seeds": [
+      "Suppose there is no retention lever. What then?"
+    ],
+    "subtopic": "framing a business problem as an ML problem",
+    "id": "ml_design-2-a-product-manager-asks-you-to"
+  },
+  {
+    "topic": "ml_design",
+    "difficulty": 2,
+    "mode": "open_ended",
+    "text": "How do you choose what to measure for a new ML feature?",
+    "reference_answer": "Two layers. An offline metric to iterate on quickly, and an online metric that reflects real value, with the offline one justified as a proxy for it. Then guardrails for what must not regress. The proxy relationship is the part people skip, and it is the part that breaks.",
+    "expected_points": [
+      "separated offline iteration metrics from online outcome metrics",
+      "justified the offline metric as a proxy for the online one",
+      "chose a metric tied to user or business value",
+      "included guardrail metrics that must not regress"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "choosing offline and online metrics",
+    "id": "ml_design-2-how-do-you-choose-what-to"
+  },
+  {
+    "topic": "ml_design",
+    "difficulty": 2,
+    "mode": "open_ended",
+    "text": "Where does the training data come from for a new model?",
+    "reference_answer": "That is usually the hardest part of the design. Either labels already exist as a by-product of the product, or they have to be created — annotation, weak supervision, or a heuristic. Each has a cost and a bias, and logged behavioural labels carry the bias of whatever system produced them.",
+    "expected_points": [
+      "identified a concrete source of labels",
+      "considered annotation cost and label quality",
+      "recognised bias in implicitly logged labels",
+      "considered weak supervision or heuristics to bootstrap"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "building the training dataset and labels",
+    "id": "ml_design-2-where-does-the-training-data-come"
+  },
+  {
+    "topic": "ml_design",
+    "difficulty": 3,
+    "mode": "open_ended",
+    "text": "Design a system that recommends products to customers on a retail site.",
+    "reference_answer": "The usual shape is two stages: cheap candidate generation to cut millions of items to a few hundred, then an expensive ranker over those. Beyond that it is about the signals available, the cold start problem for new users and items, and the fact that the logs you train on came from the previous recommender.",
+    "expected_points": [
+      "proposed a candidate generation and ranking split",
+      "identified the signals and features available",
+      "addressed cold start for new users or items",
+      "recognised feedback loops from training on its own logs",
+      "discussed latency budget at serving time"
+    ],
+    "follow_up_seeds": [
+      "How would you stop it recommending only what is already popular?"
+    ],
+    "subtopic": "design a product recommendation system",
+    "id": "ml_design-3-design-a-system-that-recommends-products"
+  },
+  {
+    "topic": "ml_design",
+    "difficulty": 3,
+    "mode": "open_ended",
+    "text": "Design search ranking for a large product catalogue.",
+    "reference_answer": "Retrieval then ranking, with lexical and semantic retrieval combined so exact identifiers and paraphrases both work. The interesting parts are what the training signal is, that clicks are biased by position, and that relevance is not the only objective the business has.",
+    "expected_points": [
+      "separated retrieval from ranking",
+      "combined lexical and semantic retrieval",
+      "derived a training signal from user interactions",
+      "accounted for position and presentation bias in clicks",
+      "balanced relevance against other business objectives"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "design a search ranking system",
+    "id": "ml_design-3-design-search-ranking-for-a-large"
+  },
+  {
+    "topic": "ml_design",
+    "difficulty": 3,
+    "mode": "open_ended",
+    "text": "Design a system to detect fraudulent transactions.",
+    "reference_answer": "Extreme class imbalance and an adversary who adapts, so the metric cannot be accuracy and the model cannot be static. Latency is tight because the decision blocks a payment, labels arrive late through chargebacks, and the cost of a false positive on a real customer is very different from a missed fraud.",
+    "expected_points": [
+      "addressed severe class imbalance",
+      "chose metrics reflecting asymmetric error costs",
+      "handled delayed labels from chargebacks",
+      "accounted for an adapting adversary and drift",
+      "respected a real-time latency budget"
+    ],
+    "follow_up_seeds": [
+      "How do you handle the label delay when retraining?"
+    ],
+    "subtopic": "design a fraud detection system",
+    "id": "ml_design-3-design-a-system-to-detect-fraudulent"
+  },
+  {
+    "topic": "ml_design",
+    "difficulty": 3,
+    "mode": "open_ended",
+    "text": "Design a system that summarises product reviews for shoppers.",
+    "reference_answer": "A generative problem where correctness is not verifiable by a single answer, so evaluation dominates the design. Faithfulness to the source reviews matters more than fluency, coverage should be representative rather than cherry-picked, and cost per product matters when there are millions of them.",
+    "expected_points": [
+      "prioritised faithfulness to the source reviews",
+      "proposed how to evaluate without a single correct answer",
+      "addressed representative coverage rather than cherry-picking",
+      "considered cost, batching or caching at catalogue scale",
+      "handled products with very few reviews"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "design a customer review summariser",
+    "id": "ml_design-3-design-a-system-that-summarises-product"
+  },
+  {
+    "topic": "ml_design",
+    "difficulty": 3,
+    "mode": "open_ended",
+    "text": "Design a system to forecast demand for inventory planning.",
+    "reference_answer": "A time series problem where the evaluation must respect time — no random splits, and backtesting on rolling origins. Seasonality and promotions dominate the signal, the error cost is asymmetric between overstock and stockout, and a forecast without an uncertainty range is not actionable.",
+    "expected_points": [
+      "used time-based splits and backtesting, not random splits",
+      "handled seasonality, trend and promotional spikes",
+      "recognised asymmetric costs of over and under forecasting",
+      "produced uncertainty intervals, not point estimates",
+      "addressed cold start for new products"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "design a demand forecasting system",
+    "id": "ml_design-3-design-a-system-to-forecast-demand"
+  },
+  {
+    "topic": "ml_design",
+    "difficulty": 3,
+    "mode": "open_ended",
+    "text": "The model is deployed. What do you monitor, and what alerts you?",
+    "reference_answer": "Three layers: that the system is healthy, that the inputs still look like training data, and that the outputs are still good. The third is the hardest because labels lag, so prediction distribution and business metrics act as the early warning while true performance catches up.",
+    "expected_points": [
+      "monitored operational health such as latency and errors",
+      "monitored input feature distributions for drift",
+      "monitored the prediction distribution",
+      "tracked business metrics as an early signal for delayed labels",
+      "defined what triggers retraining or rollback"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "model monitoring and drift detection",
+    "id": "ml_design-3-the-model-is-deployed-what-do"
+  },
+  {
+    "topic": "ml_design",
+    "difficulty": 4,
+    "mode": "open_ended",
+    "text": "Design an assistant that answers questions over internal company documents.",
+    "reference_answer": "Retrieval quality decides everything, so I would measure it separately from answer quality. Then access control, because the retriever must never surface a document the asker cannot see; freshness as documents change; and an explicit path for the model to say it does not know rather than inventing an answer.",
+    "expected_points": [
+      "measured retrieval quality separately from answer quality",
+      "enforced per-user access control in retrieval",
+      "handled document updates and index freshness",
+      "grounded answers with citations to the source",
+      "gave the system a way to decline when unsure"
+    ],
+    "follow_up_seeds": [
+      "How would you evaluate this before launch?"
+    ],
+    "subtopic": "design a document question-answering assistant",
+    "id": "ml_design-4-design-an-assistant-that-answers-questions"
+  },
+  {
+    "topic": "ml_design",
+    "difficulty": 4,
+    "mode": "open_ended",
+    "text": "How do you make sure training and serving compute the same features?",
+    "reference_answer": "By not computing them twice. One definition, used by both paths, is the structural fix — that is what a feature store is for. Beyond that, the training data must reflect what was actually knowable at prediction time, which means point-in-time correct joins rather than the latest value.",
+    "expected_points": [
+      "defined features once and shared the definition",
+      "identified train-serve skew as the failure mode",
+      "used point-in-time correct joins for training data",
+      "avoided using values unavailable at prediction time",
+      "proposed monitoring to detect divergence"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "feature stores and train-serve consistency",
+    "id": "ml_design-4-how-do-you-make-sure-training"
+  },
+  {
+    "topic": "ml_design",
+    "difficulty": 4,
+    "mode": "open_ended",
+    "text": "How would you decide between batch and real-time inference?",
+    "reference_answer": "From how fresh the prediction has to be and what the request pattern is. If the inputs change slowly and the population is enumerable, batch is far cheaper and simpler. Real time is for when the input arrives with the request. Precomputing plus a light real-time layer often gets both.",
+    "expected_points": [
+      "decided based on required freshness of the prediction",
+      "considered cost and operational complexity",
+      "batch suits slowly-changing, enumerable populations",
+      "real-time is needed when input arrives with the request",
+      "considered a hybrid with precomputed components"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "batch versus real-time inference",
+    "id": "ml_design-4-how-would-you-decide-between-batch"
+  },
+  {
+    "topic": "ml_design",
+    "difficulty": 4,
+    "mode": "open_ended",
+    "text": "How often should a model be retrained, and how do you deploy safely?",
+    "reference_answer": "Cadence should follow measured drift rather than a calendar. On deployment, the new model earns its way in — shadow traffic to compare without risk, then a small percentage, then a full experiment — with an automatic rollback trigger and the old version kept ready.",
+    "expected_points": [
+      "tied retraining frequency to observed drift, not a fixed schedule",
+      "validated a new model against the current one before launch",
+      "used shadow or canary deployment",
+      "defined automatic rollback criteria",
+      "kept model versions and their training data reproducible"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "retraining cadence and rollback",
+    "id": "ml_design-4-how-often-should-a-model-be"
+  },
+  {
+    "topic": "ml_design",
+    "difficulty": 4,
+    "mode": "open_ended",
+    "text": "Design a system to moderate user-generated content at scale.",
+    "reference_answer": "Volume forces automation but the error costs are asymmetric and political, so it should be a triage system rather than a binary classifier — confident cases automated, uncertain ones queued for humans. Policy changes over time, adversaries adapt, and appeals are part of the system, not an afterthought.",
+    "expected_points": [
+      "designed a human-in-the-loop triage rather than full automation",
+      "used confidence thresholds to route uncertain cases",
+      "recognised asymmetric and context-dependent error costs",
+      "accounted for adversarial adaptation and policy change",
+      "included an appeals or correction path that feeds back labels"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "design a content moderation system",
+    "id": "ml_design-4-design-a-system-to-moderate-user"
+  },
+  {
+    "topic": "ml_design",
+    "difficulty": 5,
+    "mode": "open_ended",
+    "text": "How would you handle cold start for both new users and new items?",
+    "reference_answer": "They are different problems. A new item has content but no interactions, so content features and a deliberate exploration budget get it seen. A new user has no history, so you fall back on context and population priors and adapt quickly within the session. Both are exploration problems, and exploration costs money you have to be willing to spend.",
+    "expected_points": [
+      "separated new-item from new-user cold start",
+      "used content or metadata features for new items",
+      "used context and population priors for new users",
+      "allocated explicit exploration to gather interaction data",
+      "acknowledged the short-term cost of exploring"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "cold start for new users or items",
+    "id": "ml_design-5-how-would-you-handle-cold-start"
+  },
+  {
+    "topic": "ml_design",
+    "difficulty": 5,
+    "mode": "open_ended",
+    "text": "Your model is accurate but too slow and too expensive to launch. What now?",
+    "reference_answer": "First establish what the budget actually is and what the accuracy is worth, because the answer may be that a cheaper model is the right product. Then the standard levers: cascade so the expensive model only sees hard cases, precompute what is predictable, cache repeats, and distil or quantise. Measure the accuracy cost of each.",
+    "expected_points": [
+      "quantified the latency and cost budget explicitly",
+      "weighed the business value of the extra accuracy",
+      "proposed a cascade so few requests reach the expensive model",
+      "considered precomputation, caching or distillation",
+      "measured the accuracy lost to each optimisation"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "cost and latency budgets at scale",
+    "id": "ml_design-5-your-model-is-accurate-but-too"
+  },
+  {
+    "topic": "ml_design",
+    "difficulty": 5,
+    "mode": "open_ended",
+    "text": "How do you evaluate a model whose true labels arrive months later?",
+    "reference_answer": "You cannot wait, so you need a proxy you have validated against the eventual outcome on historical data. Meanwhile the mature cohorts give you real performance on a lag, and monitoring watches inputs and predictions for change. The dangerous move is treating the proxy as the objective without ever checking it still tracks.",
+    "expected_points": [
+      "identified an early proxy signal for the delayed outcome",
+      "validated that proxy against historical mature labels",
+      "evaluated fully-labelled older cohorts on a lag",
+      "monitored input and prediction drift in the meantime",
+      "planned to re-check that the proxy still tracks the outcome"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "handling delayed or missing labels",
+    "id": "ml_design-5-how-do-you-evaluate-a-model"
+  }
+]

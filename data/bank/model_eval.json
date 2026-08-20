@@ -1,0 +1,586 @@
+[
+  {
+    "topic": "model_eval",
+    "difficulty": 1,
+    "mode": "factual",
+    "text": "Why does an evaluation need a baseline?",
+    "reference_answer": "Because a number on its own means nothing. Ninety percent accuracy is excellent or embarrassing depending on what predicting the majority class would have got you. The baseline is what tells you whether the model added anything at all.",
+    "expected_points": [
+      "a metric alone has no interpretation",
+      "the baseline shows what is achievable trivially",
+      "it reveals whether the model adds value",
+      "examples are majority class or a simple heuristic"
+    ],
+    "follow_up_seeds": [
+      "What baseline would you use for a regression problem?"
+    ],
+    "subtopic": "choosing a baseline",
+    "id": "model_eval-1-why-does-an-evaluation-need-a"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 1,
+    "mode": "factual",
+    "text": "What is each of the training, validation and test sets for?",
+    "reference_answer": "Training fits the parameters. Validation guides your choices — hyperparameters, which model, when to stop. Test estimates how it will perform on data nobody has used for anything, which only holds if you have genuinely left it alone.",
+    "expected_points": [
+      "training data fits the model parameters",
+      "validation guides tuning and model choice",
+      "test gives an unbiased final estimate",
+      "the test set must not influence any decision"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "train validation test discipline",
+    "id": "model_eval-1-what-is-each-of-the-training"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 1,
+    "mode": "factual",
+    "text": "What does it mean to call a metric a proxy?",
+    "reference_answer": "That you are measuring something convenient in place of what you actually care about. Click-through rate stands in for usefulness, accuracy stands in for value delivered. The gap between the proxy and the real goal is where models that look good go wrong.",
+    "expected_points": [
+      "the metric substitutes for the real objective",
+      "it is chosen because it is measurable",
+      "the proxy and the goal can diverge",
+      "optimising the proxy can hurt the real outcome"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "what a metric is a proxy for",
+    "id": "model_eval-1-what-does-it-mean-to-call"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 1,
+    "mode": "factual",
+    "text": "What is error analysis?",
+    "reference_answer": "Actually reading the cases the model got wrong, rather than only looking at the aggregate. You sort them into groups and count, and that usually tells you what to fix far faster than any metric does — often the errors are one or two systematic problems, not a spread.",
+    "expected_points": [
+      "examine individual wrong predictions",
+      "group the errors into categories and count them",
+      "it reveals systematic failures an aggregate hides",
+      "it directs what to fix next"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "error analysis",
+    "id": "model_eval-1-what-is-error-analysis"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 1,
+    "mode": "factual",
+    "text": "What is the difference between offline and online evaluation?",
+    "reference_answer": "Offline scores a model against historical data, which is fast and cheap and lets you iterate. Online measures the effect on real users and real behaviour, which is slow and expensive and is the only one that tells you whether it actually helped.",
+    "expected_points": [
+      "offline uses historical data and is fast to run",
+      "online measures real user behaviour",
+      "offline supports rapid iteration",
+      "only online measures real impact"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "offline versus online evaluation",
+    "id": "model_eval-1-what-is-the-difference-between-offline"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 1,
+    "mode": "factual",
+    "text": "Why look at performance on subgroups instead of just overall?",
+    "reference_answer": "Because an average can be good while the model is useless for a whole group. Ninety-five percent overall might be ninety-nine on the common case and sixty on new users. If those users matter, the aggregate has hidden the only thing worth knowing.",
+    "expected_points": [
+      "a good average can hide a failing subgroup",
+      "aggregate performance is weighted by group size",
+      "small but important groups get averaged away",
+      "measure each meaningful segment separately"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "slicing performance by segment",
+    "id": "model_eval-1-why-look-at-performance-on-subgroups"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 1,
+    "mode": "factual",
+    "text": "Why should you look at the test set as little as possible?",
+    "reference_answer": "Because every look leaks it into your decisions. If you evaluate on test, change something, and evaluate again, you have started tuning on it — and the number stops being an estimate of unseen performance and becomes another training score.",
+    "expected_points": [
+      "repeated use leaks it into your decisions",
+      "it stops being an unbiased estimate",
+      "tuning against it is a form of overfitting",
+      "use validation data for iteration instead"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "the test set as a scarce resource",
+    "id": "model_eval-1-why-should-you-look-at-the"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "How should you split data when the task involves time?",
+    "reference_answer": "By time, always — train on the past and test on the future. A random split lets the model learn from data recorded after what it is predicting, which is leakage and produces a score you can never reproduce in production.",
+    "expected_points": [
+      "split chronologically, not randomly",
+      "train on earlier data and test on later",
+      "a random split leaks future information",
+      "the offline score would not hold in production"
+    ],
+    "follow_up_seeds": [
+      "What is backtesting?"
+    ],
+    "subtopic": "splitting time series data",
+    "id": "model_eval-2-how-should-you-split-data-when"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "When is a plain random split the wrong thing to do?",
+    "reference_answer": "When rows are not independent. If one patient, user or document produces several rows, a random split puts some in train and some in test, and the model scores well by recognising the entity rather than the pattern. You split by group instead.",
+    "expected_points": [
+      "rows from the same entity are not independent",
+      "a random split puts the same entity on both sides",
+      "the model recognises the entity, not the pattern",
+      "split by group so entities do not cross the boundary"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "grouped and stratified splits",
+    "id": "model_eval-2-when-is-a-plain-random-split"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "Your model scores 99 percent on the holdout. What do you check first?",
+    "reference_answer": "Leakage, before celebrating. Almost always a feature encodes the answer — something recorded after the outcome, an identifier correlated with the label, or preprocessing fitted before the split. Ninety-nine percent on a hard problem is a bug report, not a result.",
+    "expected_points": [
+      "suspect leakage rather than genuine performance",
+      "look for features computed after the outcome",
+      "check preprocessing was fitted after the split",
+      "check for identifiers correlated with the label"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "detecting leakage in an evaluation",
+    "id": "model_eval-2-your-model-scores-99-percent-on"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "Can you overfit to a validation set without ever training on it?",
+    "reference_answer": "Yes, and it is the common way. Every time you pick the better of two options by validation score you are fitting your choices to that data. After enough decisions the validation score is optimistic, which is why a final untouched test set exists.",
+    "expected_points": [
+      "repeated model selection fits choices to the validation data",
+      "no gradient update is needed for this to happen",
+      "the validation score becomes optimistic",
+      "a separate untouched test set protects against it"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "overfitting to a validation set",
+    "id": "model_eval-2-can-you-overfit-to-a-validation"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "When would you use cross-validation instead of a single holdout?",
+    "reference_answer": "When the dataset is small enough that a single split is mostly luck. Rotating folds uses every row for both training and evaluation and gives you a spread as well as a mean. The cost is training as many times as you have folds.",
+    "expected_points": [
+      "use it when a single split is too noisy",
+      "small datasets benefit most",
+      "it gives a variance estimate as well as a mean",
+      "the cost is training once per fold"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "cross-validation strategy",
+    "id": "model_eval-2-when-would-you-use-cross-validation"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "Model A scores 0.81 and model B scores 0.82. Is B better?",
+    "reference_answer": "Not on that evidence. The difference could easily be noise from the particular split or the random seed. I would want the same folds for both, a spread across seeds, and a confidence interval on the difference before calling it a win.",
+    "expected_points": [
+      "a small gap can be sampling noise",
+      "evaluate both on identical splits",
+      "repeat across seeds or folds",
+      "look at the interval on the difference, not the point estimates"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "comparing two models honestly",
+    "id": "model_eval-2-model-a-scores-0-81-and"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "Where should the decision threshold come from?",
+    "reference_answer": "From the relative cost of the two error types, not from a default of one half. You pick it on validation data by asking what a false positive costs against a false negative, and the answer is a business question rather than a modelling one.",
+    "expected_points": [
+      "it should reflect the cost of each error type",
+      "one half is a default, not a decision",
+      "choose it on validation data, not test",
+      "the costs come from the business context"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "threshold selection",
+    "id": "model_eval-2-where-should-the-decision-threshold-come"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "How do you evaluate a model when positives are one percent of the data?",
+    "reference_answer": "Not with accuracy, which a trivial model wins. I would look at precision and recall on the rare class, use a precision-recall curve rather than ROC since the false positive rate is diluted by the huge negative class, and report performance at the operating point that will actually be used.",
+    "expected_points": [
+      "accuracy is meaningless at that base rate",
+      "measure precision and recall on the rare class",
+      "prefer a precision-recall curve over ROC",
+      "report at the operating point you will deploy"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "evaluating imbalanced problems",
+    "id": "model_eval-2-how-do-you-evaluate-a-model"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "What happens if some of your test labels are wrong?",
+    "reference_answer": "You get a ceiling on the measured score that has nothing to do with the model, and comparisons between good models become noise. Worse, a model that is genuinely right on a mislabelled case is punished for it — so past a point you are ranking models by how well they reproduce your errors.",
+    "expected_points": [
+      "it caps the achievable measured score",
+      "correct predictions get counted as wrong",
+      "it obscures differences between strong models",
+      "audit a sample of labels before trusting the number"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "label noise in the test set",
+    "id": "model_eval-2-what-happens-if-some-of-your"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "What is a regression test set for a model?",
+    "reference_answer": "A fixed set of cases, including every failure you have previously fixed, that you re-run on every change. It is how you find out that improving one thing broke another — which happens constantly with models and is invisible in an aggregate metric.",
+    "expected_points": [
+      "a fixed set of cases run on every change",
+      "it includes previously fixed failures",
+      "it catches regressions an aggregate metric hides",
+      "the set must stay stable to be comparable"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "regression test sets",
+    "id": "model_eval-2-what-is-a-regression-test-set"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "Why might you optimise worst-group performance instead of the average?",
+    "reference_answer": "Because the average is a business decision disguised as a metric — it accepts being bad for a minority as long as you are good for the majority. If the model gates something that matters, or the weak group is one you have obligations to, the worst slice is the number that governs.",
+    "expected_points": [
+      "the average trades minority performance for majority",
+      "an important group can be systematically failed",
+      "worst-group performance bounds the harm",
+      "it matters for fairness and for high-stakes decisions"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "worst-group performance",
+    "id": "model_eval-3-why-might-you-optimise-worst-group"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "How would you test whether one model is genuinely better than another?",
+    "reference_answer": "By comparing them on the same examples and testing the paired differences, which removes the variance from example difficulty. Bootstrapping the test set gives an interval on the gap. Comparing two independent averages throws away the pairing and needs far more data.",
+    "expected_points": [
+      "evaluate both models on identical examples",
+      "test the paired per-example differences",
+      "pairing removes variance due to example difficulty",
+      "bootstrap the test set for an interval on the gap"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "significance of a model comparison",
+    "id": "model_eval-3-how-would-you-test-whether-one"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "Your test set has 500 examples and accuracy is 90 percent. How precise is that?",
+    "reference_answer": "Not very. With five hundred examples the interval on ninety percent is roughly plus or minus two and a half points, so anything inside about five points is indistinguishable. That is worth knowing before declaring a one-point improvement.",
+    "expected_points": [
+      "the estimate has meaningful uncertainty",
+      "the interval width depends on test set size",
+      "at this size it is a few percentage points",
+      "differences inside the interval cannot be distinguished"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "confidence intervals on a metric",
+    "id": "model_eval-3-your-test-set-has-500-examples"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "How would you check whether a model's probabilities are trustworthy?",
+    "reference_answer": "Bucket the predictions by score and compare the predicted probability in each bucket to the observed frequency. Plotted, that is a reliability diagram, and a well calibrated model sits on the diagonal. Ranking metrics tell you nothing about this.",
+    "expected_points": [
+      "group predictions into score buckets",
+      "compare predicted probability to observed frequency",
+      "plot it as a reliability diagram",
+      "AUC and ranking metrics do not capture calibration"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "calibration checks",
+    "id": "model_eval-3-how-would-you-check-whether-a"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "Why is accuracy the wrong metric for a ranking system?",
+    "reference_answer": "Because rank position matters and accuracy ignores it. Getting the right item into position one is worth far more than position twenty, and a classification metric treats those identically. Ranking metrics discount by position for exactly that reason.",
+    "expected_points": [
+      "position in the ranking matters",
+      "accuracy treats all positions identically",
+      "users mostly see the top few results",
+      "ranking metrics discount gains by position"
+    ],
+    "follow_up_seeds": [
+      "Which ranking metric would you actually use?"
+    ],
+    "subtopic": "evaluating ranking systems",
+    "id": "model_eval-3-why-is-accuracy-the-wrong-metric"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "What makes recommender evaluation harder than classification?",
+    "reference_answer": "You only observe feedback on what was shown, and what was shown came from the previous system. So the logs are biased by that policy, and offline accuracy rewards agreeing with it. There is also no signal for the good recommendation nobody ever saw.",
+    "expected_points": [
+      "feedback exists only for items that were shown",
+      "the logs are biased by the previous recommender",
+      "offline metrics reward reproducing that policy",
+      "unshown but good items generate no signal"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "evaluating recommenders",
+    "id": "model_eval-3-what-makes-recommender-evaluation-harder-than"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "When do you need human evaluation, and what makes it reliable?",
+    "reference_answer": "When there is no automatic metric that captures quality — generation, relevance, tone. It is reliable when the rubric is specific enough that two people agree, when raters see items in random order, and when you measure agreement rather than assume it.",
+    "expected_points": [
+      "needed where no automatic metric captures quality",
+      "requires a specific written rubric",
+      "randomise order to avoid position bias",
+      "measure inter-annotator agreement"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "human evaluation",
+    "id": "model_eval-3-when-do-you-need-human-evaluation"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "What is benchmark contamination?",
+    "reference_answer": "When the evaluation data has appeared in the model's training data, so the score measures memorisation rather than ability. It is endemic with models trained on the open web, and it is why a strong public benchmark result may say nothing about your task.",
+    "expected_points": [
+      "evaluation data appeared in training data",
+      "the score reflects memorisation, not generalisation",
+      "common for models trained on web-scale corpora",
+      "use private or newly-created evaluation data"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "benchmark contamination",
+    "id": "model_eval-3-what-is-benchmark-contamination"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "How do you evaluate output that has many valid answers?",
+    "reference_answer": "Stop trying to produce one number. Break quality into dimensions you can judge separately — factual accuracy, relevance, format, safety — score each against a rubric, and validate any automated judge against human ratings before trusting it at scale.",
+    "expected_points": [
+      "decompose quality into separate dimensions",
+      "score each against an explicit rubric",
+      "reference-overlap metrics penalise valid paraphrase",
+      "validate an automated judge against human labels"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "evaluating generative output",
+    "id": "model_eval-3-how-do-you-evaluate-output-that"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "Someone cannot reproduce your reported number. What are the usual causes?",
+    "reference_answer": "Uncontrolled randomness — seeds for initialisation, shuffling and augmentation — a different data version or split, a preprocessing step applied inconsistently, or a different library version. It is why the split and the seed belong with the result.",
+    "expected_points": [
+      "random seeds not fixed or not recorded",
+      "a different data version or split",
+      "inconsistent preprocessing",
+      "record the data version, split, seed and environment"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "reproducibility of results",
+    "id": "model_eval-3-someone-cannot-reproduce-your-reported-number"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "Offline metrics improved but the online test was flat. What explains that?",
+    "reference_answer": "Several things, and they are worth separating. The offline metric may be a poor proxy for the online one. The offline data came from the old policy, so it rewards agreeing with it. The test may be underpowered. Or serving features differ from training features.",
+    "expected_points": [
+      "the offline metric may not proxy the online outcome",
+      "offline data is biased by the previous policy",
+      "the online test may lack power to detect the effect",
+      "train-serve differences can eat the gain"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "offline versus online evaluation",
+    "id": "model_eval-4-offline-metrics-improved-but-the-online"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "How would you turn error analysis into a plan rather than a list?",
+    "reference_answer": "By counting. I would sample errors, label each with a cause, and tally — which turns an anecdote into a distribution. Then estimate the achievable gain per category and weigh it against effort. Usually two categories account for most of the loss and the rest is not worth touching.",
+    "expected_points": [
+      "sample errors and label each with a cause",
+      "count the categories to get a distribution",
+      "estimate the recoverable gain per category",
+      "prioritise by gain against effort"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "error analysis",
+    "id": "model_eval-4-how-would-you-turn-error-analysis"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "You have run hundreds of experiments against one test set. What is it worth now?",
+    "reference_answer": "Much less than it says. Selecting the best of hundreds of results against the same data means the winner is partly chosen for fitting that sample — the reported score is biased upward and the gap to second place is mostly noise. I would want a fresh held-out set before believing it.",
+    "expected_points": [
+      "selecting a winner across many runs biases the estimate",
+      "the reported score is optimistic",
+      "the margin over other candidates is largely noise",
+      "confirm on a fresh untouched set"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "the test set as a scarce resource",
+    "id": "model_eval-4-you-have-run-hundreds-of-experiments"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "How do you evaluate a model in production when labels arrive late?",
+    "reference_answer": "You need something to watch in the meantime. Input and prediction distributions catch drift immediately. A validated early proxy tracks quality on a shorter lag. And the fully-labelled older cohorts give real performance, just delayed — so you evaluate on a rolling window that is always behind.",
+    "expected_points": [
+      "monitor input and prediction distributions immediately",
+      "use an early proxy validated against the true outcome",
+      "evaluate mature cohorts on a lag",
+      "re-check that the proxy still tracks the outcome"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "evaluating in production",
+    "id": "model_eval-4-how-do-you-evaluate-a-model"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "Your raters agree only 60 percent of the time. What does that tell you?",
+    "reference_answer": "That the task as written is ambiguous, not that the raters are bad. No model can be measured more precisely than the labels, so that agreement is a ceiling on any score derived from them. The fix is the rubric and the examples, not more raters.",
+    "expected_points": [
+      "the task definition is ambiguous",
+      "agreement bounds how precisely anything can be measured",
+      "it caps the meaningful score on that data",
+      "fix the rubric and adjudicate disagreements"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "inter-annotator agreement",
+    "id": "model_eval-4-your-raters-agree-only-60-percent"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "How would you catch a metric being gamed by the model?",
+    "reference_answer": "Watch the guardrails and the distribution, not just the headline. A gamed metric usually rises alongside something degrading — length, repetition, hedging, one segment carrying the whole gain. I would also inspect the top scoring outputs directly, because gaming is obvious to a reader long before it is obvious in aggregate.",
+    "expected_points": [
+      "monitor guardrail metrics alongside the target",
+      "watch for a shift in the output distribution",
+      "check whether the gain is concentrated in one segment",
+      "read the highest-scoring outputs directly"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "what a metric is a proxy for",
+    "id": "model_eval-4-how-would-you-catch-a-metric"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 5,
+    "mode": "factual",
+    "text": "There is no evaluation set. Build one.",
+    "reference_answer": "From real traffic, because the distribution has to be right. I would sample across the query types that occur, deliberately over-sample the hard and rare cases, label with a written rubric and measure agreement on a shared subset. Then freeze it, keep a separate untouched slice, and add every production failure to it permanently.",
+    "expected_points": [
+      "sample from real traffic for a correct distribution",
+      "cover the range of cases and over-sample hard ones",
+      "label against a written rubric and check agreement",
+      "freeze the set and hold part of it back",
+      "add production failures as permanent cases"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "building an evaluation from scratch",
+    "id": "model_eval-5-there-is-no-evaluation-set-build"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 5,
+    "mode": "factual",
+    "text": "A colleague says their model is better. What do you ask for?",
+    "reference_answer": "The same evaluation, not a better number. Identical test data and splits, the same metric at the same operating point, per-segment results, and a confidence interval on the difference. Then I would ask how many times the test set has been used, because that decides what the number is worth.",
+    "expected_points": [
+      "identical test data and split for both",
+      "the same metric at the same operating point",
+      "an interval on the difference, not two point estimates",
+      "per-segment results, not only the average",
+      "how many times the test set has been reused"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "comparing two models honestly",
+    "id": "model_eval-5-a-colleague-says-their-model-is"
+  },
+  {
+    "topic": "model_eval",
+    "difficulty": 5,
+    "mode": "factual",
+    "text": "Your evaluation takes six hours. How does that change what you do?",
+    "reference_answer": "It changes the shape of the work more than the numbers. A slow evaluation means fewer iterations, so I would build a fast noisy subset for the inner loop and reserve the full run for candidates that clear it — after checking the two rank changes the same way. Anything else and you evaluate less often, which is worse.",
+    "expected_points": [
+      "slow evaluation reduces iteration count",
+      "build a fast approximate subset for the inner loop",
+      "reserve the full run for serious candidates",
+      "verify the fast proxy ranks models the same way"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "the cost of evaluation",
+    "id": "model_eval-5-your-evaluation-takes-six-hours-how"
+  }
+]

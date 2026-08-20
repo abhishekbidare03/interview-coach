@@ -152,9 +152,9 @@ globalThis.fetch = async (url) => {
              { key: "dsa", label: "DSA", blurb: "Complexity.", available: 41 },
              { key: "resume", label: "Résumé", blurb: "Needs a CV.", available: 0 }],
     coverage: { python: { count: 66 }, dsa: { count: 41 } },
-    lengths: [5, 8, 12],
-    difficulties: [{ value: 2, label: "Junior" }, { value: 3, label: "Mid-level" },
-                   { value: 4, label: "Senior" }],
+    lengths: [5, 10, 15, 20, 30],
+    max_length: 60,
+    difficulties: [{ value: 2, label: "Junior" }, { value: 3, label: "Mid-level" }],
   } : { stats: { sessions: 0 }, sessions: [], topics: [] };
   return { json: async () => body };
 };
@@ -189,8 +189,11 @@ const chips = el("topics").children;
 console.log(`  topic chips: ${chips.map((c) => stripTags(c.innerHTML)).join(", ") || "(none)"}`);
 check("a chip per topic", chips.length === 3, `${chips.length} chips`);
 check("an empty topic is disabled", chips[2]?.disabled === true);
-check("level options rendered", el("difficulty").children.length === 3);
-check("length options rendered", el("length").children.length === 3);
+check("level options rendered", el("difficulty").children.length === 2,
+      el("difficulty").children.map((c) => c.textContent).join(", "));
+check("Senior is no longer offered",
+      !el("difficulty").children.some((c) => /senior/i.test(c.textContent)));
+check("length presets rendered", el("length").children.length === 5);
 check("bank size shown", /197|107|questions in the bank/.test(el("note").textContent),
       el("note").textContent);
 
@@ -214,7 +217,33 @@ const start = JSON.parse(SOCKET.sent.at(-1));
 console.log(`  sent: ${JSON.stringify(start)}`);
 check("start carries the chosen topic and settings",
       start.type === "start" && start.topics[0] === "python" &&
-      start.length === 8 && start.difficulty === 3);
+      start.length === 10 && start.difficulty === 3,
+      JSON.stringify(start));
+
+console.log("\n3b. INTERVIEW LENGTH IS NOT FIXED\n" + "=".repeat(72));
+console.log(`  hint: ${el("lenHint").textContent}`);
+check("the hint reports how many questions are available",
+      /available/.test(el("lenHint").textContent));
+
+// A typed number must beat the preset, and must be clamped to the server's cap.
+el("customLen").value = "24";
+el("customLen").oninput();
+await el("go").onclick();
+await new Promise((r) => setImmediate(r));
+check("a custom length overrides the preset",
+      JSON.parse(SOCKET.sent.at(-1)).length === 24,
+      String(JSON.parse(SOCKET.sent.at(-1)).length));
+
+el("customLen").value = "9999";
+el("customLen").oninput();
+await el("go").onclick();
+await new Promise((r) => setImmediate(r));
+check("a custom length is clamped to the maximum",
+      JSON.parse(SOCKET.sent.at(-1)).length === 60,
+      String(JSON.parse(SOCKET.sent.at(-1)).length));
+
+el("customLen").value = "";
+el("customLen").oninput();
 
 console.log("\n4. CAPTIONS FOLLOW THE AUDIO CLOCK\n" + "=".repeat(72));
 const send = (o) => SOCKET.onmessage({ data: JSON.stringify(o) });
@@ -276,6 +305,20 @@ send({ type: "span", text: "Next question." }); audio();
 advance(2000);
 check("an orphaned span is discarded rather than shown later",
       caption() === "Next question.", `"${caption()}"`);
+
+console.log("\n6. THERE IS A WAY HOME\n" + "=".repeat(72));
+// The report used to put its only exit under every question, so an
+// eight-question session meant scrolling past the whole thing to leave.
+const onView = () => views.find((v) => v._classes.has("on"))?.id;
+send({ type: "finished", summary: { title: "Python", questions: 8,
+                                    mean_score: 0.5, by_topic: { python: 0.5 } } });
+check("finishing shows the report", onView() === "report", String(onView()));
+check("the report has a Home button", !!els.get("reportHome"));
+el("reportHome").onclick();
+await new Promise((r) => setImmediate(r));
+check("Home returns to setup from the report", onView() === "setup", String(onView()));
+check("the interview view has its own Home button", !!els.get("liveHome"));
+check("progress has a Home button", !!els.get("histHome"));
 
 console.log("\nUI SMOKE EXIT CRITERIA\n" + "=".repeat(72));
 for (const [label, ok] of results) console.log(`  [${ok ? "PASS" : "FAIL"}] ${label}`);

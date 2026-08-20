@@ -5,6 +5,10 @@ no API keys, no cloud, no data leaving the machine. You speak, it listens, grade
 what you actually said against a rubric, tells you what you missed, and decides
 how hard to push next.
 
+Built around the **Amazon Applied Scientist** loop: ML breadth and depth,
+statistics and experimentation, NLP, generative AI, retrieval and RAG, model
+evaluation, ML system design, coding, and behavioural.
+
 Built to run inside **4 GB of VRAM** on a GTX 1650 Ti — speech recognition, a
 language model, speech synthesis and voice activity detection all loaded at
 once — with a **510 ms** median response time.
@@ -91,7 +95,7 @@ flowchart LR
     end
 
     LLM["Ollama<br/>qwen2.5:3b"]
-    BANK[("Question bank<br/>197 questions")]
+    BANK[("Question bank<br/>495 questions")]
     DB[("SQLite<br/>progress")]
 
     MIC --> WS --> ORB
@@ -120,8 +124,8 @@ grading depends on. The interview's structure is arithmetic. The model gets the
 two jobs it is genuinely good at: deciding whether an answer covered a specific
 point, and writing one short spoken transition.
 
-**Grading is coverage, not a holistic verdict.** Every question carries four
-expected points. The model answers one entailment-shaped question per point —
+**Grading is coverage, not a holistic verdict.** Every question carries three
+to five expected points. The model answers one entailment-shaped question per point —
 *did they state this?* — and the **code** computes the score and verdict
 arithmetically from the ratio. This is what makes a 3B usable as a grader, and
 it is also why the report can tell you precisely which points you missed rather
@@ -163,7 +167,7 @@ Hardware: Intel i5-10300H, GTX 1650 Ti 4 GB (Turing), 16 GB RAM, Windows 11.
 | Peak VRAM, device-wide, everything loaded | **2631 MiB / 4096** |
 | STT cost visible to the user | **0 ms** on answers under ~25 s |
 | Grader ranking accuracy | **10/10** fixtures, all three modes |
-| Question bank | 197 across 7 topics |
+| Question bank | 495 across 15 topics, 405 hand-written |
 
 ---
 
@@ -190,11 +194,23 @@ Requires Python 3.11/3.12, [uv](https://docs.astral.sh/uv/), and
 uv sync
 ollama pull qwen2.5:3b
 
-# The Piper voice is 113 MB and not in the repo — fetch it into data/voices/
+# The Piper voice is 113 MB and not in the repo - fetch it into data/voices/
 # from https://huggingface.co/rhasspy/piper-voices (en_US-lessac-high)
 
 .venv\Scripts\python.exe -m coach.server
 ```
+
+Or install a desktop shortcut and skip all of it afterwards:
+
+```powershell
+python scripts\make_icon.py                     # needs Pillow; run once
+powershell -ExecutionPolicy Bypass -File scripts\install_shortcut.ps1
+```
+
+One click then starts Ollama if it is not already up, checks the model and the
+voice file are present, launches the server, and opens the browser once the
+models are actually warm - about 13 seconds. Closing the console window stops
+it.
 
 Then open `http://127.0.0.1:8000`, or `/debug` for a live per-stage latency
 panel. The startup line should read `stt=cuda/int8_float16` — `stt=cpu` means
@@ -234,11 +250,12 @@ starts, and must be when it does.
   accent, no room noise, no filler words. Two constants (the 1300 ms endpoint
   threshold and the transcript confidence gate) remain untuned against a real
   voice.
-- **Only the Python bank is hand-written.** Its 66 questions were authored
-  directly after the generated ones proved unusable — a 3B asked for "a question
-  about closures" writes a 40-word two-part exam question, not something a
-  person says out loud. The other six topics still carry generated questions
-  with that flaw.
+- **Five of the fifteen banks are still generated.** Python, DSA and the
+  eight Applied Science topics — 405 questions — were written by hand after
+  the generated ones proved unusable: a 3B asked for "a question about
+  closures" writes a 40-word two-part exam question, not something a person
+  says out loud. OS, databases, networking, system design and behavioural
+  still carry generated questions with that flaw.
 - **No barge-in.** Microphone input is dropped while the coach speaks, so it
   cannot transcribe its own voice. Deliberate, and the reason "can you repeat
   the question?" doesn't work.
@@ -251,8 +268,8 @@ starts, and must be when it does.
 
 ```
 src/coach/        pipeline, brains, interview state machine, grading, adaptation
-scripts/          question bank builders (one generated, one hand-written)
-bench/            per-phase verification harnesses
+scripts/          bank builders — bank_kit validates, banks/ holds the content
+bench/            per-phase verification harnesses, plus a headless UI smoke test
 web/              single-page frontend, no build step
 data/bank/        the question bank, committed as content
 ```

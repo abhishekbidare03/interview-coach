@@ -37,18 +37,16 @@ Run:  .venv\Scripts\python.exe scripts\build_python_bank.py
 from __future__ import annotations
 
 import sys
-from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
-from coach.config import BANK                      # noqa: E402
-from coach.schema import Mode, Question, save_questions  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-
-# (difficulty, subtopic, question, reference, points, follow_ups)
-Entry = tuple[int, str, str, str, list[str], list[str]]
+import bank_kit as kit                                # noqa: E402
+from bank_kit import Entry                            # noqa: E402
+from coach.schema import Mode                         # noqa: E402
 
 BANK_DATA: list[Entry] = [
 
@@ -863,54 +861,15 @@ BANK_DATA: list[Entry] = [
 ]
 
 
-def build() -> list[Question]:
-    seen: set[str] = set()
-    out: list[Question] = []
-    for diff, sub, text, ref, points, seeds in BANK_DATA:
-        key = text.lower().strip()
-        if key in seen:
-            raise SystemExit(f"duplicate question: {text}")
-        seen.add(key)
-
-        # The rules in the module docstring are worth enforcing, not just
-        # stating — it is too easy to relax them while adding "just one more".
-        words = len(text.split())
-        if words > 20:
-            raise SystemExit(f"question too long ({words} words): {text}")
-        if text.count("?") > 1:
-            raise SystemExit(f"two questions in one: {text}")
-        if not 3 <= len(points) <= 4:
-            raise SystemExit(f"{len(points)} expected points (want 3-4): {text}")
-        for p in points:
-            if len(p.split()) > 12:
-                raise SystemExit(f"expected point too long: {p}")
-
-        out.append(Question(
-            topic="python", difficulty=diff, mode=Mode.FACTUAL, text=text,
-            reference_answer=ref, expected_points=points,
-            follow_up_seeds=seeds, subtopic=sub,
-        ))
-    return out
-
 
 def main() -> int:
-    qs = build()
-    path = BANK / "python.json"
-    save_questions(path, qs)
-
-    spread = Counter(q.difficulty for q in qs)
-    print(f"wrote {len(qs)} Python questions to {path}")
-    print("difficulty spread:")
-    for d in sorted(spread):
-        bar = "#" * spread[d]
-        label = {1: "basic", 2: "easy", 3: "medium", 4: "hard",
-                 5: "stretch"}[d]
-        print(f"  {d} {label:<8} {spread[d]:>3}  {bar}")
-    easy = spread[1] + spread[2]
-    print(f"\n{easy}/{len(qs)} ({easy * 100 // len(qs)}%) are basic or easy — "
-          f"a screening round checks the floor first.")
-    print(f"subtopics: {len({q.subtopic for q in qs})}")
-    print(f"longest question: {max(len(q.text.split()) for q in qs)} words")
+    # Validation lives in bank_kit, shared with the Applied Science banks, so
+    # both are held to the same rules rather than each drifting its own way.
+    questions = kit.build("python", Mode.FACTUAL, BANK_DATA)
+    kit.check_no_cross_topic_duplicates({"python": questions})
+    path = kit.write("python", questions)
+    kit.report("python", questions)
+    print(f"    -> {path}")
     return 0
 
 

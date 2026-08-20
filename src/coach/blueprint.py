@@ -85,11 +85,19 @@ def _interleave(keys: list[str], weights: dict[str, float], n: int,
     which feels broken rather than random. Filling largest-remainder first and
     then spacing the result keeps the mix honest and the order varied.
     """
-    counts = {k: max(1, round(weights.get(k, 0) * n)) for k in keys}
-    while sum(counts.values()) > n:
-        counts[max(counts, key=lambda k: counts[k])] -= 1
-    while sum(counts.values()) < n:
-        counts[min(counts, key=lambda k: counts[k])] += 1
+    # Largest remainder. The previous version floored every topic at one slot
+    # and then decremented the current largest until the total fit, which is
+    # fine for six topics and eight questions and silently wrong for twelve:
+    # there are not enough slots to give everyone one, so the decrement loop ate
+    # into the heavily-weighted topics and behavioural fell to zero percent of a
+    # "random" interview. Allocating by weight and handing out the remainder in
+    # order of fractional part cannot do that.
+    exact = {k: weights.get(k, 0.0) * n for k in keys}
+    counts = {k: int(v) for k, v in exact.items()}
+    remainder = n - sum(counts.values())
+    by_frac = sorted(keys, key=lambda k: exact[k] - int(exact[k]), reverse=True)
+    for i in range(max(0, remainder)):
+        counts[by_frac[i % len(by_frac)]] += 1
 
     pool = [k for k, c in counts.items() for _ in range(c) if c > 0]
     rng.shuffle(pool)
@@ -122,7 +130,12 @@ async def build(bank: Bank, topic_keys: list[str], *, length: int = DEFAULT_LENG
     curve = difficulty_curve(length, base_difficulty)
 
     if mixed:
-        weights = {k: T.RANDOM_MIX.get(k, 0.1) for k in available}
+        # Topics outside RANDOM_MIX get no weight rather than a default share.
+        # A default put Operating Systems and Networking above Generative AI in
+        # a mix that is supposed to be shaped like an Applied Scientist loop.
+        weights = {k: T.RANDOM_MIX.get(k, 0.0) for k in available}
+        if not any(weights.values()):
+            weights = {k: 1.0 for k in available}
         total = sum(weights.values()) or 1.0
         order = _interleave(available, {k: v / total for k, v in weights.items()},
                             length, rng)
@@ -147,8 +160,17 @@ async def build(bank: Bank, topic_keys: list[str], *, length: int = DEFAULT_LENG
 
     used = list(dict.fromkeys(p.question.topic for p in planned))
     labels = [T.get(k).label for k in used]
-    title = ("Random Interview" if mixed else
-             labels[0] if len(labels) == 1 else " + ".join(labels))
+    # Joining every label produced "Machine Learning + Statistics &
+    # Experimentation + Generative AI & LLMs + ML System Design", which does not
+    # fit anywhere it is displayed. Past two, name two and count the rest.
+    if mixed:
+        title = "Random Interview"
+    elif len(labels) == 1:
+        title = labels[0]
+    elif len(labels) == 2:
+        title = " + ".join(labels)
+    else:
+        title = f"{labels[0]} + {labels[1]} and {len(labels) - 2} more"
 
     bp = Blueprint(
         title=title,

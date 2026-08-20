@@ -55,6 +55,11 @@ WEB = Path(__file__).resolve().parent.parent.parent / "web"
 # the only real concurrency we have: speculative STT overlapping a TTS span.
 POOL = ThreadPoolExecutor(max_workers=3, thread_name_prefix="coach")
 
+# Interview length is chosen by the candidate, not fixed by a preset list, so it
+# needs a ceiling somewhere. Sixty questions is roughly a two-hour session — far
+# past anything useful, but the cap exists so a typo cannot plan a thousand.
+MIN_LENGTH, MAX_LENGTH = 3, 60
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -125,10 +130,13 @@ async def api_topics() -> dict:
         "topics": [{**t, "available": len(bank.all_for(t["key"]))}
                    for t in T.selectable()],
         "coverage": bank.coverage(),
-        "lengths": [5, 8, 12],
+        # Presets, not a fixed menu — the client also allows a custom number,
+        # capped by MAX_LENGTH and by how many questions the chosen topics
+        # actually hold.
+        "lengths": [5, 10, 15, 20, 30],
+        "max_length": MAX_LENGTH,
         "difficulties": [{"value": 2, "label": "Junior"},
-                         {"value": 3, "label": "Mid-level"},
-                         {"value": 4, "label": "Senior"}],
+                         {"value": 3, "label": "Mid-level"}],
     }
 
 
@@ -199,7 +207,9 @@ async def ws(sock: WebSocket) -> None:
         """Plan the session, then open it. Planning is off the latency path
         (plan.md §2.3) — the client shows 'preparing' while this runs."""
         mixed = bool(cmd.get("mixed"))
-        keys = list(T.TOPICS) if mixed else (cmd.get("topics") or [])
+        # "Random interview" draws from the curated mix, not from every topic
+        # that happens to exist — the weights in RANDOM_MIX are the point.
+        keys = list(T.RANDOM_MIX) if mixed else (cmd.get("topics") or [])
         keys = [k for k in keys if k in T.TOPICS]
         if not keys:
             await emit({"type": "error", "message": "Pick at least one topic."})
@@ -207,15 +217,24 @@ async def ws(sock: WebSocket) -> None:
 
         await emit({"type": "state", "state": "preparing"})
         try:
+            requested = max(MIN_LENGTH, min(MAX_LENGTH, int(cmd.get("length", 10))))
             bp = await build_blueprint(
                 app.state.bank, keys,
-                length=int(cmd.get("length", 8)),
+                length=requested,
                 base_difficulty=int(cmd.get("difficulty", 3)),
                 mixed=mixed, llm=app.state.llm,
             )
         except ValueError as e:
             await emit({"type": "error", "message": str(e)})
             return
+
+        # The bank may hold fewer questions than were asked for. The blueprint
+        # already truncates rather than failing, but the candidate should be
+        # told that rather than silently getting a shorter interview.
+        if bp.length < requested:
+            await emit({"type": "notice", "message":
+                        f"Only {bp.length} questions available for these "
+                        f"topics — asked for {requested}."})
 
         state["session_id"] = app.state.store.start_session(bp)
 

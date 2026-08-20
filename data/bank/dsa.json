@@ -1,781 +1,624 @@
 [
   {
     "topic": "dsa",
-    "difficulty": 2,
+    "difficulty": 1,
     "mode": "factual",
-    "text": "Can you explain how a trie data structure is used for prefix matching in a text search application? How does it work and what are the advantages and disadvantages compared to other data structures like hash tables or arrays for this purpose?",
-    "reference_answer": "A trie is a tree-like data structure used to store a dynamic set of strings. Each node in the trie represents a single character of a string. For prefix matching, we traverse the trie until we find a mismatch or reach the end of the word. If we reach the end, it means the prefix matched. The advantage of using a trie for prefix matching is its efficient handling of prefix queries. The disadvantage is that it can be less space-efficient compared to hash tables or arrays, especially if the strings are not frequently used as prefixes.",
+    "text": "Why is looking up an array element by index so fast?",
+    "reference_answer": "Because the elements sit in one contiguous block of memory and all have the same size, so the address is a single multiplication away from the start. It takes constant time regardless of how big the array is.",
     "expected_points": [
-      "A trie is used for prefix matching in a text search application by storing strings as nodes in a tree-like structure.",
-      "Prefix matching in a trie involves traversing the tree until a mismatch is found or the end of a string is reached.",
-      "The efficiency of prefix queries is a significant advantage of using a trie for this purpose.",
-      "However, the space efficiency of a trie can be lower compared to hash tables or arrays when dealing with a large number of non-prefixed strings."
+      "elements are stored contiguously",
+      "every element is the same size",
+      "the address is computed arithmetically",
+      "lookup is constant time regardless of size"
     ],
-    "follow_up_seeds": [
-      "Can you give an example of a scenario where a trie would be more efficient than a hash table for prefix matching?",
-      "How does a trie handle the case where multiple strings have the same prefix? Can you explain the implications for prefix matching?"
-    ],
-    "subtopic": "tries and prefix matching",
-    "id": "dsa-2-can-you-explain-how-a-trie"
+    "follow_up_seeds": [],
+    "subtopic": "arrays and indexing",
+    "id": "dsa-1-why-is-looking-up-an-array"
   },
   {
     "topic": "dsa",
-    "difficulty": 4,
+    "difficulty": 1,
     "mode": "factual",
-    "text": "Why is chaining a better collision handling strategy for hash tables when dealing with a large dataset compared to open addressing? Can you explain the trade-offs involved in each approach?",
-    "reference_answer": "Chaining is better because it handles collisions by adding each collided item into a linked list. This means there are no gaps in the hash table, which allows for efficient lookups. Open addressing, on the other hand, requires a linear search to find an empty slot, which can degrade to O(n) performance in the worst case. Chaining also maintains a more predictable performance, as the linked list size is more stable, unlike open addressing which can have a larger chain size due to clustering.",
+    "text": "When would a linked list beat an array?",
+    "reference_answer": "When you insert or remove in the middle a lot. An array has to shift everything after the insertion point, which is linear. A linked list just repoints two references. The trade is that you lose fast indexing and cache locality.",
     "expected_points": [
-      "Chaining avoids gaps in the hash table.",
-      "Open addressing requires a linear search for collisions.",
-      "Chaining maintains a more stable performance.",
-      "Open addressing can degrade to O(n) performance in the worst case."
+      "insertion and deletion in the middle are cheaper",
+      "an array must shift subsequent elements",
+      "a linked list only updates references",
+      "you lose constant-time indexing"
     ],
     "follow_up_seeds": [
-      "Can you provide an example of clustering in open addressing and how it affects performance?",
-      "What are the space complexities of chaining and open addressing, and how do they compare for a large dataset?"
+      "What does an array give you that a linked list cannot?"
+    ],
+    "subtopic": "arrays versus linked lists",
+    "id": "dsa-1-when-would-a-linked-list-beat"
+  },
+  {
+    "topic": "dsa",
+    "difficulty": 1,
+    "mode": "factual",
+    "text": "What's the difference between a stack and a queue?",
+    "reference_answer": "The order things come out. A stack is last in, first out — the most recently added is next. A queue is first in, first out, like a line at a counter. Both add and remove in constant time.",
+    "expected_points": [
+      "a stack is last in, first out",
+      "a queue is first in, first out",
+      "both add and remove in constant time",
+      "gave an example of where each is used"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "stacks and queues",
+    "id": "dsa-1-what-s-the-difference-between-a"
+  },
+  {
+    "topic": "dsa",
+    "difficulty": 1,
+    "mode": "factual",
+    "text": "How does a hash table find a value so quickly?",
+    "reference_answer": "It runs the key through a hash function to get a position in an array and goes straight there, instead of searching. That is constant time on average. It costs the ordering — a hash table has no useful order.",
+    "expected_points": [
+      "the key is hashed to an array position",
+      "lookup goes directly to that position",
+      "average time is constant",
+      "no ordering is preserved"
+    ],
+    "follow_up_seeds": [
+      "What happens when two keys hash to the same slot?"
     ],
     "subtopic": "hash tables and collision handling",
-    "id": "dsa-4-why-is-chaining-a-better-collision"
+    "id": "dsa-1-how-does-a-hash-table-find"
   },
   {
     "topic": "dsa",
-    "difficulty": 3,
+    "difficulty": 1,
     "mode": "factual",
-    "text": "Can you explain the difference between breadth-first search (BFS) and depth-first search (DFS) and when you would use each in a graph? Can you also discuss the time complexity of each and how they handle cyclic graphs?",
-    "reference_answer": "BFS starts at the root node and explores all the neighboring nodes before moving to the next level of neighbors. It uses a queue to keep track of nodes to be visited. DFS, on the other hand, starts at the root node and explores as far as possible along each branch before backtracking. It uses a stack to keep track of nodes. For cyclic graphs, BFS will find all vertices reachable from a given source, while DFS might get stuck in an infinite loop.",
+    "text": "What does big O notation actually tell you?",
+    "reference_answer": "How the cost grows as the input grows, ignoring constants and small terms. It says linear time doubles when the input doubles. It deliberately says nothing about actual speed — a quadratic algorithm can beat a linear one on small inputs.",
     "expected_points": [
-      "BFS uses a queue to explore all neighboring nodes level by level.",
-      "DFS uses a stack to explore as far as possible along each branch before backtracking.",
-      "BFS is suitable for finding the shortest path in unweighted graphs, while DFS is useful for exploring all possible states in games and puzzles.",
-      "DFS can get stuck in cyclic graphs, while BFS will not because it explores level by level."
+      "it describes growth as input size increases",
+      "constants and lower-order terms are ignored",
+      "it is about scaling, not absolute speed",
+      "a worse complexity can win on small inputs"
     ],
-    "follow_up_seeds": [
-      "Can you provide an example of a real-world problem where BFS would be more appropriate than DFS?",
-      "How do BFS and DFS handle unweighted vs weighted graphs? What would be the difference in their implementations and complexities?"
-    ],
-    "subtopic": "breadth-first versus depth-first search",
-    "id": "dsa-3-can-you-explain-the-difference-between"
+    "follow_up_seeds": [],
+    "subtopic": "time and space complexity analysis",
+    "id": "dsa-1-what-does-big-o-notation-actually"
   },
   {
     "topic": "dsa",
-    "difficulty": 2,
+    "difficulty": 1,
     "mode": "factual",
-    "text": "How would you explain the difference between amortised and worst-case analysis for a dynamic array that grows in size, and why is amortised analysis useful for understanding its performance?",
-    "reference_answer": "Amortised analysis looks at the average cost over a sequence of operations, which can be more beneficial than just looking at the worst-case scenario for a single operation. For a dynamic array that grows in size, amortised analysis can show that even though some individual insertions might be costly (O(n) in the worst case), the average cost per insertion over a series of operations is much better, typically O(1). This is useful because it helps us understand that while the dynamic array might be slow at times, it doesn't make the overall performance drastically worse.",
+    "text": "How does binary search work, and what does it require?",
+    "reference_answer": "You look at the middle element, and because the data is sorted you know which half the target must be in, so you discard the other half and repeat. Halving each step gives log n time. It only works if the data is already sorted.",
     "expected_points": [
-      "Amortised analysis considers the average cost over a sequence of operations rather than the worst-case scenario for a single operation.",
-      "For a dynamic array that grows in size, amortised analysis indicates that the average cost per insertion is O(1).",
-      "This approach is useful for understanding that even though some individual insertions might be costly, the overall performance is not drastically worse.",
-      "Amortised analysis provides a more balanced view of the dynamic array's performance, highlighting its efficiency in the long run."
+      "compare against the middle element",
+      "discard the half that cannot contain the target",
+      "the data must be sorted",
+      "it runs in logarithmic time"
     ],
-    "follow_up_seeds": [
-      "Can you provide an example of a dynamic array that grows in size and how amortised analysis would be applied to it?",
-      "How does amortised analysis affect the performance of other data structures that grow in size?"
-    ],
-    "subtopic": "amortised analysis",
-    "id": "dsa-2-how-would-you-explain-the-difference"
-  },
-  {
-    "topic": "dsa",
-    "difficulty": 4,
-    "mode": "factual",
-    "text": "Can you explain the difference between a Min-Heap and a Max-Heap, and how they are used in a priority queue?",
-    "reference_answer": "A Min-Heap is a complete binary tree where each node's value is less than or equal to its children's values. It's used in priority queues to efficiently retrieve the smallest element. A Max-Heap is a complete binary tree where each node's value is greater than or equal to its children's values. It's used in priority queues to efficiently retrieve the largest element.",
-    "expected_points": [
-      "A Min-Heap is a complete binary tree with each node's value less than or equal to its children's values.",
-      "A Max-Heap is a complete binary tree with each node's value greater than or equal to its children's values.",
-      "Min-Heaps are used in priority queues to efficiently retrieve the smallest element.",
-      "Max-Heaps are used in priority queues to efficiently retrieve the largest element."
-    ],
-    "follow_up_seeds": [
-      "How does the heap property help in maintaining the order of elements?",
-      "What are some applications of heaps in real-world scenarios where priority queues are used?"
-    ],
-    "subtopic": "heaps and priority queues",
-    "id": "dsa-4-can-you-explain-the-difference-between"
-  },
-  {
-    "topic": "dsa",
-    "difficulty": 2,
-    "mode": "factual",
-    "text": "In a balanced binary search tree, what is the maximum difference in height between the left and right subtrees for any node? How does this property affect the performance of search, insert, and delete operations in terms of time complexity?",
-    "reference_answer": "In a balanced binary search tree, the maximum difference in height between the left and right subtrees for any node is 1. This property ensures that the tree is as compact as possible, which helps in keeping the search, insert, and delete operations within the O(log n) time complexity. The height of the tree is always less than or equal to 2 * log(n) + 1, where n is the number of nodes. This balance allows for these operations to be performed efficiently, even with a large number of nodes.",
-    "expected_points": [
-      "In a balanced binary search tree, the maximum difference in height between the left and right subtrees for any node is 1.",
-      "This property ensures that the tree is as compact as possible.",
-      "The height of the tree is always less than or equal to 2 * log(n) + 1, where n is the number of nodes.",
-      "This balance allows for search, insert, and delete operations to be performed efficiently, even with a large number of nodes."
-    ],
-    "follow_up_seeds": [
-      "Can you explain how the AVL tree maintains its balance?",
-      "How does the balance of a tree affect its performance in worst-case scenarios?"
-    ],
-    "subtopic": "balanced trees and when they matter",
-    "id": "dsa-2-in-a-balanced-binary-search-tree"
-  },
-  {
-    "topic": "dsa",
-    "difficulty": 2,
-    "mode": "factual",
-    "text": "Can you explain when it’s more appropriate to use dynamic programming over a greedy approach to solve a problem, and what are the key differences between the two?",
-    "reference_answer": "Dynamic programming is used when the problem can be broken down into overlapping subproblems, and the optimal solution to the overall problem depends on optimal solutions to subproblems. Greedy algorithms, on the other hand, make locally optimal choices at each step with the hope of finding a global optimum. Dynamic programming is typically used for problems where the subproblems are not independent, meaning the optimal solution to the problem contains within it the optimal solutions to subproblems. Greedy algorithms are suitable when you can make a choice that seems best at the moment and later steps don’t need to consider the impact of this choice. For example, in the coin change problem, dynamic programming can be used because we need to consider all possible combinations of coins, whereas a greedy algorithm might just pick the largest denomination first, which might not always yield the minimum number of coins.",
-    "expected_points": [
-      "Dynamic programming is suitable for problems with overlapping subproblems and optimal substructure.",
-      "Greedy algorithms make locally optimal choices at each step without considering the impact on future steps.",
-      "Dynamic programming is used when the optimal solution to the problem contains within it the optimal solutions to subproblems.",
-      "Greedy algorithms are appropriate when a choice that seems best at the moment leads to the global optimum without needing to consider the impact of this choice."
-    ],
-    "follow_up_seeds": [
-      "Can you give an example of a problem that can be solved using dynamic programming but not a greedy approach?",
-      "When might a greedy algorithm fail to give an optimal solution, and how does dynamic programming handle such cases?"
-    ],
-    "subtopic": "dynamic programming versus greedy",
-    "id": "dsa-2-can-you-explain-when-it-s"
-  },
-  {
-    "topic": "dsa",
-    "difficulty": 4,
-    "mode": "factual",
-    "text": "Can you explain the difference between a standard binary search and a binary search tree (BST)? How do they handle search operations and what are the trade-offs between them?",
-    "reference_answer": "A standard binary search is used on a sorted array and it efficiently finds a target value in O(log n) time. In a binary search tree, the target value can be any node in the tree, and the search operation can also be O(log n) if the tree is balanced. However, binary search trees can get unbalanced, leading to worst-case O(n) time for search, insert, and delete operations if not properly managed. A standard binary search requires the input data to be sorted, while a binary search tree can handle any input order as long as it's a valid tree.",
-    "expected_points": [
-      "A standard binary search operates on a sorted array and performs searches in O(log n) time.",
-      "A binary search tree can be used with any input order and can perform searches in O(log n) time if balanced.",
-      "Binary search trees can become unbalanced, resulting in worst-case O(n) time for search, insert, and delete operations if not managed properly.",
-      "In contrast, a standard binary search requires the input data to be sorted for efficient search operations."
-    ],
-    "follow_up_seeds": [
-      "Can you describe how to ensure a binary search tree remains balanced?",
-      "How does the space complexity differ between a standard binary search and a binary search tree?"
-    ],
+    "follow_up_seeds": [],
     "subtopic": "binary search and its variants",
-    "id": "dsa-4-can-you-explain-the-difference-between"
+    "id": "dsa-1-how-does-binary-search-work-and"
   },
   {
     "topic": "dsa",
-    "difficulty": 4,
+    "difficulty": 1,
     "mode": "factual",
-    "text": "Can you explain how the two pointers technique and the sliding window approach are used together to find the maximum sum subarray of length k in an array of integers? How do they work together and what is the time complexity of this solution?",
-    "reference_answer": "We use two pointers to mark the start and end of the window. We slide the window across the array, adjusting the start pointer when the window size exceeds k. We keep track of the maximum sum encountered during this process. The time complexity is O(n), where n is the length of the array.",
+    "text": "You need to check whether you have seen an item before. What do you use?",
+    "reference_answer": "A hash set. Membership testing is constant time on average, versus scanning a list which is linear. Doing that check inside a loop is the difference between linear and quadratic overall.",
     "expected_points": [
-      "Uses two pointers to define the start and end of the window",
-      "Slides the window across the array to find the maximum sum subarray of length k",
-      "Maintains a variable to track the maximum sum encountered",
-      "Ensures the window size does not exceed k by moving the start pointer when necessary"
+      "use a hash set",
+      "membership testing is constant time on average",
+      "scanning a list is linear each time",
+      "it avoids a quadratic loop"
     ],
-    "follow_up_seeds": [
-      "What happens if the array contains negative numbers? How does this affect the maximum sum?",
-      "How would you modify this approach if the window size was not fixed but could vary between m and n?"
-    ],
-    "subtopic": "two pointers and sliding window",
-    "id": "dsa-4-can-you-explain-how-the-two"
+    "follow_up_seeds": [],
+    "subtopic": "sets and membership",
+    "id": "dsa-1-you-need-to-check-whether-you"
   },
   {
     "topic": "dsa",
-    "difficulty": 4,
+    "difficulty": 1,
     "mode": "factual",
-    "text": "Explain the differences between an in-order, pre-order, and post-order traversal of a binary tree. What are the specific sequences you would expect to see for a binary search tree (BST)?",
-    "reference_answer": "In-order traversal visits nodes in ascending order for a binary search tree. Pre-order traversal visits the root first, then in-order and finally post-order. Post-order visits first, then in-order, then the root. For a binary search tree, pre-order traversal would give you the root node, then the left subtree and finally the right subtree. In-order traversal would start with the left subtree, then the root, and finally the right subtree. Post-order traversal would visit the left subtree, then the right subtree, and finally the root node.",
+    "text": "What makes a binary search tree different from an ordinary binary tree?",
+    "reference_answer": "The ordering rule. Everything in the left subtree is smaller than the node and everything in the right is larger, all the way down. That invariant is what lets you discard half the tree at each step when searching.",
     "expected_points": [
-      "In-order traversal of a binary search tree yields nodes in ascending order.",
-      "Pre-order traversal of a binary search tree results in the root node first, followed by the left subtree, and then the right subtree.",
-      "Post-order traversal of a binary search tree results in the left subtree, then the right subtree, and finally the root node.",
-      "For a binary search tree, pre-order traversal would yield the root node, followed by the left subtree, and then the right subtree."
+      "left subtree holds smaller values",
+      "right subtree holds larger values",
+      "the property holds recursively at every node",
+      "it enables search by discarding half each step"
     ],
-    "follow_up_seeds": [
-      "What happens to the sequence if the tree is not a binary search tree?",
-      "How would you reverse the order of nodes in the pre-order sequence to get the in-order sequence?"
-    ],
+    "follow_up_seeds": [],
     "subtopic": "binary trees and traversals",
-    "id": "dsa-4-explain-the-differences-between-an-in"
+    "id": "dsa-1-what-makes-a-binary-search-tree"
+  },
+  {
+    "topic": "dsa",
+    "difficulty": 1,
+    "mode": "factual",
+    "text": "What does every recursive function need to avoid running forever?",
+    "reference_answer": "A base case that returns without recursing, and each call has to move towards it. Without both, it recurses until the call stack runs out and you get a stack overflow.",
+    "expected_points": [
+      "a base case that stops the recursion",
+      "each call must progress towards the base case",
+      "otherwise it recurses until the stack is exhausted",
+      "the result is a stack overflow"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "recursion and stack depth",
+    "id": "dsa-1-what-does-every-recursive-function-need"
   },
   {
     "topic": "dsa",
     "difficulty": 2,
     "mode": "factual",
-    "text": "What is the time complexity of finding the connected components in a graph using the union-find algorithm and how does it change with the number of components? Can you explain it in terms of best, average, and worst-case scenarios?",
-    "reference_answer": "Finding connected components using union-find is efficient when the number of components is small, as finding a component takes O(α(n)), where α is the inverse Ackermann function, which is very close to constant for practical purposes. However, in the worst case, finding a component can be O(n) when all vertices are in different components, which occurs when the algorithm is initially called with each vertex as its own component. In the best case, when all vertices are in the same component, it is O(1).",
+    "text": "What is a hash collision, and how is it handled?",
+    "reference_answer": "Two different keys landing in the same slot, which is unavoidable because there are more possible keys than slots. Either the slot holds a small list of entries, or you probe forward for the next free slot. Both keep lookup constant on average.",
     "expected_points": [
-      "Finding connected components using union-find has a time complexity of O(α(n)) in the best and average cases.",
-      "In the worst case, the time complexity can degrade to O(n) when all vertices are in different components.",
-      "The algorithm performs optimally with a time complexity of O(1) when all vertices are in the same component.",
-      "The inverse Ackermann function ensures that the time complexity remains constant for practical purposes, regardless of the number of vertices or components."
+      "two keys map to the same position",
+      "it is unavoidable given finite slots",
+      "chaining stores multiple entries per slot",
+      "open addressing probes for another slot"
     ],
     "follow_up_seeds": [
-      "Can you provide an example of a practical scenario where the O(α(n)) complexity is effectively constant?",
-      "How does the number of components affect the time complexity? Is it possible to reduce the number of components to improve performance?"
+      "When does a hash table stop being constant time?"
     ],
-    "subtopic": "union-find",
-    "id": "dsa-2-what-is-the-time-complexity-of"
+    "subtopic": "hash tables and collision handling",
+    "id": "dsa-2-what-is-a-hash-collision-and"
   },
   {
     "topic": "dsa",
-    "difficulty": 4,
+    "difficulty": 2,
     "mode": "factual",
-    "text": "Explain the differences between in-order, pre-order, and post-order traversals in a binary tree. Which traversal would you choose if you wanted to create a copy of the binary tree, and why?",
-    "reference_answer": "In-order traversal visits nodes in the left subtree, then the node itself, and then the right subtree. Pre-order traversal visits the node first, then the left subtree, and finally the right subtree. Post-order traversal visits the left subtree, then the right subtree, and finally the node. If you want to create a copy of a binary tree, you would choose pre-order traversal because it allows you to specify the structure of the new tree in the order you want it, by setting the left and right pointers appropriately for each node.",
+    "text": "Why is quicksort usually preferred over merge sort in practice?",
+    "reference_answer": "It sorts in place, so it does not need a second array, and its memory access pattern is cache-friendly, which makes it faster in wall-clock terms despite the same average complexity. Merge sort wins when you need guaranteed worst case or a stable sort.",
     "expected_points": [
-      "In-order traversal visits nodes in the left subtree, then the node itself, and then the right subtree.",
-      "Pre-order traversal visits the node first, then the left subtree, and finally the right subtree.",
-      "Post-order traversal visits the left subtree, then the right subtree, and finally the node.",
-      "To create a copy of a binary tree, pre-order traversal is chosen because it allows for the specification of the structure in the desired order."
+      "quicksort sorts in place with less extra memory",
+      "better cache behaviour makes it faster in practice",
+      "both average to n log n",
+      "merge sort guarantees worst case and is stable"
     ],
     "follow_up_seeds": [
-      "Are there any advantages or disadvantages to using pre-order traversal for creating a binary tree copy?",
-      "How might the traversal order differ if the tree contained nested binary trees? Would it still be pre-order, or would a different order be needed?"
-    ],
-    "subtopic": "binary trees and traversals",
-    "id": "dsa-4-explain-the-differences-between-in-order"
-  },
-  {
-    "topic": "dsa",
-    "difficulty": 3,
-    "mode": "factual",
-    "text": "Can you compare and contrast the time and space complexity of QuickSort and MergeSort, and discuss when one might be preferred over the other in a real-world application?",
-    "reference_answer": "QuickSort typically has an average time complexity of O(n log n) but can degrade to O(n^2) in the worst case. MergeSort, on the other hand, always has a time complexity of O(n log n) and a space complexity of O(n). In terms of space usage, QuickSort is generally more space-efficient as it is an in-place sort, whereas MergeSort requires additional memory. For applications where time efficiency is critical and the list is large, QuickSort might be preferred due to its lower overhead. For applications where space is a concern or the list size is moderate, MergeSort is often the better choice.",
-    "expected_points": [
-      "QuickSort has an average time complexity of O(n log n) but can degrade to O(n^2) in the worst case.",
-      "MergeSort always has a time complexity of O(n log n) and a space complexity of O(n).",
-      "QuickSort is generally more space-efficient as it is an in-place sort.",
-      "MergeSort requires additional memory."
-    ],
-    "follow_up_seeds": [
-      "Are there any scenarios where QuickSort would be more efficient than MergeSort? Why?",
-      "How does the worst-case time complexity of QuickSort affect its performance, and how does MergeSort handle such cases?"
+      "What is quicksort's worst case, and when does it happen?"
     ],
     "subtopic": "sorting algorithm tradeoffs",
-    "id": "dsa-3-can-you-compare-and-contrast-the"
-  },
-  {
-    "topic": "dsa",
-    "difficulty": 3,
-    "mode": "factual",
-    "text": "Can you explain when it's important to use a balanced tree data structure like an AVL tree or a Red-Black tree, and why balancing is crucial for its performance?",
-    "reference_answer": "Balanced trees like AVL trees and Red-Black trees are important when you need predictable and efficient operations like insertions, deletions, and searches. Balancing ensures that the tree stays approximately the same height, which means operations are faster and more predictable. For example, in a balanced AVL tree, the height difference between the left and right subtrees is at most one, ensuring that operations like search, insert, and delete take O(log n) time in the worst case, rather than O(n) in the worst case for an unbalanced tree.",
-    "expected_points": [
-      "Balanced trees like AVL and Red-Black trees are crucial for operations such as insertions, deletions, and searches.",
-      "Balancing ensures that the height difference between the left and right subtrees is at most one in AVL trees.",
-      "This balancing property guarantees that operations like search, insert, and delete take O(log n) time in the worst case.",
-      "Without balancing, operations could take O(n) time in the worst case for an unbalanced tree."
-    ],
-    "follow_up_seeds": [
-      "What are the trade-offs of using a balanced tree over an unbalanced tree?",
-      "Can you give an example where a balanced tree would be more beneficial than an unbalanced tree?"
-    ],
-    "subtopic": "balanced trees and when they matter",
-    "id": "dsa-3-can-you-explain-when-it-s"
-  },
-  {
-    "topic": "dsa",
-    "difficulty": 4,
-    "mode": "factual",
-    "text": "Which of the following is generally more efficient for accessing elements at a specific index: arrays or linked lists? And why is this the case?",
-    "reference_answer": "Arrays are more efficient for accessing elements at a specific index because they store elements in contiguous memory locations, which allows for direct calculation of the memory address of any element based on its index. Linked lists, on the other hand, store elements in a series of nodes that are linked together, so accessing an element at a specific index requires traversing the list from the start.",
-    "expected_points": [
-      "Arrays store elements in contiguous memory locations.",
-      "Linked lists store elements in a series of nodes linked together.",
-      "Accessing an element at a specific index in arrays requires direct calculation of the memory address based on its index.",
-      "Accessing an element at a specific index in linked lists requires traversing the list from the start."
-    ],
-    "follow_up_seeds": [
-      "Are there exceptions to this rule in specific scenarios? If so, what are they?",
-      "In what situations might linked lists still be preferred over arrays despite this efficiency difference?"
-    ],
-    "subtopic": "arrays versus linked lists",
-    "id": "dsa-4-which-of-the-following-is-generally"
-  },
-  {
-    "topic": "dsa",
-    "difficulty": 4,
-    "mode": "factual",
-    "text": "Can you explain the relationship between the depth of a recursive call stack and the structure of a binary tree? How does the maximum depth of a binary tree relate to the number of nodes in the tree?",
-    "reference_answer": "In a binary tree, the maximum depth of the recursion stack corresponds to the height of the tree, which is the longest path from the root to a leaf. The maximum depth is one less than the number of nodes in the tree. For example, a binary tree with 4 nodes will have a maximum depth of 2.",
-    "expected_points": [
-      "The maximum depth of a binary tree is one less than the number of nodes in the tree.",
-      "The maximum depth of the recursion stack in a binary tree traversal corresponds to the height of the tree.",
-      "A binary tree with 4 nodes will have a maximum depth of 2.",
-      "The relationship between the maximum depth and the number of nodes in a binary tree is not always linear."
-    ],
-    "follow_up_seeds": [
-      "Can you provide an example of a binary tree with a specific number of nodes and its maximum depth?",
-      "How does the maximum depth of a binary tree change if you add a new node to the root of the tree? Explain your reasoning."
-    ],
-    "subtopic": "recursion and stack depth",
-    "id": "dsa-4-can-you-explain-the-relationship-between"
-  },
-  {
-    "topic": "dsa",
-    "difficulty": 4,
-    "mode": "factual",
-    "text": "Can you explain a scenario where a greedy algorithm would work but a dynamic programming approach wouldn't, and vice versa? Explain the key differences in these approaches and how they affect the solution space.",
-    "reference_answer": "A classic example is the problem of finding the shortest path in a grid where you can only move right or down. A greedy algorithm would always move to the right or down at each step, which might not lead to the shortest path. In contrast, dynamic programming would build a table where each cell represents the shortest path to that cell, allowing it to make optimal decisions based on the shortest paths to previous cells. Another example is the problem of making change with the fewest coins. A greedy algorithm would always pick the largest denomination, which doesn't always yield the minimum number of coins. In dynamic programming, we build up a table of solutions to subproblems, ensuring we make the best choices at each step.",
-    "expected_points": [
-      "A greedy algorithm for finding the shortest path in a grid will not always find the optimal solution.",
-      "A dynamic programming approach for finding the shortest path in a grid will always find the optimal solution.",
-      "A greedy algorithm for making change with the fewest coins will not always find the optimal solution.",
-      "A dynamic programming approach for making change with the fewest coins will always find the optimal solution."
-    ],
-    "follow_up_seeds": [
-      "Can you provide another example where greedy fails but dynamic programming succeeds?",
-      "How does the concept of overlapping subproblems apply to dynamic programming?"
-    ],
-    "subtopic": "dynamic programming versus greedy",
-    "id": "dsa-4-can-you-explain-a-scenario-where"
+    "id": "dsa-2-why-is-quicksort-usually-preferred-over"
   },
   {
     "topic": "dsa",
     "difficulty": 2,
     "mode": "factual",
-    "text": "Given an array of integers, can you find the maximum sum of a subarray that has a length greater than or equal to 3? How would you use two pointers to solve this problem?",
-    "reference_answer": "I would use two pointers to solve this problem. I would start with one pointer at the beginning of the array and another pointer at the end. I would move the end pointer towards the start pointer until the difference between the two pointers is greater than or equal to 3. I would keep track of the maximum sum of the subarray I have seen so far. I would repeat this process until the end pointer reaches the start pointer. The maximum sum I found will be the answer.",
+    "text": "What's the complexity of looking something up in a sorted array versus a hash table?",
+    "reference_answer": "The sorted array gives log n with binary search; the hash table gives constant time on average. The hash table wins on lookup, but the sorted array supports range queries and ordered traversal, which the hash table cannot do at all.",
     "expected_points": [
-      "Uses two pointers to solve the problem",
-      "Keeps track of the maximum sum of the subarray",
-      "Ensures the subarray length is greater than or equal to 3",
-      "Updates the maximum sum when a new maximum is found"
+      "sorted array with binary search is logarithmic",
+      "hash table is constant time on average",
+      "the hash table is faster for single lookups",
+      "the sorted array supports range and ordered queries"
     ],
-    "follow_up_seeds": [
-      "What would you do if the array contained negative numbers?",
-      "How would you handle an array with a very large number of elements?"
+    "follow_up_seeds": [],
+    "subtopic": "time and space complexity analysis",
+    "id": "dsa-2-what-s-the-complexity-of-looking"
+  },
+  {
+    "topic": "dsa",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "What kind of problem does the two pointer technique solve?",
+    "reference_answer": "One where you would otherwise compare every pair. If the data is sorted or you are scanning a sequence, two indices moving towards each other or in the same direction cover the possibilities in one pass, turning quadratic into linear.",
+    "expected_points": [
+      "it avoids checking every pair",
+      "two indices move through the data",
+      "it usually needs sorted data or a sequence",
+      "it reduces quadratic work to linear"
     ],
+    "follow_up_seeds": [],
     "subtopic": "two pointers and sliding window",
-    "id": "dsa-2-given-an-array-of-integers-can"
+    "id": "dsa-2-what-kind-of-problem-does-the"
   },
   {
     "topic": "dsa",
     "difficulty": 2,
     "mode": "factual",
-    "text": "Can you explain how a trie is used for prefix matching and provide an example of how it works?",
-    "reference_answer": "A trie is used for prefix matching by storing strings in a way that allows us to search for words that share common prefixes. Each node in the trie represents a character in the strings, and we can traverse the trie from the root to any node to find all strings that have the node as a prefix. For example, if we have a trie with the words 'cat', 'car', 'cart', 'cartel', and 'card', we can find all strings that have 'ca' as a prefix by starting at the node representing 'c' and traversing to the node representing 'a'. This allows us to quickly find all strings that match a given prefix.",
+    "text": "What's the practical difference between breadth-first and depth-first search?",
+    "reference_answer": "Breadth-first explores level by level using a queue, so the first time it reaches a node is by the shortest path in edges. Depth-first goes as deep as it can using a stack or recursion, uses less memory on wide graphs, but gives no shortest-path guarantee.",
     "expected_points": [
-      "A trie is used for prefix matching by storing strings in a way that allows us to search for words that share common prefixes.",
-      "Each node in the trie represents a character in the strings.",
-      "We can traverse the trie from the root to any node to find all strings that have the node as a prefix.",
-      "For example, if we have a trie with the words 'cat', 'car', 'cart', 'cartel', and 'card', we can find all strings that have 'ca' as a prefix by starting at the node representing 'c' and traversing to the node representing 'a'."
+      "breadth-first explores level by level with a queue",
+      "it finds the fewest-edges path first",
+      "depth-first goes deep using a stack or recursion",
+      "depth-first uses less memory on wide graphs"
     ],
     "follow_up_seeds": [
-      "Can you explain the time complexity of prefix matching in a trie?",
-      "How does a trie handle the case where there are multiple words with the same prefix?"
-    ],
-    "subtopic": "tries and prefix matching",
-    "id": "dsa-2-can-you-explain-how-a-trie"
-  },
-  {
-    "topic": "dsa",
-    "difficulty": 2,
-    "mode": "factual",
-    "text": "Can you explain the key differences between dynamic programming and greedy algorithms, and provide an example where one would be more appropriate than the other?",
-    "reference_answer": "Greedy algorithms make the locally optimal choice at each step hoping to find the global optimum. Dynamic programming, on the other hand, breaks the problem into smaller subproblems and stores the results of these subproblems to avoid redundant computations. A good example where greedy is better is Huffman coding, where you need to minimize the total weighted path length of a prefix code. Dynamic programming is more suitable for problems like the Knapsack problem, where you need to consider all possibilities and make a decision based on the best outcome.",
-    "expected_points": [
-      "dynamic programming breaks problems into subproblems and stores results",
-      "greedy algorithms make local optimal choices",
-      "dynamic programming is more suitable for problems with overlapping subproblems",
-      "greedy algorithms do not consider the entire solution space"
-    ],
-    "follow_up_seeds": [
-      "Can you give an example where dynamic programming would be more appropriate than greedy?",
-      "Can you explain how dynamic programming can handle problems with optimal substructure?"
-    ],
-    "subtopic": "dynamic programming versus greedy",
-    "id": "dsa-2-can-you-explain-the-key-differences"
-  },
-  {
-    "topic": "dsa",
-    "difficulty": 4,
-    "mode": "factual",
-    "text": "Given an array and a linked list, how do they differ in terms of their primary use cases and what are the trade-offs associated with each in terms of memory and speed?",
-    "reference_answer": "An array is a contiguous block of memory that allows you to access elements directly using an index. Linked lists, on the other hand, are a collection of nodes where each node contains a reference to the next node. Arrays have a fixed size and you can access any element in constant time, O(1). Linked lists can grow dynamically as you add elements, but accessing elements requires traversing the list, making it O(n) for both accessing and inserting elements. Memory-wise, arrays use less space because they are contiguous, while linked lists use more space due to the overhead of pointers.",
-    "expected_points": [
-      "arrays use contiguous memory and can access elements in constant time O(1)",
-      "linked lists use dynamic memory allocation and can grow dynamically but accessing elements requires traversal O(n)",
-      "arrays have fixed size and do not require pointers",
-      "linked lists require pointers for each node to maintain the list structure"
-    ],
-    "follow_up_seeds": [
-      "Can you describe a scenario where the use of an array would be more appropriate than a linked list?",
-      "What are the time complexities for accessing and inserting elements in arrays and linked lists?"
-    ],
-    "subtopic": "arrays versus linked lists",
-    "id": "dsa-4-given-an-array-and-a-linked"
-  },
-  {
-    "topic": "dsa",
-    "difficulty": 3,
-    "mode": "factual",
-    "text": "Can you explain the union-find algorithm and how it can be used to efficiently manage disjoint sets in a program?",
-    "reference_answer": "Union-find is a data structure that efficiently manages a collection of disjoint sets. It includes two operations: union, which merges two sets, and find, which determines which set a particular element belongs to. These operations are crucial for algorithms like Kruskal's for finding the minimum spanning tree. It uses path compression and union by rank to maintain efficiency, especially when these operations are performed frequently.",
-    "expected_points": [
-      "Union-find is a data structure for managing disjoint sets.",
-      "It includes two operations: union and find.",
-      "Path compression and union by rank are used to maintain efficiency.",
-      "These operations are particularly useful in algorithms like Kruskal's for finding the minimum spanning tree."
-    ],
-    "follow_up_seeds": [
-      "Can you describe how union-find can be used to solve the classic problem of finding connected components in an undirected graph?",
-      "How does union-find handle cases where elements are not directly comparable, such as strings or complex objects?"
-    ],
-    "subtopic": "union-find",
-    "id": "dsa-3-can-you-explain-the-union-find"
-  },
-  {
-    "topic": "dsa",
-    "difficulty": 3,
-    "mode": "factual",
-    "text": "Can you compare and contrast a max-heap and a min-heap in terms of their internal structure and how they are used in priority queues?",
-    "reference_answer": "A max-heap is a complete binary tree where each node's value is greater than or equal to its children's values. This structure allows for efficient retrieval of the maximum element, which is useful in priority queues where the highest priority item is always taken first. A min-heap, on the other hand, is a complete binary tree where each node's value is less than or equal to its children's values. This structure allows for efficient retrieval of the minimum element, which is useful in similar priority queues where the lowest priority item is always taken first.",
-    "expected_points": [
-      "A max-heap is a complete binary tree with each node's value greater than or equal to its children's values.",
-      "A min-heap is a complete binary tree with each node's value less than or equal to its children's values.",
-      "Max-heap structure supports efficient retrieval of the maximum element.",
-      "Min-heap structure supports efficient retrieval of the minimum element."
-    ],
-    "follow_up_seeds": [
-      "How would you implement a priority queue using a max-heap? What are the time complexities for enqueue and dequeue operations?",
-      "What are the differences in implementation complexity between a max-heap and a min-heap? How do these differences affect the performance of priority queues?"
-    ],
-    "subtopic": "heaps and priority queues",
-    "id": "dsa-3-can-you-compare-and-contrast-a"
-  },
-  {
-    "topic": "dsa",
-    "difficulty": 2,
-    "mode": "factual",
-    "text": "Can you describe the difference between Dijkstra's algorithm and Bellman-Ford algorithm in the context of finding the shortest path in a graph with negative edge weights?",
-    "reference_answer": "Dijkstra's algorithm is used for graphs with non-negative edge weights, while Bellman-Ford can handle graphs with negative weights but requires more iterations. Dijkstra's algorithm maintains a priority queue and can get stuck in a loop if there are negative cycles, whereas Bellman-Ford can detect negative cycles and is more robust for graphs with negative weights.",
-    "expected_points": [
-      "Dijkstra's algorithm cannot process graphs with negative edge weights.",
-      "Bellman-Ford can process graphs with negative edge weights but requires more iterations.",
-      "Dijkstra's algorithm can get stuck in a loop if there are negative cycles.",
-      "Bellman-Ford can detect negative cycles and is more robust for such graphs."
-    ],
-    "follow_up_seeds": [
-      "Can you explain when you would choose one algorithm over the other?",
-      "Can you provide an example scenario where Bellman-Ford would be more suitable?"
-    ],
-    "subtopic": "shortest path algorithms",
-    "id": "dsa-2-can-you-describe-the-difference-between"
-  },
-  {
-    "topic": "dsa",
-    "difficulty": 4,
-    "mode": "factual",
-    "text": "Can you explain the concept of amortised analysis in the context of a dynamic array resizing and how it helps in understanding the average cost over a series of operations?",
-    "reference_answer": "Amortised analysis is a way to analyze a sequence of operations so that the average cost per operation is as low as possible. For a dynamic array that resizes itself, amortised analysis helps us see that even though a single resize operation can be expensive (O(n)), where n is the current size of the array, the overall cost per operation over many operations is much lower. By treating a sequence of resize operations as a sequence of O(1) operations, we can achieve an amortised time complexity of O(1). This means that, on average, each operation in the sequence costs us O(1) time, which is very efficient.",
-    "expected_points": [
-      "Even a single resize operation can be O(n) in cost.",
-      "By treating a sequence of resize operations as O(1) operations, amortised analysis achieves O(1) overall cost per operation.",
-      "This means that, on average, each operation in the sequence costs O(1) time.",
-      "Thus, amortised analysis helps in understanding the average cost over a series of operations for dynamic array resizing."
-    ],
-    "follow_up_seeds": [
-      "Can you provide an example of a dynamic array and how its resizing affects the overall performance?",
-      "How does the concept of amortised analysis apply to other data structures like a linked list or a balanced binary search tree?"
-    ],
-    "subtopic": "amortised analysis",
-    "id": "dsa-4-can-you-explain-the-concept-of"
-  },
-  {
-    "topic": "dsa",
-    "difficulty": 3,
-    "mode": "factual",
-    "text": "Can you compare adjacency matrix and adjacency list representations of a graph and discuss their strengths and weaknesses?",
-    "reference_answer": "An adjacency matrix is a 2D array that represents a graph where the value at matrix[i][j] indicates whether there is an edge from node i to node j. An adjacency list is a collection of linked lists, where each list represents the neighbors of a single node. The adjacency matrix is useful for dense graphs and provides constant-time access to all neighbors of a node. The adjacency list is more memory efficient for sparse graphs and can provide faster iteration over neighbors.",
-    "expected_points": [
-      "An adjacency matrix is suitable for dense graphs.",
-      "An adjacency list is more memory efficient for sparse graphs.",
-      "An adjacency matrix provides constant-time access to all neighbors of a node.",
-      "An adjacency list can provide faster iteration over neighbors."
-    ],
-    "follow_up_seeds": [
-      "Can you provide an example of a scenario where the adjacency list representation would be more advantageous?",
-      "What are the trade-offs between using adjacency matrix and adjacency list for a graph with 100 nodes and 1000 edges?"
-    ],
-    "subtopic": "graph representations",
-    "id": "dsa-3-can-you-compare-adjacency-matrix-and"
-  },
-  {
-    "topic": "dsa",
-    "difficulty": 3,
-    "mode": "factual",
-    "text": "Compare and contrast the stack depth of a recursive algorithm that divides a problem into two equal halves, versus one that divides it into thirds. Which one is likely to have a deeper stack and why?",
-    "reference_answer": "A recursive algorithm that divides a problem into two equal halves will have a deeper stack because it makes twice as many function calls at each level of recursion. A recursive algorithm that divides a problem into thirds will have a shallower stack because it makes fewer function calls at each level of recursion.",
-    "expected_points": [
-      "A recursive algorithm that divides a problem into two equal halves will have a deeper stack.",
-      "A recursive algorithm that divides a problem into thirds will have a shallower stack.",
-      "A recursive algorithm that divides a problem into two equal halves makes twice as many function calls at each level of recursion.",
-      "A recursive algorithm that divides a problem into thirds makes fewer function calls at each level of recursion."
-    ],
-    "follow_up_seeds": [
-      "Can you provide an example of a problem where dividing into thirds would be more efficient than dividing into halves?",
-      "How does the stack depth of a recursive algorithm change if the division ratio is not fixed, but instead depends on the size of the problem?"
-    ],
-    "subtopic": "recursion and stack depth",
-    "id": "dsa-3-compare-and-contrast-the-stack-depth"
-  },
-  {
-    "topic": "dsa",
-    "difficulty": 4,
-    "mode": "factual",
-    "text": "Can you explain the key differences between breadth-first search (BFS) and depth-first search (DFS) in terms of their traversal order and how they handle graph structures?",
-    "reference_answer": "Breadth-first search (BFS) explores all the vertices of a graph level by level, starting from the root node. It uses a queue to manage the nodes to be visited. Depth-first search (DFS), on the other hand, explores as far as possible along each branch before backtracking. It uses a stack to manage the nodes to be visited. In terms of handling graph structures, BFS is better for finding the shortest path in an unweighted graph, while DFS is better for finding a path in a graph where you don’t need to explore all nodes or for certain graph properties like cycle detection.",
-    "expected_points": [
-      "BFS explores all vertices level by level.",
-      "DFS explores as far as possible along each branch before backtracking.",
-      "BFS is suitable for finding the shortest path in an unweighted graph.",
-      "DFS is useful for detecting cycles in a graph."
-    ],
-    "follow_up_seeds": [
-      "Can you provide an example where BFS would be more suitable than DFS?",
-      "How do BFS and DFS differ in terms of space complexity and time complexity?"
+      "Which would you use to find the shortest route, and why?"
     ],
     "subtopic": "breadth-first versus depth-first search",
-    "id": "dsa-4-can-you-explain-the-key-differences"
+    "id": "dsa-2-what-s-the-practical-difference-between"
   },
   {
     "topic": "dsa",
-    "difficulty": 4,
+    "difficulty": 2,
     "mode": "factual",
-    "text": "Can you give an example where a greedy algorithm works but a dynamic programming approach wouldn't be suitable for solving the same problem?",
-    "reference_answer": "Sure! Consider the problem of finding the minimum coin change for a given amount. A greedy algorithm would work here because at each step, the algorithm chooses the largest coin that does not exceed the remaining amount. However, dynamic programming is not suitable for this problem because the solution depends on the optimal solution of subproblems, which isn't captured by the greedy approach.",
+    "text": "What is a heap useful for?",
+    "reference_answer": "Repeatedly getting the smallest or largest item without sorting everything. The extreme is at the root so peeking is constant, and inserting or removing is log n. That is what a priority queue is built on.",
     "expected_points": [
-      "A greedy algorithm can solve the minimum coin change problem.",
-      "Dynamic programming is not applicable to the minimum coin change problem.",
-      "The greedy approach works because it always selects the largest coin at each step.",
-      "Dynamic programming requires solving subproblems to find the optimal solution, which is not applicable here."
+      "it gives fast access to the minimum or maximum",
+      "the extreme element is at the root",
+      "insert and remove are logarithmic",
+      "it backs a priority queue"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "heaps and priority queues",
+    "id": "dsa-2-what-is-a-heap-useful-for"
+  },
+  {
+    "topic": "dsa",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "Why can appending to a dynamic array be constant time on average?",
+    "reference_answer": "Because it does not grow by one each time. When it runs out of space it allocates a larger block, usually double, and copies. Those copies are rare and get cheaper per element as the array grows, so the cost averages out to constant.",
+    "expected_points": [
+      "capacity grows by a multiple, not by one",
+      "a resize copies all existing elements",
+      "resizes become rarer as the array grows",
+      "the cost amortises to constant per append"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "arrays versus linked lists",
+    "id": "dsa-2-why-can-appending-to-a-dynamic"
+  },
+  {
+    "topic": "dsa",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "How would you represent a graph in memory?",
+    "reference_answer": "An adjacency list for most things — each node keeps its neighbours, so space is proportional to the edges and iterating a node's neighbours is fast. An adjacency matrix costs space in the square of the nodes but answers 'is there an edge' instantly, so it suits dense graphs.",
+    "expected_points": [
+      "an adjacency list stores neighbours per node",
+      "its space is proportional to the number of edges",
+      "a matrix uses space quadratic in the nodes",
+      "a matrix gives constant-time edge lookup and suits dense graphs"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "graph representations",
+    "id": "dsa-2-how-would-you-represent-a-graph"
+  },
+  {
+    "topic": "dsa",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "What does an in-order traversal of a binary search tree give you?",
+    "reference_answer": "The values in sorted order. You visit the left subtree, then the node, then the right, and because of the ordering invariant that produces ascending values. It is the cheapest way to get a sorted sequence out of one.",
+    "expected_points": [
+      "left subtree, then node, then right subtree",
+      "it yields the values in sorted order",
+      "it follows from the search tree ordering property",
+      "it visits every node once, in linear time"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "binary trees and traversals",
+    "id": "dsa-2-what-does-an-in-order-traversal"
+  },
+  {
+    "topic": "dsa",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "When is recursion a bad choice?",
+    "reference_answer": "When the depth can get large, because each call consumes stack and Python in particular caps it fairly low. Anything that recurses proportionally to the input size is safer as a loop with an explicit stack. Deep recursion also hides its memory cost.",
+    "expected_points": [
+      "deep recursion can exhaust the call stack",
+      "each call has stack frame overhead",
+      "rewrite as a loop with an explicit stack",
+      "the memory cost is not obvious in the code"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "recursion and stack depth",
+    "id": "dsa-2-when-is-recursion-a-bad-choice"
+  },
+  {
+    "topic": "dsa",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "What goes wrong with an unbalanced binary search tree?",
+    "reference_answer": "It degenerates into a linked list. Insert already-sorted data and every node goes down the same side, so searching becomes linear instead of log n — the exact case you chose a tree to avoid. Balanced variants rotate on insert to keep the height logarithmic.",
+    "expected_points": [
+      "it can degrade into a linked list",
+      "sorted insertion order is the common cause",
+      "search becomes linear instead of logarithmic",
+      "balanced trees restructure to bound the height"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "balanced trees and when they matter",
+    "id": "dsa-3-what-goes-wrong-with-an-unbalanced"
+  },
+  {
+    "topic": "dsa",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "When does a greedy algorithm fail?",
+    "reference_answer": "When a locally best choice rules out a better overall solution. Greedy works only when the problem has the property that local optima compose into a global one. Otherwise you need dynamic programming, which considers combinations rather than committing at each step.",
+    "expected_points": [
+      "a locally optimal choice can prevent a better global one",
+      "greedy requires a specific structural property",
+      "dynamic programming considers overlapping alternatives",
+      "gave an example where greedy fails"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "dynamic programming versus greedy",
+    "id": "dsa-3-when-does-a-greedy-algorithm-fail"
+  },
+  {
+    "topic": "dsa",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "What makes a problem suitable for dynamic programming?",
+    "reference_answer": "Two things: the optimal solution is built from optimal solutions to subproblems, and those subproblems repeat. The repetition is what makes caching worth it — without overlap you are just doing recursion with extra bookkeeping.",
+    "expected_points": [
+      "optimal substructure: subproblem solutions compose",
+      "overlapping subproblems that recur",
+      "results are cached and reused",
+      "without overlap, caching gains nothing"
     ],
     "follow_up_seeds": [
-      "Can you think of another problem where a greedy algorithm works but dynamic programming doesn't?",
-      "What are the key characteristics of problems where dynamic programming is more suitable than greedy algorithms?"
+      "What's the difference between memoisation and tabulation?"
     ],
     "subtopic": "dynamic programming versus greedy",
-    "id": "dsa-4-can-you-give-an-example-where"
+    "id": "dsa-3-what-makes-a-problem-suitable-for"
   },
   {
     "topic": "dsa",
     "difficulty": 3,
     "mode": "factual",
-    "text": "Can you explain how the two pointers technique can be applied to solve the problem of finding the maximum subarray with a fixed window size in linear time?",
-    "reference_answer": "The two pointers technique can be used to solve the maximum subarray problem with a fixed window size in linear time. We maintain two pointers, one at the start and one at the end of the window. We slide the window across the array, updating the maximum sum as we go. This way, we only need to iterate through the array once, resulting in a time complexity of O(n).",
+    "text": "Why does breadth-first search stop working for shortest paths once edges have weights?",
+    "reference_answer": "Because it counts edges, not cost. With weights, a path with more edges can be cheaper, and breadth-first will settle a node before the cheaper longer route is found. Dijkstra fixes it by always expanding the lowest total cost so far, using a priority queue.",
     "expected_points": [
-      "We use two pointers to traverse the array with a fixed window.",
-      "The maximum sum within the window is updated as the window slides across the array.",
-      "This approach ensures the solution is found in linear time, O(n).",
-      "The technique avoids the need for nested loops or additional data structures."
+      "breadth-first minimises edge count, not weight",
+      "a longer path can have lower total cost",
+      "Dijkstra expands the cheapest known node first",
+      "it uses a priority queue rather than a plain queue"
     ],
     "follow_up_seeds": [
-      "Can you walk through an example of finding the maximum subarray with a fixed window size?",
-      "What are some common edge cases in this problem, and how would you handle them?"
+      "What breaks Dijkstra?"
     ],
-    "subtopic": "two pointers and sliding window",
-    "id": "dsa-3-can-you-explain-how-the-two"
-  },
-  {
-    "topic": "dsa",
-    "difficulty": 4,
-    "mode": "factual",
-    "text": "Can you explain the difference between an adjacency matrix and an adjacency list representation of a graph?",
-    "reference_answer": "An adjacency matrix is a 2D array where the value at matrix[i][j] indicates whether there is an edge from node i to node j. An adjacency list is a collection of linked lists, where each node points to a list of its adjacent nodes. The adjacency matrix is more memory-efficient for dense graphs, while the adjacency list is more space-efficient for sparse graphs and is faster for operations like insertion and deletion.",
-    "expected_points": [
-      "An adjacency matrix uses a 2D array to represent edges between nodes.",
-      "An adjacency list uses a collection of linked lists to represent nodes and their adjacent nodes.",
-      "The adjacency matrix is more memory-efficient for dense graphs.",
-      "The adjacency list is more space-efficient for sparse graphs and faster for operations like insertion and deletion."
-    ],
-    "follow_up_seeds": [
-      "Can you describe a scenario where an adjacency list would be preferred over an adjacency matrix?",
-      "What is the time complexity for adding a node to an adjacency list and to an adjacency matrix? How do these compare for dense and sparse graphs?"
-    ],
-    "subtopic": "graph representations",
-    "id": "dsa-4-can-you-explain-the-difference-between"
+    "subtopic": "shortest path algorithms",
+    "id": "dsa-3-why-does-breadth-first-search-stop"
   },
   {
     "topic": "dsa",
     "difficulty": 3,
     "mode": "factual",
-    "text": "Can you describe the advantages and disadvantages of using an in-order, pre-order, and post-order traversal on a binary search tree?",
-    "reference_answer": "In-order traversal visits nodes in sorted order, which is why it's ideal for binary search trees. Pre-order traversal visits the root first, then the left subtree, then the right subtree. Post-order traversal visits the left subtree, then the right subtree, then the root. Each traversal has different properties and uses. In-order traversal is used to print the nodes of a binary search tree in sorted order, pre-order is used for creating a copy of the tree, and post-order is used to delete a tree.",
+    "text": "When does a hash table degrade to linear time?",
+    "reference_answer": "When too many keys land in the same bucket — a bad hash function, or adversarial input chosen to collide. Then a lookup walks a long chain. A high load factor also degrades it, which is why implementations resize once occupancy passes a threshold.",
     "expected_points": [
-      "In-order traversal yields nodes in sorted order.",
-      "Pre-order traversal is useful for creating a copy of the tree.",
-      "Post-order traversal is employed for deleting a tree.",
-      "Each traversal has distinct properties and applications."
+      "when many keys collide into one bucket",
+      "a poor hash function or adversarial keys cause it",
+      "lookup degenerates to scanning a chain",
+      "a high load factor triggers resizing to prevent it"
     ],
-    "follow_up_seeds": [
-      "What would be the result of an in-order traversal on a full binary tree?",
-      "Can you provide a real-world example where one of these traversals would be particularly useful?"
-    ],
-    "subtopic": "binary trees and traversals",
-    "id": "dsa-3-can-you-describe-the-advantages-and"
-  },
-  {
-    "topic": "dsa",
-    "difficulty": 2,
-    "mode": "factual",
-    "text": "Can you explain the difference between amortised analysis and average-case analysis for dynamic data structures?",
-    "reference_answer": "Amortised analysis looks at the overall cost of a sequence of operations, where the cost of individual operations may be high but the total cost is manageable over a sequence of operations. Average-case analysis, on the other hand, looks at the average cost of a single operation over many executions, without regard to the sequence.",
-    "expected_points": [
-      "Amortised analysis considers the total cost of a sequence of operations rather than the cost of each individual operation.",
-      "Average-case analysis focuses on the average cost of a single operation across multiple executions.",
-      "Amortised analysis is useful for understanding the efficiency of dynamic data structures over a series of operations.",
-      "Average-case analysis provides a measure of expected performance for a single operation in the long run."
-    ],
-    "follow_up_seeds": [
-      "Can you give an example where amortised analysis would be more useful than average-case analysis?",
-      "How does amortised analysis handle operations that have very different costs?"
-    ],
-    "subtopic": "amortised analysis",
-    "id": "dsa-2-can-you-explain-the-difference-between"
-  },
-  {
-    "topic": "dsa",
-    "difficulty": 4,
-    "mode": "factual",
-    "text": "Can you explain when you would prefer to use an array over a linked list for a given use case?",
-    "reference_answer": "For example, if you need to access an element by index quickly, an array is preferred because it allows you to calculate the memory address of an element in constant time, O(1). On the other hand, linked lists have to iterate through the list to find a specific element, which is O(n) time complexity. Also, if you need to add or remove elements frequently, linked lists are more efficient as you can do so by changing the pointers, whereas in an array, you might need to shift all elements, leading to O(n) time complexity.",
-    "expected_points": [
-      "arrays are preferred for random access",
-      "linked lists are preferred for dynamic resizing",
-      "arrays have O(1) time complexity for indexing",
-      "linked lists have O(n) time complexity for searching"
-    ],
-    "follow_up_seeds": [
-      "Can you give an example where dynamic resizing of linked lists would be more beneficial?",
-      "What are the tradeoffs between appending to an array versus appending to a linked list?"
-    ],
-    "subtopic": "arrays versus linked lists",
-    "id": "dsa-4-can-you-explain-when-you-would"
-  },
-  {
-    "topic": "dsa",
-    "difficulty": 2,
-    "mode": "factual",
-    "text": "Can you explain when an in-place algorithm is preferred over an algorithm that requires additional space? What specific tradeoffs does this involve in terms of memory and time complexity?",
-    "reference_answer": "An in-place algorithm is preferred when additional space is a concern. It uses the same space as the input, which is often more efficient, especially for large datasets. In terms of tradeoffs, in-place algorithms might have higher time complexity due to the need to rearrange data within the input array, which can lead to a worst-case time complexity that is O(n log n) instead of O(n) or O(n^2), depending on the algorithm. However, they are more efficient in terms of space, which can be crucial in scenarios where memory is limited.",
-    "expected_points": [
-      "An in-place algorithm uses the same space as the input.",
-      "In-place algorithms might have higher time complexity due to rearranging data within the input array.",
-      "They are more efficient in terms of space, which can be crucial in scenarios where memory is limited.",
-      "Additional space is preferred when it is available and does not affect the algorithm's efficiency."
-    ],
-    "follow_up_seeds": [
-      "Can you provide examples of common in-place sorting algorithms and how they compare to their non-in-place counterparts?",
-      "What are the implications of in-place algorithms on the stability of sorting algorithms? Can you give an example of a stable in-place sorting algorithm?"
-    ],
-    "subtopic": "in-place algorithms and space tradeoffs",
-    "id": "dsa-2-can-you-explain-when-an-in"
-  },
-  {
-    "topic": "dsa",
-    "difficulty": 3,
-    "mode": "factual",
-    "text": "How does a hash table handle collisions and what is the difference between chaining and open addressing? Can you explain how each method works and what are the trade-offs?",
-    "reference_answer": "Chaining uses linked lists to store collisions. Open addressing directly inserts the new item into the hash table, checking for collisions by probing the next slot.",
-    "expected_points": [
-      "Hash tables use chaining to resolve collisions by storing multiple entries in a linked list at the same index.",
-      "Open addressing resolves collisions by searching for the next available slot in the hash table.",
-      "In chaining, the collision is resolved by adding a new entry to a linked list at the same index in the hash table.",
-      "Open addressing, on the other hand, resolves collisions by sequentially checking the next slots until an empty slot is found."
-    ],
-    "follow_up_seeds": [
-      "What are some scenarios where chaining might be preferred over open addressing?",
-      "Can you explain the time complexity of both chaining and open addressing in terms of collisions?"
-    ],
+    "follow_up_seeds": [],
     "subtopic": "hash tables and collision handling",
-    "id": "dsa-3-how-does-a-hash-table-handle"
+    "id": "dsa-3-when-does-a-hash-table-degrade"
   },
   {
     "topic": "dsa",
     "difficulty": 3,
     "mode": "factual",
-    "text": "Why are balanced trees important in the context of data structures, and can you give an example where a balanced tree outperforms an unbalanced tree in terms of search times?",
-    "reference_answer": "A balanced tree, such as an AVL tree or a Red-Black tree, ensures that the tree remains approximately the same height, which allows for faster search, insert, and delete operations compared to an unbalanced tree. For instance, in a balanced binary search tree, the worst-case time for a search operation is O(log n), making it much more efficient than an unbalanced tree where the worst-case time could be O(n).",
+    "text": "What does it mean for a sort to be stable, and when does it matter?",
+    "reference_answer": "That equal elements keep their original relative order. It matters when you sort by one key after another — sort by name, then stably by department, and within each department the names are still in order. With an unstable sort that ordering is lost.",
     "expected_points": [
-      "A balanced tree like an AVL tree or Red-Black tree maintains a height that is approximately the same for all nodes.",
-      "In a balanced binary search tree, the worst-case time for a search operation is O(log n).",
-      "In contrast, an unbalanced tree could have a worst-case time of O(n) for a search operation.",
-      "Therefore, a balanced tree outperforms an unbalanced tree in terms of search times."
+      "equal elements retain their original order",
+      "it matters when sorting by successive keys",
+      "it preserves the earlier ordering within ties",
+      "an unstable sort discards that information"
     ],
-    "follow_up_seeds": [
-      "Can you provide another example where a balanced tree would be more advantageous?",
-      "How does the balance factor help maintain a balanced tree?"
-    ],
-    "subtopic": "balanced trees and when they matter",
-    "id": "dsa-3-why-are-balanced-trees-important-in"
-  },
-  {
-    "topic": "dsa",
-    "difficulty": 2,
-    "mode": "factual",
-    "text": "Can you explain how recursion impacts stack depth in a recursive function that performs a depth-first traversal of a binary tree?",
-    "reference_answer": "In a recursive function for a depth-first traversal of a binary tree, the stack depth is determined by how deep the recursion goes. Each recursive call adds one more level to the stack until the entire tree is traversed from the root to the leaves. The maximum stack depth is the height of the tree, and it can be as high as the height of a skewed tree, which is approximately log(n) for a balanced tree, where n is the number of nodes.",
-    "expected_points": [
-      "The maximum stack depth in a recursive depth-first traversal of a binary tree is equal to the height of the tree.",
-      "In a skewed tree, the maximum stack depth can be as high as the height of the tree.",
-      "For a balanced binary tree, the maximum stack depth is approximately log(n) where n is the number of nodes.",
-      "Each recursive call to the depth-first traversal function adds one more level to the stack until the entire tree is traversed from the root to the leaves."
-    ],
-    "follow_up_seeds": [
-      "Can you explain the impact of changing the traversal order from depth-first to breadth-first on the stack depth?",
-      "What is the maximum stack depth for a complete binary tree and why?"
-    ],
-    "subtopic": "recursion and stack depth",
-    "id": "dsa-2-can-you-explain-how-recursion-impacts"
-  },
-  {
-    "topic": "dsa",
-    "difficulty": 2,
-    "mode": "factual",
-    "text": "Can you explain the difference between a binary search and a binary search tree, and in what scenarios each might be more appropriate?",
-    "reference_answer": "A binary search is used on a sorted list to find an item quickly, while a binary search tree is a data structure that can store items in a sorted order and allows for quick insertion and deletion of items. Binary search is more appropriate for searching a sorted list directly, whereas a binary search tree is more appropriate for scenarios where you need to frequently add or remove items from a sorted collection.",
-    "expected_points": [
-      "Binary search is used for searching a sorted list efficiently.",
-      "Binary search tree allows for efficient insertion and deletion of items.",
-      "Binary search is more suitable for searching a sorted list directly.",
-      "Binary search tree is more suitable for scenarios where frequent additions or deletions are needed."
-    ],
-    "follow_up_seeds": [
-      "Are there any trade-offs between using binary search and a binary search tree? How do these trade-offs manifest?",
-      "Can you provide an example of a real-world scenario where a binary search tree would be more beneficial than a binary search?"
-    ],
-    "subtopic": "binary search and its variants",
-    "id": "dsa-2-can-you-explain-the-difference-between"
+    "follow_up_seeds": [],
+    "subtopic": "sorting algorithm tradeoffs",
+    "id": "dsa-3-what-does-it-mean-for-a"
   },
   {
     "topic": "dsa",
     "difficulty": 3,
     "mode": "factual",
-    "text": "Can you explain how the union-find data structure works and how it optimizes path compression and union by size? How does this help in managing disjoint sets more efficiently?",
-    "reference_answer": "The union-find data structure is used for managing disjoint sets. It supports two main operations: union, which merges two sets, and find, which determines which set a particular element belongs to. To optimize these operations, we can apply path compression and union by size. Path compression flattens the structure of the tree after find operations, making subsequent find operations faster. Union by size ensures that the smaller tree is always attached to the root of the larger tree, balancing the tree heights. This helps in keeping the tree height low, making both find and union operations efficient, with each operation being nearly constant time.",
+    "text": "What problems does a sliding window solve?",
+    "reference_answer": "Ones asking about every contiguous subarray or substring of some size or property. Instead of recomputing each window from scratch, you add what enters and subtract what leaves, so the whole scan is linear rather than quadratic.",
     "expected_points": [
-      "Union-find optimizes path compression by flattening the structure of the tree after find operations.",
-      "Union by size ensures that the smaller tree is attached to the larger tree during union operations.",
-      "This balancing of tree heights helps in keeping the tree height low, making both find and union operations nearly constant time.",
-      "Path compression and union by size together help in managing disjoint sets more efficiently."
+      "it handles contiguous subarrays or substrings",
+      "the window updates incrementally as it moves",
+      "add the entering element and remove the leaving one",
+      "it turns quadratic recomputation into a linear scan"
     ],
-    "follow_up_seeds": [
-      "Can you elaborate on the time complexity of union-find operations when path compression and union by size are applied?",
-      "How does the efficiency of union-find change when using union by rank instead of union by size?"
-    ],
-    "subtopic": "union-find",
-    "id": "dsa-3-can-you-explain-how-the-union"
+    "follow_up_seeds": [],
+    "subtopic": "two pointers and sliding window",
+    "id": "dsa-3-what-problems-does-a-sliding-window"
   },
   {
     "topic": "dsa",
     "difficulty": 3,
     "mode": "factual",
-    "text": "Can you compare the time and space complexity of using a binary search tree (BST) versus a hash table for a key-value store operation of inserting a new key-value pair?",
-    "reference_answer": "Inserting a new key-value pair into a binary search tree can take O(log n) time in the best case, assuming the tree is balanced, and O(n) in the worst case if the tree is unbalanced. In contrast, a hash table can insert a new key-value pair in O(1) time, assuming a good hash function and a good load factor. The space complexity of a binary search tree is O(n) as it needs to allocate memory for each node, whereas a hash table typically requires O(n) space for the hash table itself, plus some additional space for the hash function and possibly a load factor.",
+    "text": "How would you reason about the complexity of a nested loop over the same array?",
+    "reference_answer": "The outer runs n times and the inner runs up to n for each, so it is quadratic. If the inner loop starts where the outer is, it is about half that — still quadratic, since constants drop out. The usual fix is a hash set or sorting first.",
     "expected_points": [
-      "Inserting a new key-value pair in a binary search tree takes O(log n) time in the best case.",
-      "Inserting a new key-value pair in a hash table takes O(1) time under ideal conditions.",
-      "The space complexity of a binary search tree is O(n).",
-      "The space complexity of a hash table is O(n) for the table itself."
+      "multiply the iteration counts of the loops",
+      "it is quadratic in the input size",
+      "halving the inner range does not change the class",
+      "a hash set or a sort often reduces it"
     ],
-    "follow_up_seeds": [
-      "Can you elaborate on the conditions under which a binary search tree might be unbalanced?",
-      "How does the worst-case time complexity for hash table insertions compare to other operations like lookups and deletions?"
-    ],
+    "follow_up_seeds": [],
     "subtopic": "time and space complexity analysis",
-    "id": "dsa-3-can-you-compare-the-time-and"
+    "id": "dsa-3-how-would-you-reason-about-the"
+  },
+  {
+    "topic": "dsa",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "How would you detect a cycle in a directed graph?",
+    "reference_answer": "Depth-first search, tracking which nodes are on the current path rather than merely visited. Reaching a node already on the path means a cycle. Just checking 'visited' is not enough — that only tells you it was seen on some earlier branch.",
+    "expected_points": [
+      "use depth-first search",
+      "track nodes on the current recursion path",
+      "an edge back to a node on the path is a cycle",
+      "a plain visited set is insufficient"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "graph representations",
+    "id": "dsa-3-how-would-you-detect-a-cycle"
+  },
+  {
+    "topic": "dsa",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "Why are arrays often faster than linked lists even when complexity says otherwise?",
+    "reference_answer": "Cache locality. Array elements sit together, so reading one pulls its neighbours into cache and the next access is nearly free. Linked list nodes are scattered, so each step is a potential cache miss — and a miss costs far more than the pointer chase itself.",
+    "expected_points": [
+      "arrays are contiguous in memory",
+      "reading one element caches its neighbours",
+      "linked list nodes are scattered and cause cache misses",
+      "complexity ignores this constant factor"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "arrays versus linked lists",
+    "id": "dsa-3-why-are-arrays-often-faster-than"
+  },
+  {
+    "topic": "dsa",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "Why does Dijkstra break with negative edge weights?",
+    "reference_answer": "Because it commits. Once it settles a node as final it never revisits it, and that is only safe if adding an edge can never reduce a total. A negative edge can make an already-settled path cheaper later, so the answer is wrong. Bellman-Ford relaxes repeatedly instead.",
+    "expected_points": [
+      "it finalises a node once and never revisits it",
+      "that assumes costs only increase along a path",
+      "a negative edge can improve a settled distance",
+      "Bellman-Ford handles negatives by repeated relaxation"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "shortest path algorithms",
+    "id": "dsa-4-why-does-dijkstra-break-with-negative"
+  },
+  {
+    "topic": "dsa",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "What's the difference between average and amortised complexity?",
+    "reference_answer": "Average is over a distribution of inputs — it is a probabilistic claim, and a bad input can be slow. Amortised is a guarantee over a sequence of operations: any run of n operations costs the bound, even though individual ones vary.",
+    "expected_points": [
+      "average is over a distribution of inputs",
+      "amortised is over a sequence of operations",
+      "amortised gives a guarantee, average does not",
+      "dynamic array append is amortised constant"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "time and space complexity analysis",
+    "id": "dsa-4-what-s-the-difference-between-average"
+  },
+  {
+    "topic": "dsa",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "How would you find the first non-repeating character in a stream?",
+    "reference_answer": "Two passes over stored state rather than over the stream twice. Keep counts in a hash map, and keep insertion order — either an ordered map or a queue of candidates whose front is discarded once its count exceeds one. That gives an answer at any point in linear time.",
+    "expected_points": [
+      "count occurrences in a hash map",
+      "preserve insertion order of candidates",
+      "discard candidates whose count exceeds one",
+      "it answers in linear time over the stream"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "hash tables and collision handling",
+    "id": "dsa-4-how-would-you-find-the-first"
+  },
+  {
+    "topic": "dsa",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "How do you reduce the memory of a dynamic programming solution?",
+    "reference_answer": "By noticing how far back the recurrence actually reaches. If each row depends only on the previous one, you keep two rows instead of the whole table — linear space instead of quadratic. You lose the ability to reconstruct the path, which sometimes matters.",
+    "expected_points": [
+      "check how many previous states the recurrence needs",
+      "keep only those rows rather than the full table",
+      "it reduces quadratic space to linear",
+      "you lose the ability to reconstruct the solution path"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "dynamic programming versus greedy",
+    "id": "dsa-4-how-do-you-reduce-the-memory"
+  },
+  {
+    "topic": "dsa",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "You need the ten largest items from a billion. How?",
+    "reference_answer": "Not by sorting. Keep a heap of size ten and stream the data past it, replacing the smallest whenever something larger arrives. That is linear time in the data and constant memory, versus sorting the whole billion.",
+    "expected_points": [
+      "do not sort the entire dataset",
+      "maintain a heap of the k best seen",
+      "replace the smallest when a larger value arrives",
+      "linear time and memory proportional to k"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "sorting algorithm tradeoffs",
+    "id": "dsa-4-you-need-the-ten-largest-items"
+  },
+  {
+    "topic": "dsa",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "When would you choose a balanced tree over a hash table?",
+    "reference_answer": "When you need order. A tree gives sorted traversal, range queries, and nearest-key lookups, none of which a hash table supports. It also has a worst-case guarantee rather than an average, which matters if the input might be adversarial.",
+    "expected_points": [
+      "when ordering or range queries are needed",
+      "a hash table has no useful ordering",
+      "trees support nearest-key and successor queries",
+      "trees give worst-case rather than average guarantees"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "balanced trees and when they matter",
+    "id": "dsa-4-when-would-you-choose-a-balanced"
+  },
+  {
+    "topic": "dsa",
+    "difficulty": 5,
+    "mode": "factual",
+    "text": "How would you approach a problem where the obvious solution is too slow?",
+    "reference_answer": "First work out what the obvious one costs and what the target is, because that gap tells you what to look for. Then the usual levers: precompute with a hash map, sort to enable two pointers or binary search, cache overlapping subproblems, or find structure in the input that lets you skip work.",
+    "expected_points": [
+      "quantify the current cost and the required cost",
+      "the gap indicates what complexity class is needed",
+      "trade memory for time with a hash map or cache",
+      "sorting can unlock a faster technique"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "time and space complexity analysis",
+    "id": "dsa-5-how-would-you-approach-a-problem"
+  },
+  {
+    "topic": "dsa",
+    "difficulty": 5,
+    "mode": "factual",
+    "text": "How would you handle a graph too large to fit in memory?",
+    "reference_answer": "Stop holding it all. Stream the edges and process in passes, partition by node so each part fits and handle cross-partition edges explicitly, or keep it on disk with an index and accept the access cost. Which one depends on whether the algorithm needs random access or only local neighbourhoods.",
+    "expected_points": [
+      "stream or process the graph in passes",
+      "partition it so each part fits in memory",
+      "handle edges crossing partitions explicitly",
+      "the choice depends on the access pattern needed"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "graph representations",
+    "id": "dsa-5-how-would-you-handle-a-graph"
+  },
+  {
+    "topic": "dsa",
+    "difficulty": 5,
+    "mode": "factual",
+    "text": "How would you sort more data than fits in memory?",
+    "reference_answer": "External merge sort. Read as much as fits, sort it, write it out as a run, and repeat — then merge the runs together, reading a block from each. The cost is dominated by disk passes, so you merge as many runs at once as buffer space allows.",
+    "expected_points": [
+      "sort chunks that fit in memory and write them out",
+      "merge the sorted runs together afterwards",
+      "only a block from each run is held at once",
+      "minimise passes over the data, since disk dominates"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "sorting algorithm tradeoffs",
+    "id": "dsa-5-how-would-you-sort-more-data"
   }
 ]

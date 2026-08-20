@@ -1,0 +1,538 @@
+[
+  {
+    "topic": "stats",
+    "difficulty": 1,
+    "mode": "factual",
+    "text": "What do the mean and the variance tell you about a distribution?",
+    "reference_answer": "The mean is where the distribution sits — its centre of mass. The variance is how spread out it is around that centre. Two datasets can share a mean and behave completely differently, which is why reporting an average alone is rarely enough.",
+    "expected_points": [
+      "the mean is the centre of the distribution",
+      "the variance measures spread around the mean",
+      "standard deviation is its square root, in original units",
+      "equal means can hide very different spreads"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "expectation and variance",
+    "id": "stats-1-what-do-the-mean-and-the"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 1,
+    "mode": "factual",
+    "text": "Why does the normal distribution turn up so often?",
+    "reference_answer": "Because of the central limit theorem: when you add up many independent small effects, the total tends towards a normal shape whatever the individual effects looked like. Most measurements are sums of many small causes, so the bell curve appears everywhere.",
+    "expected_points": [
+      "sums of many independent effects tend to normality",
+      "this is the central limit theorem",
+      "it holds regardless of the underlying distribution",
+      "many real measurements are such sums"
+    ],
+    "follow_up_seeds": [
+      "Where does that reasoning break down?"
+    ],
+    "subtopic": "the normal distribution",
+    "id": "stats-1-why-does-the-normal-distribution-turn"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 1,
+    "mode": "factual",
+    "text": "What does conditional probability mean?",
+    "reference_answer": "The probability of one event given that another has already happened. It restricts attention to the cases where the condition holds and asks how often the event occurs within those. It is generally not the same as the probability the other way round.",
+    "expected_points": [
+      "the probability of an event given another has occurred",
+      "it restricts the sample space to the condition",
+      "it differs from the unconditional probability",
+      "it is not symmetric between the two events"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "conditional probability",
+    "id": "stats-1-what-does-conditional-probability-mean"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 1,
+    "mode": "factual",
+    "text": "What is sampling bias?",
+    "reference_answer": "When the way you collected the sample makes it unrepresentative of the population you want to talk about. Surveying only people who answered a survey tells you about people who answer surveys. No amount of extra data fixes it, because the bias is in the collection, not the size.",
+    "expected_points": [
+      "the sample is not representative of the target population",
+      "it comes from how the data was collected",
+      "more data does not remove it",
+      "conclusions drawn from it do not generalise"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "sampling and sampling bias",
+    "id": "stats-1-what-is-sampling-bias"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 1,
+    "mode": "factual",
+    "text": "Why does correlation not imply causation?",
+    "reference_answer": "Because two things can move together for reasons other than one causing the other. A third variable may drive both, the causation may run the other way, or it may be coincidence in a large search. Establishing causation needs an intervention or a design that rules those out.",
+    "expected_points": [
+      "a third variable may cause both",
+      "the direction of causation may be reversed",
+      "it can be coincidence, especially across many comparisons",
+      "causation requires an experiment or a causal design"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "correlation versus causation",
+    "id": "stats-1-why-does-correlation-not-imply-causation"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 1,
+    "mode": "factual",
+    "text": "What is an A/B test?",
+    "reference_answer": "A controlled experiment where users are randomly assigned to a control group that sees the current experience and a treatment group that sees the change. Random assignment is what makes the two groups comparable, so a difference in outcomes can be attributed to the change.",
+    "expected_points": [
+      "users are randomly assigned to control and treatment",
+      "control sees the existing experience",
+      "randomisation makes the groups comparable",
+      "the difference in outcomes is attributed to the change"
+    ],
+    "follow_up_seeds": [
+      "What exactly does randomisation protect you from?"
+    ],
+    "subtopic": "A/B test design",
+    "id": "stats-1-what-is-an-a-b-test"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 1,
+    "mode": "factual",
+    "text": "What is a null hypothesis?",
+    "reference_answer": "The default position that there is no effect — the two groups come from the same distribution. A test asks how surprising the observed data would be if that were true. You either reject it or fail to reject it; you never prove it.",
+    "expected_points": [
+      "the default assumption of no effect",
+      "the test measures how surprising the data is under it",
+      "you either reject it or fail to reject it",
+      "failing to reject is not proof it is true"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "hypothesis testing",
+    "id": "stats-1-what-is-a-null-hypothesis"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 1,
+    "mode": "factual",
+    "text": "What makes a good success metric for an experiment?",
+    "reference_answer": "It should be tied to the outcome you actually care about, sensitive enough to move in the time available, and hard to game. It also needs to be chosen before the experiment runs, because picking it afterwards turns any noise into a result.",
+    "expected_points": [
+      "it reflects the outcome you actually care about",
+      "it is sensitive enough to move during the test",
+      "it is difficult to game",
+      "it must be chosen before the experiment starts"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "choosing a success metric",
+    "id": "stats-1-what-makes-a-good-success-metric"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "What does a p-value of 0.03 actually mean?",
+    "reference_answer": "That if there were genuinely no effect, you would see data at least this extreme about three percent of the time. It is a statement about the data under the null hypothesis. It is not the probability that the null is true, and not the probability your result is real.",
+    "expected_points": [
+      "the probability of data this extreme if the null were true",
+      "it is conditional on the null hypothesis",
+      "it is not the probability the null is true",
+      "it says nothing about the size of the effect"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "p-values and what they do not mean",
+    "id": "stats-2-what-does-a-p-value-of"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "Why report a confidence interval rather than just a p-value?",
+    "reference_answer": "Because the interval carries the effect size and the uncertainty together. A p-value only tells you whether you cleared a threshold. An interval tells you whether the plausible effects are large enough to matter, which is the actual decision.",
+    "expected_points": [
+      "it shows the size of the effect, not just significance",
+      "it communicates the uncertainty around the estimate",
+      "a p-value only reports a threshold decision",
+      "it supports a judgement about practical importance"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "confidence intervals",
+    "id": "stats-2-why-report-a-confidence-interval-rather"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "What's the difference between a type one and a type two error?",
+    "reference_answer": "A type one error is a false positive — you declare an effect that is not there. A type two error is a false negative — a real effect you failed to detect. Tightening the significance threshold reduces the first and increases the second.",
+    "expected_points": [
+      "type one is a false positive",
+      "type two is a false negative",
+      "the significance level controls type one error",
+      "the two trade off against each other"
+    ],
+    "follow_up_seeds": [
+      "Which is worse in a product launch decision?"
+    ],
+    "subtopic": "type one and type two errors",
+    "id": "stats-2-what-s-the-difference-between-a"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "What is statistical power?",
+    "reference_answer": "The probability that a test detects an effect that genuinely exists. It rises with the sample size and the size of the effect, and falls as the data gets noisier. An underpowered test that finds nothing tells you almost nothing.",
+    "expected_points": [
+      "the probability of detecting a real effect",
+      "it increases with sample size",
+      "it increases with the size of the true effect",
+      "an underpowered null result is uninformative"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "statistical power",
+    "id": "stats-2-what-is-statistical-power"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "How do you decide how long to run an experiment?",
+    "reference_answer": "You work backwards from the smallest effect worth acting on. Given that, the variance of the metric, and the power and significance you want, the required sample size follows — and traffic tells you how long that takes. You also run at least a full week to cover weekly seasonality.",
+    "expected_points": [
+      "start from the minimum effect worth detecting",
+      "compute the sample size from variance, power and significance",
+      "convert sample size to duration using traffic",
+      "cover full weekly cycles to avoid day-of-week effects"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "sample size and minimum detectable effect",
+    "id": "stats-2-how-do-you-decide-how-long"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "What is a guardrail metric?",
+    "reference_answer": "A metric you do not expect to improve but refuse to damage — latency, crash rate, unsubscribes. It catches the case where the headline number goes up because the change quietly hurt something else. You monitor it rather than optimise it.",
+    "expected_points": [
+      "a metric you protect rather than improve",
+      "it catches harm hidden behind a headline win",
+      "examples include latency, errors or churn",
+      "a regression in it can block a launch"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "guardrail metrics",
+    "id": "stats-2-what-is-a-guardrail-metric"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "What does Bayes theorem let you do?",
+    "reference_answer": "It flips a conditional probability around: given how likely the evidence is under each hypothesis, plus how likely each hypothesis was beforehand, it gives the probability of the hypothesis after seeing the evidence. The prior is what makes rare conditions produce so many false alarms.",
+    "expected_points": [
+      "it reverses a conditional probability",
+      "it combines a prior with the likelihood of the evidence",
+      "it yields the posterior probability of the hypothesis",
+      "a low prior makes positive results mostly false alarms"
+    ],
+    "follow_up_seeds": [
+      "A test is 99 percent accurate for a disease affecting one in ten thousand. What's the chance a positive is real?"
+    ],
+    "subtopic": "Bayes theorem",
+    "id": "stats-2-what-does-bayes-theorem-let-you"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "What's the difference between standard deviation and standard error?",
+    "reference_answer": "Standard deviation describes the spread of individual values in the data. Standard error describes the spread of an estimate, like the sample mean, across repeated samples. The standard error shrinks as the sample grows; the standard deviation does not.",
+    "expected_points": [
+      "standard deviation is the spread of the data",
+      "standard error is the spread of an estimate",
+      "standard error shrinks as sample size grows",
+      "standard deviation does not shrink with more data"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "expectation and variance",
+    "id": "stats-2-what-s-the-difference-between-standard"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "What goes wrong if you test twenty metrics in one experiment?",
+    "reference_answer": "At a five percent significance level you expect roughly one false positive by chance alone, even with no real effect anywhere. Unless you correct for the number of comparisons or pre-register one primary metric, you will find a winner in pure noise.",
+    "expected_points": [
+      "each test carries its own false positive rate",
+      "the chance of at least one false positive grows with the count",
+      "correct with Bonferroni or false discovery rate control",
+      "or pre-register a single primary metric"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "multiple comparisons",
+    "id": "stats-2-what-goes-wrong-if-you-test"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "Why is checking an experiment every day and stopping at significance wrong?",
+    "reference_answer": "Because you are running a new test at every look, so the real false positive rate is far above the nominal one. The metric wanders, and stopping the first time it crosses the line systematically selects the moments when noise favoured you.",
+    "expected_points": [
+      "each look is another chance to cross the threshold",
+      "the true false positive rate is much higher than nominal",
+      "stopping at a crossing selects favourable noise",
+      "use a fixed horizon or a sequential testing method"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "sequential testing and peeking",
+    "id": "stats-3-why-is-checking-an-experiment-every"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "What are novelty and primacy effects in an experiment?",
+    "reference_answer": "Novelty is users engaging with a change simply because it is new, which fades. Primacy is the reverse — existing users perform worse at first because they have to relearn something. Both mean the effect measured in the first days is not the long-run effect.",
+    "expected_points": [
+      "novelty is a temporary lift from a change being new",
+      "primacy is a temporary drop while users adapt",
+      "both distort early measurements",
+      "run longer or analyse new users separately"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "novelty and primacy effects",
+    "id": "stats-3-what-are-novelty-and-primacy-effects"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "What is a confounder, and how does randomisation handle it?",
+    "reference_answer": "A confounder is a variable that affects both the treatment someone gets and the outcome, creating an association that is not causal. Randomisation handles it by making assignment independent of everything else, including confounders you never thought to measure.",
+    "expected_points": [
+      "a variable affecting both treatment and outcome",
+      "it creates a non-causal association",
+      "randomisation makes assignment independent of it",
+      "it works even for unmeasured confounders"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "confounding variables",
+    "id": "stats-3-what-is-a-confounder-and-how"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "What is Simpson's paradox?",
+    "reference_answer": "When a trend that holds in every subgroup reverses once the groups are pooled. It happens when group membership is related to both the variable and the outcome, and the groups have very different sizes. The lesson is that the aggregate can point the opposite way to the truth.",
+    "expected_points": [
+      "a trend within subgroups reverses when they are combined",
+      "it arises from an uneven confounding variable",
+      "group sizes differ substantially",
+      "the aggregate can mislead about every subgroup"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "Simpson's paradox",
+    "id": "stats-3-what-is-simpson-s-paradox"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "What is the bootstrap, and when would you use it?",
+    "reference_answer": "You resample your data with replacement many times, recompute the statistic on each resample, and use the spread of those values as the sampling distribution. It gives you a confidence interval when the statistic has no clean analytic formula — a median, a ratio, a percentile.",
+    "expected_points": [
+      "resample the data with replacement many times",
+      "recompute the statistic on each resample",
+      "the spread estimates the sampling distribution",
+      "useful when no analytic formula exists"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "the bootstrap",
+    "id": "stats-3-what-is-the-bootstrap-and-when"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "What is maximum likelihood estimation?",
+    "reference_answer": "You choose the parameter values that make the observed data most probable under your model. It is the principle behind fitting most standard models, and minimising cross-entropy loss is exactly maximum likelihood for a classifier.",
+    "expected_points": [
+      "choose parameters that maximise the probability of the data",
+      "the likelihood is a function of parameters, not data",
+      "usually optimised via the log-likelihood",
+      "cross-entropy minimisation is maximum likelihood"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "maximum likelihood estimation",
+    "id": "stats-3-what-is-maximum-likelihood-estimation"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "When does randomising individual users break an A/B test?",
+    "reference_answer": "When users influence each other. If treated users change the experience of control users — a marketplace where they compete for the same inventory, or a social feature that spreads — the control group is contaminated and the measured difference understates or distorts the true effect.",
+    "expected_points": [
+      "when subjects interact, control is contaminated",
+      "common in marketplaces and social products",
+      "the measured effect is biased",
+      "randomise clusters or regions instead of individuals"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "network effects in experiments",
+    "id": "stats-3-when-does-randomising-individual-users-break"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "What is regression to the mean, and how does it fool people?",
+    "reference_answer": "Extreme measurements are extreme partly by luck, so the next measurement tends to be closer to average even with no intervention. Target your worst performing group, do anything at all, and it improves — which is why before-and-after comparisons without a control are so misleading.",
+    "expected_points": [
+      "extreme values are partly due to chance",
+      "subsequent measurements drift towards the average",
+      "improvement can appear without any real effect",
+      "it is why a control group is necessary"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "regression to the mean",
+    "id": "stats-3-what-is-regression-to-the-mean"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "You cannot randomise. How do you still estimate a causal effect?",
+    "reference_answer": "You look for something that mimics randomisation. Difference in differences if there is a comparison group and a before period, an instrument that shifts treatment but not the outcome directly, a discontinuity at a threshold, or matching on observed confounders — which is the weakest, because it only handles what you measured.",
+    "expected_points": [
+      "difference in differences with a comparison group",
+      "instrumental variables",
+      "regression discontinuity at a cutoff",
+      "matching or propensity scores, limited to observed confounders"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "observational causal inference",
+    "id": "stats-4-you-cannot-randomise-how-do-you"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "What assumption does difference in differences rely on?",
+    "reference_answer": "Parallel trends: that without the intervention, the treated and control groups would have moved the same way. It is not testable directly, so you support it by showing the two tracked each other before the intervention and by checking nothing else changed at the same time.",
+    "expected_points": [
+      "the parallel trends assumption",
+      "both groups would have moved similarly without treatment",
+      "it cannot be tested directly",
+      "supported by checking pre-intervention trends match"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "difference in differences",
+    "id": "stats-4-what-assumption-does-difference-in-differences"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "Your experiment is underpowered and you cannot get more traffic. Options?",
+    "reference_answer": "Reduce the variance rather than chase the sample. Use a less noisy metric, use pre-experiment data to adjust the outcome, or stratify the randomisation. Failing that, run longer, accept a larger minimum detectable effect, or accept that this change cannot be measured and decide on other grounds.",
+    "expected_points": [
+      "reduce metric variance rather than only adding users",
+      "use pre-experiment covariates to adjust the estimate",
+      "stratify randomisation to balance known factors",
+      "or accept a larger detectable effect and say so"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "sample size and minimum detectable effect",
+    "id": "stats-4-your-experiment-is-underpowered-and-you"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "A launch is flat overall but strong for new users. What do you conclude?",
+    "reference_answer": "Not much, if that segment was found after the fact. Slicing after the result guarantees some segment looks good. I would treat it as a hypothesis, not a finding, and run a follow-up experiment targeted at that segment with the metric pre-registered.",
+    "expected_points": [
+      "a segment found after the fact is not evidence",
+      "slicing many ways guarantees some look significant",
+      "treat it as a hypothesis to test, not a result",
+      "confirm with a pre-registered follow-up"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "multiple comparisons",
+    "id": "stats-4-a-launch-is-flat-overall-but"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "How would you measure whether a new ranking model actually improved things?",
+    "reference_answer": "Offline metrics only rank candidates for the online test, so the real answer is an experiment. I would pick one primary online metric tied to user value rather than to engagement alone, add guardrails for latency and for the long tail of queries, and be careful that clicks measure exposure as much as quality.",
+    "expected_points": [
+      "decide with an online experiment, not offline metrics",
+      "pre-register one primary metric tied to user value",
+      "add guardrail metrics such as latency",
+      "account for position and exposure bias in click data"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "choosing a success metric",
+    "id": "stats-4-how-would-you-measure-whether-a"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 5,
+    "mode": "factual",
+    "text": "Your metric is a heavy-tailed average. Why is that a problem, and what do you do?",
+    "reference_answer": "A few enormous values dominate the mean, so the variance is huge and the central limit theorem needs a much bigger sample than usual. I would cap or winsorise the extreme values, analyse a transformed or rank-based version, or switch to a quantile that is not driven by the tail — and say which decision the metric is meant to support.",
+    "expected_points": [
+      "a few extreme values dominate the mean",
+      "variance is large so tests are underpowered",
+      "cap, winsorise or transform the values",
+      "or report a median or quantile instead"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "long tail and heavy-tailed distributions",
+    "id": "stats-5-your-metric-is-a-heavy-tailed"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 5,
+    "mode": "factual",
+    "text": "How would you design an experiment for a change that only affects rare events?",
+    "reference_answer": "The rarity is the whole problem: the metric has very low base rate, so power is terrible. I would move the measurement upstream to a more frequent proxy that is causally linked, restrict the experiment to the population that can actually experience the event, and run it long enough to accumulate events rather than users.",
+    "expected_points": [
+      "a rare outcome gives very low statistical power",
+      "use a more frequent upstream proxy metric",
+      "restrict to the population that can experience the event",
+      "power the test on event count, not user count"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "A/B test design",
+    "id": "stats-5-how-would-you-design-an-experiment"
+  },
+  {
+    "topic": "stats",
+    "difficulty": 5,
+    "mode": "factual",
+    "text": "How would you tell whether a model's recommendations cause purchases?",
+    "reference_answer": "Correlation is guaranteed here — recommendations go to people already likely to buy. I would randomly withhold recommendations from a holdout group, which measures the incremental effect directly. Where a full holdout is too costly, a small permanent one or a geographic split gives the same comparison.",
+    "expected_points": [
+      "recommendations are targeted, so correlation is expected",
+      "randomly withhold from a holdout group",
+      "this measures the incremental effect",
+      "a small or geographic holdout limits the business cost"
+    ],
+    "follow_up_seeds": [],
+    "subtopic": "correlation versus causation",
+    "id": "stats-5-how-would-you-tell-whether-a"
+  }
+]
