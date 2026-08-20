@@ -1,0 +1,251 @@
+[
+  {
+    "topic": "behavioural",
+    "difficulty": 3,
+    "mode": "behavioural",
+    "text": "Tell me about a time when you took ownership of something unglamorous and describe what you personally did, the outcome, and what you would change if you had the chance.",
+    "reference_answer": "You should be able to describe a specific situation where you took responsibility for a task that wasn't necessarily your top priority, explain what actions you took to address the issue, and reflect on what you would have done differently if you had more time or resources.",
+    "expected_points": [
+      "You took ownership of a task that was not your top priority.",
+      "You explained the actions you took to address the issue.",
+      "You reflected on what you would have done differently if you had more time or resources.",
+      "You did not mention the specific situation or task in detail."
+    ],
+    "follow_up_seeds": [
+      "Can you provide more detail about the specific situation you were in?",
+      "What specific actions did you take to address the unglamorous task?"
+    ],
+    "subtopic": "taking ownership of something unglamorous",
+    "id": "behavioural-3-tell-me-about-a-time-when"
+  },
+  {
+    "topic": "behavioural",
+    "difficulty": 2,
+    "mode": "behavioural",
+    "text": "Tell me about a time when you had to prioritize when everything seemed urgent. Can you describe the situation, what you personally did about it, what the outcome was, and what you would change or reflect on?",
+    "reference_answer": "You can discuss a specific situation where you had to handle multiple urgent tasks, explain the actions you took personally to manage the workload, describe the outcome of your efforts, and reflect on what could have been done differently.",
+    "expected_points": [
+      "names a specific situation with enough context to follow",
+      "says what you personally did rather than what the team did",
+      "gives a concrete outcome",
+      "reflects on what you would change or reflect on"
+    ],
+    "follow_up_seeds": [
+      "Can you provide more details about the tasks you had to handle?",
+      "How did you decide which tasks were most urgent and why?",
+      "What were some challenges you faced in this situation?"
+    ],
+    "subtopic": "prioritising when everything was urgent",
+    "id": "behavioural-2-tell-me-about-a-time-when"
+  },
+  {
+    "topic": "behavioural",
+    "difficulty": 2,
+    "mode": "behavioural",
+    "text": "Tell me about a time you missed a deadline. How did you personally handle the situation, what specific actions did you take, what was the outcome, and what do you think you would have done differently if you could go back in time?",
+    "reference_answer": "You should describe a specific situation where you missed a deadline, what you personally did to address the issue, the outcome of your actions, and how you could have improved your approach.",
+    "expected_points": [
+      "names a specific situation with enough context to follow",
+      "says what you personally did rather than what the team did",
+      "gives a concrete outcome",
+      "reflects on what you would have done differently if you could go back in time"
+    ],
+    "follow_up_seeds": [
+      "Can you provide more details about the specific actions you took to address the situation?",
+      "How did you communicate with your team or manager about the missed deadline?"
+    ],
+    "subtopic": "a deadline you missed",
+    "id": "behavioural-2-tell-me-about-a-time-you"
+  },
+  {
+    "topic": "behavioural",
+    "difficulty": 4,
+    "mode": "behavioural",
+    "text": "Tell me about a time when you were responsible for a project that did not meet your expectations. How did you personally contribute to the outcome, and what was the specific outcome of the project? Additionally, please reflect on what you would change if you were to undertake the project again, and why.",
+    "reference_answer": "You describe a specific project where you were responsible, detailing the scope, timeline, and expected outcomes. You explain what specific actions you took, such as resource allocation, communication strategies, or project management techniques. You then discuss the actual results of the project, including any challenges faced and how they were addressed. Finally, you reflect on what you would change and why, such as how to better manage resources or improve communication with stakeholders.",
+    "expected_points": [
+      "names a specific situation with enough context to follow (e.g., a web development project for a client that was supposed to launch in two months, but took six months and cost more than the budget)",
+      "says what you personally did rather than what the team did (e.g., I personally oversaw the project management and resource allocation)",
+      "gives a concrete outcome (e.g., the project launched late and over budget, with a number of technical issues)",
+      "reflects on what you would change and why (e.g., I would have allocated more resources upfront to avoid the delays and cost overruns)"
+    ],
+    "follow_up_seeds": [
+      "Can you provide more detail on the specific actions you took during this project?",
+      "What were the most significant challenges you faced during this project, and how did you overcome them?"
+    ],
+    "subtopic": "a project that failed",
+    "id": "behavioural-4-tell-me-about-a-time-when"
+  },
+  {
+    "topic": "behavioural",
+    "difficulty": 3,
+    "mode": "behavioural",
+    "text": "Tell me about a time when you worked on a project where the requirements were not clear. How did you approach it, and what was the outcome?",
+    "reference_answer": "The question asks about a specific situation where the candidate had to work with ambiguous requirements, the actions they took personally to address the situation, the outcome of their efforts, and any lessons they learned or changes they would make in the future.",
+    "expected_points": [
+      "a specific situation with enough context to follow (e.g., a project for a client, a feature to build, a particular timeframe)",
+      "what they personally did rather than what the team did (e.g., I organized a meeting with stakeholders to clarify the requirements, I drafted a detailed proposal for the client)",
+      "a concrete outcome (e.g., the client was satisfied with the final product, the feature was well-received by users, the project was completed on time)",
+      "reflect on what they would change (e.g., I would have spent more time upfront understanding the requirements, I would have used a more structured design approach to ensure clarity)"
+    ],
+    "follow_up_seeds": [
+      "Can you provide more details about the specific requirements that were unclear?",
+      "What steps did you take to clarify the requirements with the stakeholders?"
+    ],
+    "subtopic": "working with an unclear requirement",
+    "id": "behavioural-3-tell-me-about-a-time-when"
+  },
+  {
+    "topic": "behavioural",
+    "difficulty": 4,
+    "mode": "behavioural",
+    "text": "Tell me about a time when you were responsible for a project that did not succeed, and what you learned from the experience.",
+    "reference_answer": "You should describe a specific project you were involved in, explain your role and the steps you took, and discuss the outcome. You should also reflect on what you would change or what you learned from the experience.",
+    "expected_points": [
+      "names a specific situation with enough context to follow (e.g., the project was a website redesign for a local business, your role was project manager, the project failed to meet deadlines and budget)",
+      "says what you personally did rather than what the team did (e.g., I personally took the lead on the project management aspect, I personally set up the project plan, I personally communicated with the client and team members to keep everyone aligned)",
+      "gives a concrete outcome (e.g., the project was delayed by three months and over budget by $20,000, the business lost a significant client due to the delay)",
+      "reflects on what you would change or what you learned (e.g., I would have personally taken a more hands-on role in coordinating the team, I would have personally implemented stricter quality control measures, I learned that it's crucial to establish clear expectations with clients to avoid misunderstandings)"
+    ],
+    "follow_up_seeds": [
+      "Can you provide more details about the project scope and what was expected from it?",
+      "What specific actions did you take to try and salvage the project, and what were the outcomes of those actions?"
+    ],
+    "subtopic": "a project that failed",
+    "id": "behavioural-4-tell-me-about-a-time-when"
+  },
+  {
+    "topic": "behavioural",
+    "difficulty": 2,
+    "mode": "behavioural",
+    "text": "Tell me about a time you received hard feedback and how you handled it.",
+    "reference_answer": "You should be able to describe a specific incident where you received difficult feedback, explain what you personally did in response, and reflect on what you would change or how you grew from the experience.",
+    "expected_points": [
+      "naming a specific situation with enough context to follow (e.g., a project deadline missed, a client complaint, a performance review feedback)",
+      "saying what you personally did rather than what the team did (e.g., talking to a mentor, reviewing my work, setting up a follow-up meeting with the feedback-giver)",
+      "giving a concrete outcome (e.g., improved my performance, received a promotion, learned to better handle criticism)",
+      "reflecting on what you would change or how you grew from the experience (e.g., becoming more proactive in seeking feedback, improving communication skills)"
+    ],
+    "follow_up_seeds": [
+      "Can you provide more details about the specific situation you faced?",
+      "How did you personally contribute to the outcome of the situation?"
+    ],
+    "subtopic": "a time you received hard feedback",
+    "id": "behavioural-2-tell-me-about-a-time-you"
+  },
+  {
+    "topic": "behavioural",
+    "difficulty": 3,
+    "mode": "behavioural",
+    "text": "Tell me about a time when you helped someone who was struggling. Can you describe the specific situation, what you personally did to assist, what the outcome was, and what you would change if you were in that situation again?",
+    "reference_answer": "Please provide a concrete example of a situation where you had to help someone who was struggling. Mention what you personally did to assist, including specific actions you took. Also, describe the outcome of your actions, and share your thoughts on what you would change if you were in that situation again.",
+    "expected_points": [
+      "narrates a specific situation with enough context to follow",
+      "describes what you personally did to assist, giving specific actions",
+      "details the outcome of your actions",
+      "reflects on what you would change if you were in that situation again"
+    ],
+    "follow_up_seeds": [
+      "Can you share more details about the specific actions you took to assist?",
+      "What was the most challenging part of helping the person who was struggling?"
+    ],
+    "subtopic": "helping someone who was struggling",
+    "id": "behavioural-3-tell-me-about-a-time-when"
+  },
+  {
+    "topic": "behavioural",
+    "difficulty": 4,
+    "mode": "behavioural",
+    "text": "Tell me about a time when you had to handle an interruption mid-project and what you personally did about it.",
+    "reference_answer": "Provide a specific situation where you were working on a project when someone interrupted you. Describe what you personally did in response to the interruption, such as delegating tasks, communicating with other team members, or finding a way to keep the project moving forward. Describe the outcome of your actions and any lessons you learned from the experience.",
+    "expected_points": [
+      "Delegated tasks to another team member to handle the interruption.",
+      "Communicated with other team members to ensure they understood the project's status and next steps.",
+      "Found a way to keep the project moving forward by prioritizing tasks and setting clear deadlines.",
+      "Outcome was that the project continued to progress despite the interruption, though there was some delay in the timeline."
+    ],
+    "follow_up_seeds": [
+      "Can you provide more details about the specific tasks you delegated during the interruption?",
+      "How did you ensure the project team understood the new priorities and deadlines during the interruption?"
+    ],
+    "subtopic": "handling an interruption mid-project",
+    "id": "behavioural-4-tell-me-about-a-time-when"
+  },
+  {
+    "topic": "behavioural",
+    "difficulty": 2,
+    "mode": "behavioural",
+    "text": "Tell me about a time when you had to learn something quickly and describe the situation, what you personally did to learn, the outcome, and what you would change if you could do it again.",
+    "reference_answer": "You should describe a specific situation where you had to learn a new skill or concept quickly, explain what you personally did to learn, and discuss the outcome of your efforts. Additionally, you should reflect on what you would have done differently if you could go back in time.",
+    "expected_points": [
+      "names a specific situation with enough context to follow",
+      "says what you personally did rather than what the team did",
+      "gives a concrete outcome",
+      "reflects on what you would change if you could do it again"
+    ],
+    "follow_up_seeds": [
+      "Can you provide more details about the situation and what specifically you had to learn?",
+      "What were some of the challenges you faced in learning this quickly, and how did you overcome them?"
+    ],
+    "subtopic": "a time you had to learn something quickly",
+    "id": "behavioural-2-tell-me-about-a-time-when"
+  },
+  {
+    "topic": "behavioural",
+    "difficulty": 3,
+    "mode": "behavioural",
+    "text": "Tell me about a time when you made a technical decision that you later regretted. Can you describe the situation, what you personally did, what the outcome was, and what you would change or do differently if you had to do it again?",
+    "reference_answer": "You can provide a hypothetical or real-life scenario where a technical decision was made, and you discussed the specific steps taken, the results achieved, and the lessons learned.",
+    "expected_points": [
+      "a specific situation with enough context to follow",
+      "say what you personally did rather than what the team did",
+      "give a concrete outcome",
+      "reflect on what you would change or do differently"
+    ],
+    "follow_up_seeds": [
+      "Can you describe the circumstances that led you to make that technical decision?",
+      "What specific actions did you take to implement that decision?",
+      "What were the measurable outcomes of that decision, and how did they compare to your expectations?"
+    ],
+    "subtopic": "a technical decision you later regretted",
+    "id": "behavioural-3-tell-me-about-a-time-when"
+  },
+  {
+    "topic": "behavioural",
+    "difficulty": 3,
+    "mode": "behavioural",
+    "text": "Tell me about a time you asked for help on a project or task, and what specifically happened.",
+    "reference_answer": "This question seeks a concrete example of a situation where you sought help, along with a reflection on what you did and how things turned out.",
+    "expected_points": [
+      "explains the importance of seeking help in a project",
+      "describes a specific instance where help was needed",
+      "mentions the steps taken to seek help",
+      "does not discuss the outcome or reflection on the help received"
+    ],
+    "follow_up_seeds": [
+      "Can you elaborate on the specific steps you took to ask for help? What did you do to prepare?",
+      "What was the outcome you were hoping for, and how did the actual outcome compare to what you hoped for?"
+    ],
+    "subtopic": "a time you asked for help",
+    "id": "behavioural-3-tell-me-about-a-time-you"
+  },
+  {
+    "topic": "behavioural",
+    "difficulty": 3,
+    "mode": "behavioural",
+    "text": "Tell me about a time when you had to prioritize multiple urgent tasks, and how you handled the situation.",
+    "reference_answer": "You describe a situation where you had to balance several important tasks that were all competing for your attention. You explain what you personally did to manage the urgency of the tasks and how you ultimately decided which tasks to focus on. You also reflect on what you would change if you could do it again.",
+    "expected_points": [
+      "names a specific situation with enough context to follow (e.g., a project deadline approaching, a customer support request, a team member's urgent issue)",
+      "says what you personally did rather than what the team did (e.g., I prioritized based on the impact, time required, and importance to the project/organization)",
+      "gives a concrete outcome (e.g., I was able to address the most critical issues within the given time frame, leading to a positive outcome for the project and team morale)",
+      "reflects on what you would change if you could do it again (e.g., I might have delegated some tasks to other team members if possible, or I might have communicated more clearly with stakeholders about the priorities)"
+    ],
+    "follow_up_seeds": [
+      "Can you provide more details on how you decided which tasks to prioritize?",
+      "How did you ensure that the tasks you chose to complete were actually completed and had the desired impact?"
+    ],
+    "subtopic": "prioritising when everything was urgent",
+    "id": "behavioural-3-tell-me-about-a-time-when"
+  }
+]

@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interview Coach — Phase 1 voice loop</title>
+<style>
+  :root {
+    --bg: #0a0a0c; --panel: #131317; --line: #24242b;
+    --text: #e8e8ea; --dim: #7a7a85; --accent: #6ea8fe;
+    --ok: #4ade80; --warn: #fbbf24; --bad: #f87171;
+    font-family: ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    display: grid; grid-template-columns: 1fr 340px; height: 100vh;
+  }
+  main {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 28px; padding: 32px; min-width: 0;
+  }
+  #orb { width: 200px; height: 200px; }
+  #state { font-size: 13px; letter-spacing: .14em; text-transform: uppercase;
+           color: var(--dim); height: 16px; }
+  button {
+    background: var(--accent); color: #06131f; border: 0; border-radius: 999px;
+    padding: 12px 30px; font-size: 15px; font-weight: 600; cursor: pointer;
+  }
+  button.stop { background: var(--bad); color: #200; }
+  button:disabled { opacity: .4; cursor: default; }
+  #log {
+    width: 100%; max-width: 640px; flex: 1; overflow-y: auto;
+    display: flex; flex-direction: column; gap: 10px; padding-right: 6px;
+  }
+  .msg { font-size: 15px; line-height: 1.5; }
+  .msg.you { color: var(--text); }
+  .msg.you::before { content: "you "; color: var(--dim); font-size: 12px; }
+  .msg.ai  { color: var(--accent); }
+  .msg.ai::before { content: "coach "; color: var(--dim); font-size: 12px; }
+  .msg.low { color: var(--warn); }
+  aside {
+    background: var(--panel); border-left: 1px solid var(--line);
+    padding: 20px; overflow-y: auto; font-size: 12px;
+  }
+  h2 { font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+       color: var(--dim); margin: 0 0 10px; font-weight: 600; }
+  aside section { margin-bottom: 22px; }
+  table { width: 100%; border-collapse: collapse; }
+  td { padding: 3px 0; color: var(--dim); }
+  td.v { text-align: right; color: var(--text); font-variant-numeric: tabular-nums; }
+  td.v.ok { color: var(--ok); } td.v.warn { color: var(--warn); }
+  td.v.bad { color: var(--bad); }
+  .budget { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--line);
+            font-weight: 600; }
+  code { color: var(--dim); font-size: 11px; }
+</style>
+</head>
+<body>
+<main>
+  <canvas id="orb" width="400" height="400"></canvas>
+  <div id="state">connecting</div>
+  <button id="btn" disabled>Start talking</button>
+  <div id="log"></div>
+</main>
+
+<aside>
+  <section>
+    <h2>Turn latency</h2>
+    <table id="metrics">
+      <tr><td>answer length</td><td class="v" id="m-audio">—</td></tr>
+      <tr><td>STT</td><td class="v" id="m-stt">—</td></tr>
+      <tr><td>&nbsp;&nbsp;↳ paid after endpoint</td><td class="v" id="m-sttwait">—</td></tr>
+      <tr><td>LLM first token</td><td class="v" id="m-ttft">—</td></tr>
+      <tr><td>LLM first span</td><td class="v" id="m-span">—</td></tr>
+      <tr><td>TTS first audio</td><td class="v" id="m-tts">—</td></tr>
+      <tr class="budget"><td>endpoint → audio</td><td class="v" id="m-first">—</td></tr>
+    </table>
+    <p><code>budget: under 1500 ms (plan.md §2.3)</code></p>
+  </section>
+  <section>
+    <h2>Speech spans</h2>
+    <div id="spans"></div>
+  </section>
+  <section>
+    <h2>Config</h2>
+    <table>
+      <tr><td>endpoint silence</td><td class="v" id="c-endpoint">—</td></tr>
+      <tr><td>mic rate</td><td class="v" id="c-rate">—</td></tr>
+      <tr><td>audio queued</td><td class="v" id="c-queue">0 ms</td></tr>
+    </table>
+  </section>
+</aside>
+
+<script type="module">
+const $ = (id) => document.getElementById(id);
+let ws, ctx, node, stream, playhead = 0, playRate = 22050;
+let amplitude = 0, state = "idle", running = false;
+
+// ---------------------------------------------------------------- orb
+// A Canvas orb, not Three.js. plan.md §2.5 — this gets ~90% of the ElevenLabs
+// look for ~60 lines. Phase 5 decides whether the remaining 10% is worth a
+// React toolchain in a Python project.
+const orb = $("orb"), g = orb.getContext("2d");
+const COLORS = { idle: "#3b4252", listening: "#4ade80",
+                 thinking: "#fbbf24", speaking: "#6ea8fe" };
+
+function draw(t) {
+  const w = orb.width, h = orb.height, cx = w / 2, cy = h / 2;
+  g.clearRect(0, 0, w, h);
+  const base = 90;
+  const pulse = state === "idle" ? Math.sin(t / 900) * 4
+              : state === "thinking" ? Math.sin(t / 140) * 5
+              : amplitude * 46;
+  const r = base + pulse;
+  const c = COLORS[state] || COLORS.idle;
+
+  const glow = g.createRadialGradient(cx, cy, r * 0.2, cx, cy, r * 2.1);
+  glow.addColorStop(0, c + "55");
+  glow.addColorStop(1, c + "00");
+  g.fillStyle = glow;
+  g.beginPath(); g.arc(cx, cy, r * 2.1, 0, Math.PI * 2); g.fill();
+
+  const body = g.createRadialGradient(cx - r * .3, cy - r * .35, r * .1, cx, cy, r);
+  body.addColorStop(0, c);
+  body.addColorStop(1, c + "22");
+  g.fillStyle = body;
+  g.beginPath(); g.arc(cx, cy, r, 0, Math.PI * 2); g.fill();
+
+  if (state === "thinking") {
+    g.strokeStyle = c + "99"; g.lineWidth = 2;
+    g.beginPath();
+    g.arc(cx, cy, r + 16, t / 260, t / 260 + Math.PI * 0.7);
+    g.stroke();
+  }
+  amplitude *= 0.90;                       // decay so the orb settles smoothly
+  requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+
+function setState(s) { state = s; $("state").textContent = s; }
+
+// ---------------------------------------------------------------- playback
+// Audio arrives as sequential PCM spans. Schedule each one to start exactly
+// where the previous ended, so consecutive Piper spans play gapless.
+function enqueue(rate, pcm) {
+  const n = pcm.length / 2;
+  const view = new DataView(pcm.buffer, pcm.byteOffset, pcm.byteLength);
+  const buf = ctx.createBuffer(1, n, rate);
+  const ch = buf.getChannelData(0);
+  for (let i = 0; i < n; i++) ch[i] = view.getInt16(i * 2, true) / 32768;
+
+  const src = ctx.createBufferSource();
+  src.buffer = buf;
+  const analyser = ctx.createAnalyser();
+  analyser.fftSize = 256;
+  src.connect(analyser); analyser.connect(ctx.destination);
+
+  const now = ctx.currentTime;
+  const at = Math.max(now, playhead);
+  src.start(at);
+  playhead = at + buf.duration;
+  $("c-queue").textContent = Math.round((playhead - now) * 1000) + " ms";
+
+  // Drive the orb from the audio that is actually playing.
+  const data = new Uint8Array(analyser.frequencyBinCount);
+  const tick = () => {
+    if (ctx.currentTime > playhead) return;
+    analyser.getByteTimeDomainData(data);
+    let peak = 0;
+    for (const v of data) peak = Math.max(peak, Math.abs(v - 128) / 128);
+    if (state === "speaking") amplitude = Math.max(amplitude, peak);
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
+// ---------------------------------------------------------------- metrics
+function showMetrics(m) {
+  const cls = (v, good, bad) => v <= good ? "ok" : v <= bad ? "warn" : "bad";
+  $("m-audio").textContent   = m.audio_s.toFixed(1) + " s";
+  $("m-stt").textContent     = Math.round(m.stt_ms) + " ms"
+                             + (m.stt_speculative ? " (spec)" : "");
+  $("m-sttwait").textContent = Math.round(m.stt_wait_ms) + " ms";
+  $("m-sttwait").className   = "v " + cls(m.stt_wait_ms, 150, 600);
+  $("m-ttft").textContent    = Math.round(m.llm_ttft_ms) + " ms";
+  $("m-span").textContent    = Math.round(m.llm_first_span_ms) + " ms";
+  $("m-tts").textContent     = Math.round(m.tts_first_ms) + " ms";
+  $("m-tts").className       = "v " + cls(m.tts_first_ms, 500, 900);
+  $("m-first").textContent   = Math.round(m.first_audio_ms) + " ms";
+  $("m-first").className     = "v " + cls(m.first_audio_ms, 1500, 2500);
+}
+
+function say(cls, text) {
+  const d = document.createElement("div");
+  d.className = "msg " + cls;
+  d.textContent = text;
+  $("log").append(d);
+  $("log").scrollTop = $("log").scrollHeight;
+}
+
+// ---------------------------------------------------------------- transport
+function connect() {
+  ws = new WebSocket(`ws://${location.host}/ws`);
+  ws.binaryType = "arraybuffer";
+
+  ws.onmessage = (e) => {
+    if (e.data instanceof ArrayBuffer) {
+      const rate = new DataView(e.data).getUint32(0, true);
+      enqueue(rate, new Uint8Array(e.data, 4));
+      return;
+    }
+    const msg = JSON.parse(e.data);
+    switch (msg.type) {
+      case "ready":
+        $("c-endpoint").textContent = msg.endpoint_silence_ms + " ms";
+        $("c-rate").textContent = (msg.sample_rate / 1000) + " kHz";
+        $("btn").disabled = false;
+        setState("idle");
+        break;
+      case "state":
+        setState(msg.state);
+        // A fresh reply must not be scheduled behind stale silence.
+        if (msg.state === "thinking" && ctx) playhead = ctx.currentTime;
+        break;
+      case "transcript":
+        say(msg.confident ? "you" : "you low",
+            msg.text || "(nothing heard)");
+        break;
+      case "assistant": say("ai", msg.text); break;
+      case "span":
+        $("spans").insertAdjacentHTML("afterbegin",
+          `<div><code>${msg.synth_ms}ms / ${msg.audio_ms}ms</code> ${msg.text}</div>`);
+        break;
+      case "metrics": showMetrics(msg.metrics); break;
+      case "error": say("you low", msg.message); break;
+    }
+  };
+  ws.onclose = () => { setState("disconnected"); $("btn").disabled = true; };
+}
+connect();
+
+// ---------------------------------------------------------------- mic
+async function start() {
+  stream = await navigator.mediaDevices.getUserMedia({
+    audio: { channelCount: 1, echoCancellation: true,
+             noiseSuppression: true, autoGainControl: true },
+  });
+  ctx = new AudioContext();
+  await ctx.audioWorklet.addModule("/static/mic-worklet.js");
+  playhead = ctx.currentTime;
+
+  const src = ctx.createMediaStreamSource(stream);
+  node = new AudioWorkletNode(ctx, "mic-processor");
+  node.port.onmessage = (e) => {
+    if (ws?.readyState === WebSocket.OPEN) ws.send(e.data);
+    if (state === "listening") {
+      const pcm = new Int16Array(e.data);
+      let peak = 0;
+      for (const v of pcm) peak = Math.max(peak, Math.abs(v) / 32768);
+      amplitude = Math.max(amplitude, peak * 1.6);
+    }
+  };
+  src.connect(node);
+  // Worklets are only pulled if downstream of the destination; a muted gain
+  // node keeps it running without feeding the mic back to the speakers.
+  const mute = ctx.createGain();
+  mute.gain.value = 0;
+  node.connect(mute).connect(ctx.destination);
+
+  running = true;
+  $("btn").textContent = "Stop";
+  $("btn").classList.add("stop");
+  setState("idle");
+}
+
+function stop() {
+  stream?.getTracks().forEach((t) => t.stop());
+  node?.disconnect();
+  ctx?.close();
+  running = false;
+  $("btn").textContent = "Start talking";
+  $("btn").classList.remove("stop");
+  setState("idle");
+}
+
+$("btn").onclick = () => (running ? stop() : start());
+</script>
+</body>
+</html>

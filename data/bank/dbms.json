@@ -1,0 +1,382 @@
+[
+  {
+    "topic": "dbms",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "How does the N+1 query problem affect database performance, and what are some strategies to mitigate it? Can you provide an example of a situation where you encountered this issue and how you fixed it?",
+    "reference_answer": "The N+1 query problem occurs when a loop or a loop-like structure in your application queries the database multiple times, resulting in N queries to fetch data that could be aggregated into a single query. This can lead to poor performance because each query incurs overhead. To mitigate this, you can use techniques like eager loading or query batching to combine multiple related queries into a single query. For example, if you have a blog post with comments, instead of fetching comments for each post individually, you can fetch all comments in a single query, reducing the number of database hits.",
+    "expected_points": [
+      "The N+1 query problem happens when multiple database queries are made, each fetching data that could be retrieved in a single query.",
+      "To mitigate the N+1 query problem, techniques such as eager loading and query batching can be used to combine multiple related queries into a single query.",
+      "An example of the N+1 query problem is fetching all comments for each blog post individually, which can be improved by fetching all comments in a single query.",
+      "In a situation where this issue was encountered, fixing it involved optimizing the database queries to reduce the number of hits and improve performance."
+    ],
+    "follow_up_seeds": [
+      "Can you explain the difference between eager loading and lazy loading in the context of the N+1 query problem?",
+      "How do you ensure that the benefits of reducing database hits outweigh the overhead of fetching all related data in a single query?"
+    ],
+    "subtopic": "the N+1 query problem",
+    "id": "dbms-3-how-does-the-n-1-query"
+  },
+  {
+    "topic": "dbms",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "Can you explain the difference between sharding and partitioning in databases, and how they are used to improve scalability and performance?",
+    "reference_answer": "Sharding is the process of splitting a database into smaller, more manageable parts called shards. Each shard is a subset of the database's data. Partitioning, on the other hand, involves dividing a database into smaller, independent parts called partitions. Sharding is typically used for horizontal scaling by distributing data across multiple servers, while partitioning can be used for both horizontal and vertical scaling by separating data into different tables or databases.",
+    "expected_points": [
+      "Sharding involves splitting a database into smaller, manageable parts called shards.",
+      "Partitioning divides a database into independent parts called partitions.",
+      "Sharding is used for horizontal scaling by distributing data across multiple servers.",
+      "Partitioning can be used for both horizontal and vertical scaling by separating data into different tables or databases."
+    ],
+    "follow_up_seeds": [
+      "Can you give an example of when you would use sharding over partitioning?",
+      "How does partitioning affect data consistency and what are the trade-offs compared to sharding?"
+    ],
+    "subtopic": "sharding and partitioning",
+    "id": "dbms-2-can-you-explain-the-difference-between"
+  },
+  {
+    "topic": "dbms",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "Can you explain the concept of transactions in a database system, and what happens when a transaction needs to be rolled back? Can you describe how this process works in a simple example?",
+    "reference_answer": "In a database system, a transaction is a unit of work that consists of one or more database operations. It ensures that all operations are completed successfully or none of them are applied. If any part of the transaction fails, the database rolls back the transaction to restore it to the state before the transaction started. For example, if you try to save a transaction that involves updating a customer record and also updating their address, and the address update fails, the entire transaction can be rolled back so that no changes are made to the database.",
+    "expected_points": [
+      "A transaction in a database system is a unit of work that includes one or more database operations.",
+      "If a transaction fails, it can be rolled back to undo any changes made during the transaction.",
+      "When a transaction needs to be rolled back, the database returns to the state it was in before the transaction started.",
+      "For example, if a transaction involves updating a customer's record and their address, and the address update fails, the entire transaction can be rolled back to prevent any changes to the database."
+    ],
+    "follow_up_seeds": [
+      "Can you explain the difference between a transaction and a query in a database system?",
+      "How does the database ensure that a transaction is committed or rolled back?"
+    ],
+    "subtopic": "transactions and rollback",
+    "id": "dbms-2-can-you-explain-the-concept-of"
+  },
+  {
+    "topic": "dbms",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "Explain the difference between an optimal query execution plan and an efficient query execution plan. Can you provide an example where one might be preferred over the other?",
+    "reference_answer": "An optimal query execution plan is one that minimizes the cost, which could be time or resources, and it's the best possible plan. An efficient query execution plan is also cost-minimizing, but it might not be the optimal one because it considers practical factors like available resources and data availability. For example, if a database is running low on memory, an efficient plan might use more disk reads to avoid running out of memory, even if it's slightly more costly in terms of time.",
+    "expected_points": [
+      "An optimal query execution plan minimizes cost but may not be feasible.",
+      "An efficient query execution plan also minimizes cost but considers practical factors.",
+      "An efficient plan might use more disk reads to avoid running out of memory.",
+      "An optimal plan would not necessarily account for resource constraints."
+    ],
+    "follow_up_seeds": [
+      "Can you discuss scenarios where an optimal plan might be preferred over an efficient one?",
+      "How might the choice between optimal and efficient plans affect a database's performance in a high-traffic environment?"
+    ],
+    "subtopic": "query execution plans",
+    "id": "dbms-4-explain-the-difference-between-an-optimal"
+  },
+  {
+    "topic": "dbms",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "Can you explain why the order of columns in a composite index matters and how it affects query performance in a database system? Can you give an example?",
+    "reference_answer": "When creating a composite index, the order of the columns matters because it affects how the database can efficiently retrieve data. If you want to query based on the first column, you should place it first in the index. If you want to query based on the second column, you should place the second column after the first. For example, if you have a table with columns (first_name, last_name, age) and you frequently query by last_name and then by age, you should create an index on (last_name, age). This allows the database to quickly find all the entries with the same last_name and then filter by age, rather than scanning the entire table for each query.",
+    "expected_points": [
+      "When creating a composite index, the order of the columns matters.",
+      "If you want to query based on the first column, you should place it first in the index.",
+      "If you want to query based on the second column, you should place the second column after the first.",
+      "For example, if you have a table with columns (first_name, last_name, age) and you frequently query by last_name and then by age, you should create an index on (last_name, age)."
+    ],
+    "follow_up_seeds": [
+      "Can you explain the difference between a composite index and a single-column index in terms of query optimization?",
+      "How does the order of columns in a composite index affect the performance of range queries versus equality queries?"
+    ],
+    "subtopic": "composite index ordering",
+    "id": "dbms-2-can-you-explain-why-the-order"
+  },
+  {
+    "topic": "dbms",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "Imagine you have a blog post application where each post can have multiple comments. If you want to fetch all comments for a specific blog post, how would you avoid the N+1 query problem? Can you explain how to do this?",
+    "reference_answer": "To avoid the N+1 query problem, you should fetch the comments as a collection in one database query instead of fetching them individually. You can do this by using a LEFT JOIN in your SQL query. This way, you can retrieve all comments for a specific post in a single database call, reducing the number of queries to zero for that specific post.",
+    "expected_points": [
+      "Use a LEFT JOIN to fetch all comments for a specific blog post in a single query.",
+      "Avoid fetching comments individually for each blog post to prevent N+1 query problem.",
+      "This approach ensures that all comments related to a specific blog post are retrieved in one database call.",
+      "It reduces the number of queries to zero for that specific post, improving database performance."
+    ],
+    "follow_up_seeds": [
+      "What happens if the post has no comments? Do you still want to return a collection of comments?",
+      "Can you explain how this affects the performance of your application?"
+    ],
+    "subtopic": "the N+1 query problem",
+    "id": "dbms-2-imagine-you-have-a-blog-post"
+  },
+  {
+    "topic": "dbms",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "Can you explain the concept of connection pooling in a database context and why it is beneficial?",
+    "reference_answer": "Connection pooling is a technique where a set of database connections are kept open and reused for multiple database operations. This helps in reducing the overhead of establishing a new connection, as it can be reused, and also helps in managing the connection pool size to avoid exhaustion.",
+    "expected_points": [
+      "Connection pooling involves keeping a set of database connections open for reuse.",
+      "It reduces the overhead of establishing a new connection for each database operation.",
+      "Connection pooling helps in managing the connection pool size to avoid exhaustion.",
+      "It is beneficial for improving the performance and efficiency of database operations."
+    ],
+    "follow_up_seeds": [
+      "Can you describe the different strategies for managing a connection pool?",
+      "How does connection pooling affect the performance of a database application?"
+    ],
+    "subtopic": "connection pooling",
+    "id": "dbms-2-can-you-explain-the-concept-of"
+  },
+  {
+    "topic": "dbms",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "In a database system, what are the key differences between sharding and partitioning? Can you provide an example where sharding would be more advantageous than partitioning and vice versa?",
+    "reference_answer": "Sharding is a database design pattern where a database is divided into smaller, more manageable pieces called shards. Each shard contains a subset of the total data. Partitioning, on the other hand, is the process of dividing a database into smaller parts called partitions. The key difference is that sharding distributes data across multiple servers, while partitioning can be done within a single server or across multiple servers but typically doesn't involve multiple servers. Sharding is often more advantageous when dealing with very large datasets that cannot fit into a single server, as it allows for horizontal scaling. Partitioning is better for managing data that needs to be partitioned based on specific attributes, such as geographic regions or time periods.",
+    "expected_points": [
+      "sharding involves distributing data across multiple servers",
+      "partitioning is typically within a single server or across multiple servers but not necessarily multiple servers",
+      "sharding is for very large datasets",
+      "partitioning can be based on specific attributes"
+    ],
+    "follow_up_seeds": [
+      "Can you provide an example of a scenario where partitioning would be more advantageous than sharding?",
+      "How does sharding and partitioning affect data consistency in a database system?"
+    ],
+    "subtopic": "sharding and partitioning",
+    "id": "dbms-3-in-a-database-system-what-are"
+  },
+  {
+    "topic": "dbms",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "Can you explain when denormalisation for read performance might be beneficial in a database system, and why?",
+    "reference_answer": "Denormalisation for read performance is beneficial when you have a read-heavy workload and a relatively infrequent write workload. By denormalising, you reduce the need to join multiple tables to get all the data you need for a single read operation, which can speed up the read performance. However, it can make write operations more complex and can reduce the data's consistency.",
+    "expected_points": [
+      "denormalisation improves read performance for read-heavy workloads",
+      "denormalisation can simplify read queries by reducing the need for joins",
+      "denormalisation can increase the speed of read operations",
+      "denormalisation requires careful consideration of data consistency"
+    ],
+    "follow_up_seeds": [
+      "Can you provide an example of a scenario where denormalisation would be more beneficial than normalisation?",
+      "What are some tradeoffs of denormalisation, and how do they relate to read performance?"
+    ],
+    "subtopic": "denormalisation for read performance",
+    "id": "dbms-4-can-you-explain-when-denormalisation-for"
+  },
+  {
+    "topic": "dbms",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "How does the ACID property of Atomicity apply to a database transaction that needs to update both the 'orders' and 'inventory' tables simultaneously? Can you give an example scenario where breaking Atomicity would lead to inconsistent data?",
+    "reference_answer": "Atomicity means that all the operations in a transaction either all happen, or none of them happen. If we're updating both the 'orders' and 'inventory' tables in a single transaction, even if only one of the updates fails, we need to ensure that neither table changes occur. For example, if the 'orders' table update succeeds but the 'inventory' table update fails, the final state could be orders increased but inventory unchanged, leading to an inconsistent state where the inventory doesn't reflect the actual changes in orders.",
+    "expected_points": [
+      "Atomicity requires that all operations in a transaction are either all committed or all rolled back.",
+      "If a transaction involving updates to the 'orders' and 'inventory' tables fails, the state of the database could be inconsistent.",
+      "For instance, if updating 'orders' succeeds but 'inventory' fails, the inventory might not reflect the changes in orders.",
+      "Inconsistency can occur if only part of a transaction is completed, leading to a database state that is not consistent with the expected behavior."
+    ],
+    "follow_up_seeds": [
+      "Can you explain how this relates to the 'two-phase commit' protocol?",
+      "How does Atomicity affect the performance of a database transaction?"
+    ],
+    "subtopic": "ACID properties",
+    "id": "dbms-2-how-does-the-acid-property-of"
+  },
+  {
+    "topic": "dbms",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "Can you compare and contrast how SQL and NoSQL databases handle sharding and scaling in a high-load web application environment?",
+    "reference_answer": "SQL databases use sharding by splitting data across multiple servers based on a shard key, which can be a database ID, user ID, or any column. Each shard is a separate database instance that can be scaled independently. NoSQL databases, like MongoDB, scale by distributing data across multiple nodes in a cluster, each running a replica set. Scaling is often achieved by adding more nodes or replicating data. Both handle sharding, but SQL’s approach is more straightforward with a single shard key, while NoSQL’s is more flexible with data distribution across multiple nodes.",
+    "expected_points": [
+      "SQL databases use sharding by splitting data across multiple servers based on a shard key.",
+      "NoSQL databases, like MongoDB, scale by distributing data across multiple nodes in a cluster.",
+      "SQL’s approach to sharding is more straightforward with a single shard key.",
+      "NoSQL’s approach to sharding is more flexible with data distribution across multiple nodes."
+    ],
+    "follow_up_seeds": [
+      "How would you implement sharding in a NoSQL database like Cassandra?",
+      "Can you explain the difference in performance between SQL and NoSQL sharding under heavy load?"
+    ],
+    "subtopic": "SQL versus NoSQL tradeoffs",
+    "id": "dbms-4-can-you-compare-and-contrast-how"
+  },
+  {
+    "topic": "dbms",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "Can you explain the difference between a primary key and a foreign key in a database and give an example of each.",
+    "reference_answer": "A primary key uniquely identifies each record in a table and is always a single column. A foreign key is a column in one table that links to the primary key of another table. For example, a table of customers might have a primary key of a customer ID, and a table of orders might have a foreign key that references the customer ID in the customers table to associate orders with specific customers.",
+    "expected_points": [
+      "A primary key is a single column in a table that uniquely identifies each record.",
+      "A foreign key is a column in one table that references the primary key of another table.",
+      "An example of a primary key could be a customer ID in a customers table.",
+      "A foreign key in an orders table might reference the customer ID in the customers table to associate orders with specific customers."
+    ],
+    "follow_up_seeds": [
+      "Can you give an example of a scenario where a foreign key is used to enforce referential integrity?",
+      "Can you explain the difference between a one-to-one relationship and a one-to-many relationship in terms of primary and foreign keys?"
+    ],
+    "subtopic": "primary and foreign keys",
+    "id": "dbms-3-can-you-explain-the-difference-between"
+  },
+  {
+    "topic": "dbms",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "Can you explain how transaction isolation levels affect the occurrence of dirty reads, non-repeatable reads, and phantom reads in a database system?",
+    "reference_answer": "Transaction isolation levels determine how transactions interact with each other and with the database. Dirty reads occur when a transaction reads uncommitted data. Non-repeatable reads happen when a transaction reads the same row multiple times, and those reads produce different results. Phantom reads happen when a transaction reads multiple rows that another transaction has subsequently added, and the original transaction cannot see these new rows. The isolation levels (Serializable, Repeatable Read, Read Committed, and Read Uncommitted) are designed to minimize these anomalies.",
+    "expected_points": [
+      "Dirty reads occur when a transaction reads uncommitted data.",
+      "Non-repeatable reads happen when a transaction reads the same row multiple times and those reads produce different results.",
+      "Phantom reads happen when a transaction reads multiple rows that another transaction has subsequently added and the original transaction cannot see these new rows.",
+      "Transaction isolation levels are designed to minimize these anomalies."
+    ],
+    "follow_up_seeds": [
+      "Can you give an example of when Serializable isolation level might still allow a dirty read?",
+      "How does setting a transaction to Read Committed instead of Repeatable Read affect the possibility of phantom reads?"
+    ],
+    "subtopic": "isolation levels and anomalies",
+    "id": "dbms-3-can-you-explain-how-transaction-isolation"
+  },
+  {
+    "topic": "dbms",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "How does a read replica differ from a write replica in a database replication setup? Can you explain the primary differences in terms of data consistency and availability?",
+    "reference_answer": "A read replica is a database that is a copy of the primary database, but it only receives read queries. It does not replicate all write queries to the replica. In contrast, a write replica receives all write queries from the primary database, including those that are not replicated. The main difference in terms of data consistency is that a read replica may not have the most up-to-date data, while a write replica always has the most up-to-date data. Availability is higher for read replicas because they do not need to be available for write operations, unlike write replicas.",
+    "expected_points": [
+      "A read replica does not receive all write queries from the primary database.",
+      "A write replica receives all write queries from the primary database.",
+      "A read replica may not have the most up-to-date data.",
+      "A write replica always has the most up-to-date data."
+    ],
+    "follow_up_seeds": [
+      "Can you describe a scenario where you would prefer to use a read replica over a write replica?",
+      "How does the replication lag affect the performance of a read replica compared to a write replica?"
+    ],
+    "subtopic": "replication and read replicas",
+    "id": "dbms-3-how-does-a-read-replica-differ"
+  },
+  {
+    "topic": "dbms",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "Can you compare and contrast the query execution plans for a SELECT statement with and without an index on a specific column?",
+    "reference_answer": "When a SELECT statement has an index on a column, the database can use the index to quickly locate the relevant rows. Without the index, the database may have to scan the entire table to find the matching rows, which can be much slower. The execution plan for a SELECT with an index will often involve a seek operation, while a SELECT without an index might involve a seek and then a scan.",
+    "expected_points": [
+      "When a SELECT statement has an index, the database uses an index seek operation.",
+      "Without an index, the database may have to perform a seek followed by a table scan.",
+      "An index on a column can significantly reduce the time needed to locate relevant rows in a table.",
+      "An index on a column can lead to faster query execution compared to a table scan."
+    ],
+    "follow_up_seeds": [
+      "What happens to the execution plan if the index is on a different column within the same table?",
+      "How does the presence of a covering index affect the query execution plan?"
+    ],
+    "subtopic": "query execution plans",
+    "id": "dbms-4-can-you-compare-and-contrast-the"
+  },
+  {
+    "topic": "dbms",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "Can you explain the importance of the order in which columns are specified when creating a composite index in a database?",
+    "reference_answer": "When creating a composite index, the order in which columns are specified matters because it affects which queries can be efficiently executed using that index. For example, if you have an index on (column1, column2), then queries that involve only column1 or only column2 can use this index, but queries that involve both column1 and column2 in a specific order (like column1 then column2) can also use this index effectively. In contrast, if you have an index on (column2, column1), then only queries that involve both columns in that exact order can use this index, which is less efficient for many queries.",
+    "expected_points": [
+      "When creating a composite index, the order of columns does not affect queries that only involve one of the columns.",
+      "An index on (column1, column2) allows queries involving both columns in any order to use the index effectively.",
+      "An index on (column2, column1) is less efficient for queries involving both columns because it only allows them to use the index in a specific order.",
+      "The order of columns in a composite index impacts which queries can use the index, thus affecting query performance."
+    ],
+    "follow_up_seeds": [
+      "Can you provide an example where the order of columns in a composite index would be crucial for query optimization?",
+      "How does the order of columns in a composite index affect the join operations between tables?"
+    ],
+    "subtopic": "composite index ordering",
+    "id": "dbms-2-can-you-explain-the-importance-of"
+  },
+  {
+    "topic": "dbms",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "Can you explain a situation where the use of an index actually slows down a database query?",
+    "reference_answer": "Sure, imagine a scenario where you have a large table with millions of records. If you create an index on a frequently searched column, the index can help speed up the search. However, if the same column is frequently used in a WHERE clause with a condition that doesn't match the index, the database might actually end up doing more work because it has to scan the entire table to find the matching records. This can sometimes be slower than using a non-indexed search, especially if the index is not selective enough or if the WHERE clause doesn't use the index effectively.",
+    "expected_points": [
+      "If a column is frequently used in a WHERE clause with a condition that doesn't match the index, using an index can slow down the query.",
+      "An index can be less effective if it is not selective enough, meaning it doesn't cover a significant portion of the data.",
+      "A non-indexed search might be faster if the WHERE clause doesn't use the index effectively, especially for large tables.",
+      "An index can slow down a query if it is not used efficiently, such as when the search condition doesn't match the index key."
+    ],
+    "follow_up_seeds": [
+      "Can you give an example where an index might be more beneficial despite the initial inefficiency?",
+      "How does the size of the dataset affect the decision to use an index in a query?"
+    ],
+    "subtopic": "when an index hurts",
+    "id": "dbms-3-can-you-explain-a-situation-where"
+  },
+  {
+    "topic": "dbms",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "How do B-tree indexes store and retrieve data efficiently, and what happens when a node in the B-tree becomes too full or too empty?",
+    "reference_answer": "B-tree indexes are balanced trees that store data in a way that allows for quick lookups. Each node in the B-tree can have multiple child nodes, and the number of children is defined by the B-tree's order. When a node becomes too full, it splits into two nodes. If a node becomes too empty, it can be merged with an adjacent node. This structure ensures that data can be efficiently searched, inserted, and deleted.",
+    "expected_points": [
+      "B-tree indexes store data in a balanced tree structure.",
+      "When a node becomes too full, it splits into two nodes.",
+      "If a node becomes too empty, it can be merged with an adjacent node.",
+      "This structure ensures efficient data search, insertion, and deletion."
+    ],
+    "follow_up_seeds": [
+      "Can you explain the impact of a B-tree's order on its performance?",
+      "How does the B-tree handle deletions when a node is too empty?"
+    ],
+    "subtopic": "how B-tree indexes work",
+    "id": "dbms-2-how-do-b-tree-indexes-store"
+  },
+  {
+    "topic": "dbms",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "Can you explain the key differences between optimistic and pessimistic locking in databases, and how they handle concurrent access scenarios?",
+    "reference_answer": "Optimistic locking assumes that concurrent transactions will not conflict and only checks for conflicts before committing. Pessimistic locking assumes conflicts will happen and checks for conflicts after committing. Optimistic locking is generally faster but can lead to conflicts. Pessimistic locking is more robust but slower.",
+    "expected_points": [
+      "Optimistic locking assumes concurrent transactions will not conflict.",
+      "Pessimistic locking assumes conflicts will happen and checks for them after committing.",
+      "Optimistic locking is generally faster but can lead to conflicts.",
+      "Pessimistic locking is more robust but slower."
+    ],
+    "follow_up_seeds": [
+      "Can you provide an example of a situation where optimistic locking might be preferred over pessimistic locking?",
+      "How do you handle conflicts when using optimistic locking?"
+    ],
+    "subtopic": "optimistic versus pessimistic locking",
+    "id": "dbms-3-can-you-explain-the-key-differences"
+  },
+  {
+    "topic": "dbms",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "Can you explain the difference between a nested loop join and a hash join in terms of their time and space complexities, and when you would use each one in a database system?",
+    "reference_answer": "A nested loop join compares every row from one table with every row from another table. This can be very slow if the tables are large. A hash join, on the other hand, creates a hash table of one of the tables and then uses it to find matching rows in the other table. This can be faster if the tables are not too large. You would use a nested loop join when the tables are small and a hash join when the tables are large.",
+    "expected_points": [
+      "A nested loop join compares every row from one table with every row from another table.",
+      "A hash join creates a hash table of one of the tables and then uses it to find matching rows in the other table.",
+      "A nested loop join can be very slow if the tables are large.",
+      "A hash join is faster if the tables are not too large."
+    ],
+    "follow_up_seeds": [
+      "In what scenarios might a hash join be more efficient than a nested loop join?",
+      "How does the size of the tables affect the choice between a nested loop join and a hash join?"
+    ],
+    "subtopic": "joins and join algorithms",
+    "id": "dbms-3-can-you-explain-the-difference-between"
+  }
+]

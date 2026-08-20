@@ -1,0 +1,439 @@
+[
+  {
+    "topic": "networking",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "In a typical web request, how do caching layers and cache headers work together to optimize data delivery? Can you explain the process from a client requesting a resource to a server responding with a cache header, and how these layers interact to improve performance?",
+    "reference_answer": "When a client requests a resource, the server can include a cache header in the response to inform the client if and how it can use the resource. The caching layer in the client's browser or intermediary caching layer (like a CDN) will check its cache to see if it has the requested resource already. If it does, it sends the resource from its cache instead of the server. This saves bandwidth and time. If the resource is not in the cache, it fetches the resource from the server and caches it for future use.",
+    "expected_points": [
+      "Caching layers in the client's browser or intermediary caching layer (like a CDN) check their cache before sending a response to the client.",
+      "If the requested resource is not in the cache, the caching layer fetches it from the server.",
+      "The caching layer then caches the resource for future use.",
+      "Cache headers in the server's response to the client indicate if and how the resource can be used from the cache."
+    ],
+    "follow_up_seeds": [
+      "Can you elaborate on the types of cache headers commonly used, such as `max-age`, `s-maxage`, and `must-revalidate`?",
+      "How do cache headers impact the freshness of a resource and what are the trade-offs involved?"
+    ],
+    "subtopic": "caching layers and cache headers",
+    "id": "networking-3-in-a-typical-web-request-how"
+  },
+  {
+    "topic": "networking",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "Can you explain how Cross-Origin Resource Sharing (CORS) works and why it is important in web development? Can you also discuss the implications of different HTTP methods and the role of the Access-Control-Allow-Origin header in CORS?",
+    "reference_answer": "CORS is a security feature that enables web applications to request resources from a different domain than the one that served the original request. It allows a server to specify which origins are allowed to access its resources. For example, if a server wants to allow requests from a specific domain, it can include an Access-Control-Allow-Origin header in the response. Different HTTP methods have different implications for CORS. For instance, GET and HEAD requests do not have the same issues as POST or PUT when it comes to CORS. The Access-Control-Allow-Origin header is used to indicate which origin(s) are allowed to access a resource. This header can also specify the methods that are allowed, allowing more granular control over which operations are permitted.",
+    "expected_points": [
+      "CORS enables web applications to request resources from a different domain.",
+      "CORS allows a server to specify which origins are allowed to access its resources.",
+      "The Access-Control-Allow-Origin header is used to indicate which origin(s) are allowed to access a resource.",
+      "The header can also specify the methods that are allowed, providing more granular control over which operations are permitted."
+    ],
+    "follow_up_seeds": [
+      "Can you give an example of how CORS can be misused to bypass security?",
+      "How does CORS affect the security of a web application and what are some best practices to implement it effectively?"
+    ],
+    "subtopic": "CORS",
+    "id": "networking-2-can-you-explain-how-cross-origin"
+  },
+  {
+    "topic": "networking",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "How do Content Delivery Networks (CDNs) optimize the delivery of static and dynamic web content to improve performance, and what are the key trade-offs involved in using a CDN versus a traditional server setup?",
+    "reference_answer": "CDNs work by distributing content across multiple servers located in different geographic regions. This allows users to access content from the server that is geographically closest to them, reducing latency. For static content like images and videos, the CDN caches these files at edge locations, so users can access them quickly without having to query the origin server. For dynamic content, the CDN can serve pre-rendered versions or partial responses. The main trade-offs are increased cost for hosting content on the CDN and potential security concerns with caching content that may be stale or compromised.",
+    "expected_points": [
+      "CDNs reduce latency by serving content from the nearest server.",
+      "CDNs cache static content at edge locations to improve access speed.",
+      "CDNs can serve pre-rendered dynamic content to reduce server load.",
+      "CDNs may introduce security risks with stale or compromised cached content."
+    ],
+    "follow_up_seeds": [
+      "Can you provide an example of a scenario where a CDN would be more beneficial than a traditional server setup?",
+      "How does a CDN handle updates to cached content versus updates to the original content?"
+    ],
+    "subtopic": "CDNs",
+    "id": "networking-3-how-do-content-delivery-networks-cdns"
+  },
+  {
+    "topic": "networking",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "Can you explain the HTTP methods POST, GET, PUT, and DELETE and how they relate to the concept of idempotency in a simple way?",
+    "reference_answer": "POST is used for creating a resource. It’s not idempotent because if you make the same request multiple times, the result can vary. GET is for fetching a resource and is idempotent; making it multiple times will get you the same result. PUT is for updating a resource, and it’s also idempotent; making it multiple times updates the resource the same number of times. DELETE is for deleting a resource, and it’s not idempotent; making it multiple times will delete the resource multiple times.",
+    "expected_points": [
+      "POST is used for creating a resource and is not idempotent.",
+      "GET is used for fetching a resource and is idempotent.",
+      "PUT is used for updating a resource and is idempotent.",
+      "DELETE is used for deleting a resource and is not idempotent."
+    ],
+    "follow_up_seeds": [
+      "Can you give an example where the idempotency of a GET request is important in a real-world scenario?",
+      "Why is it important for a resource to be idempotent? Can you think of a situation where it might not be?"
+    ],
+    "subtopic": "HTTP methods and idempotency",
+    "id": "networking-2-can-you-explain-the-http-methods"
+  },
+  {
+    "topic": "networking",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "When you type a URL into your browser, what happens under the hood? Can you walk me through the process from when the browser receives the request until it receives a response?",
+    "reference_answer": "When you type a URL into your browser, the browser sends an HTTP request to the server at the specified URL. This request includes details like the version of the HTTP protocol, the method (usually GET), and the resource you want to access. The request is sent over the network using TCP/IP protocols. The browser then waits for the server to respond with an HTTP response, which typically includes the requested resource (like a webpage) and a status code indicating whether the request was successful. If the response is successful, the browser renders the content of the response, which could be a webpage, and displays it to you.",
+    "expected_points": [
+      "The browser sends an HTTP request to the server.",
+      "The request includes details such as the HTTP version, method, and resource.",
+      "The browser waits for the server to respond with an HTTP response.",
+      "The response includes the requested resource and a status code indicating success or failure."
+    ],
+    "follow_up_seeds": [
+      "Can you explain the difference between a GET and a POST request in terms of their usage and implications?",
+      "How does the browser handle redirects (e.g., 301 or 302 codes)?"
+    ],
+    "subtopic": "what happens when you type a URL",
+    "id": "networking-2-when-you-type-a-url-into"
+  },
+  {
+    "topic": "networking",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "What are the most common HTTP status codes and what do they mean? Can you explain why a client might receive a 404 Not Found error and a 500 Internal Server Error?",
+    "reference_answer": "HTTP status codes are messages that the web server sends back to the browser. A 404 Not Found means the requested resource cannot be found on the server. A 500 Internal Server Error means the server encountered an unexpected condition while executing a request. A client might receive a 404 error when they try to access a page that no longer exists. They might get a 500 error if there's a bug on the server that causes the server to fail to process the request.",
+    "expected_points": [
+      "A 404 Not Found error indicates the requested resource cannot be found on the server.",
+      "A 500 Internal Server Error signifies the server encountered an unexpected condition.",
+      "A client might receive a 404 error when trying to access a non-existent page.",
+      "A 500 error occurs when there's a server-side issue that prevents processing the request."
+    ],
+    "follow_up_seeds": [
+      "Can you give an example of when a client might receive a 301 Moved Permanently?",
+      "What does a 200 OK status code mean and how does it differ from a 301 Moved Permanently?"
+    ],
+    "subtopic": "HTTP status codes",
+    "id": "networking-2-what-are-the-most-common-http"
+  },
+  {
+    "topic": "networking",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "What is the role of the TLS Handshake in establishing a secure HTTPS connection? Can you describe the steps involved in a TLS Handshake and why each step is important for security? Do you know the difference between a client and server certificate in the TLS Handshake?",
+    "reference_answer": "The TLS Handshake is crucial for establishing a secure connection between a client and a server in an HTTPS connection. It involves steps like client authentication, server authentication, and encryption setup. Each step is important for security, such as verifying the identity of the server and ensuring that the data is encrypted and not tampered with. In the TLS Handshake, the client sends its certificate to the server to prove its identity, and the server then sends its own certificate to the client to prove its identity. The client also sends a client certificate if it has one, and the server checks the certificate against its own certificate authority database to verify the server's identity. After authentication, the client and server negotiate a shared encryption key and a cipher suite to use for the session. The client then sends a message to the server indicating it is ready to send data securely, and the server responds with a message indicating the data will be encrypted. The session is now secure, and data can be sent encrypted between the client and server.",
+    "expected_points": [
+      "TLS Handshake is crucial for establishing a secure connection between a client and a server in an HTTPS connection.",
+      "The client sends its certificate to the server to prove its identity, and the server sends its own certificate to the client to prove its identity.",
+      "The client also sends a client certificate if it has one, and the server checks the certificate against its own certificate authority database to verify the server's identity.",
+      "After authentication, the client and server negotiate a shared encryption key and a cipher suite to use for the session."
+    ],
+    "follow_up_seeds": [
+      "Can you explain the process of certificate validation in the TLS Handshake?",
+      "What happens if a server does not have a certificate or if a client's certificate is expired? How does this affect the TLS Handshake and the security of the connection?"
+    ],
+    "subtopic": "HTTPS and TLS",
+    "id": "networking-4-what-is-the-role-of-the"
+  },
+  {
+    "topic": "networking",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "What are the primary benefits and drawbacks of using a CDN for website performance improvement? Can you elaborate on how a CDN can improve a website's speed and reduce latency, and what tradeoffs are made in terms of cost and data sovereignty?",
+    "reference_answer": "Using a CDN can improve a website's speed by caching static assets like images and videos closer to users, reducing the distance data has to travel to reach its destination. It can also reduce latency, which is the time it takes for a user to see a website. However, there are tradeoffs: cost can be higher due to CDN fees, and there might be issues with data sovereignty if the CDN's servers are in a different country than the website's origin.",
+    "expected_points": [
+      "CDNs can improve website speed by caching assets closer to users.",
+      "CDNs reduce latency by minimizing the distance data travels.",
+      "Cost is a tradeoff for using CDNs, as fees are often higher.",
+      "Data sovereignty concerns may arise if CDN servers are in a different country than the website's origin."
+    ],
+    "follow_up_seeds": [
+      "Can you explain how a CDN handles edge cases where a user requests content from a location not covered by the CDN’s network?",
+      "What measures do CDNs take to ensure data privacy and security, especially for sensitive data?"
+    ],
+    "subtopic": "CDNs",
+    "id": "networking-4-what-are-the-primary-benefits-and"
+  },
+  {
+    "topic": "networking",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "Can you explain the main differences between TCP and UDP in terms of reliability and performance, and when you might choose one over the other in a network application?",
+    "reference_answer": "TCP is a reliable protocol that ensures data packets are delivered in the correct order and that no data is lost. It uses a three-way handshake to establish a connection and a sequence number to reorder packets. In contrast, UDP is lightweight and does not guarantee delivery or order. It does not use a handshake and does not reorder packets. Applications like streaming video use UDP because the delay caused by reordering packets is acceptable for the human eye. Applications like file transfers use TCP because they require reliability.",
+    "expected_points": [
+      "TCP ensures data packets are delivered in the correct order and that no data is lost.",
+      "UDP does not guarantee delivery or order and does not reorder packets.",
+      "TCP uses a three-way handshake to establish a connection.",
+      "UDP is lightweight and does not use a handshake."
+    ],
+    "follow_up_seeds": [
+      "What is the primary reason for using TCP over UDP in a network application?",
+      "Can you discuss the implications of using UDP versus TCP in a network application where latency is critical?"
+    ],
+    "subtopic": "TCP versus UDP",
+    "id": "networking-3-can-you-explain-the-main-differences"
+  },
+  {
+    "topic": "networking",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "Can you explain the differences and use cases between cookies and tokens in web applications?",
+    "reference_answer": "Cookies are stored on the client-side as small text files and can be used to store session information like login status or user preferences. Tokens, on the other hand, are typically sent with each request as an HTTP header or as part of the URL. They are often used for stateless authentication and authorization, like JWT (JSON Web Tokens), because they don't require the server to manage a persistent storage for the user's session.",
+    "expected_points": [
+      "Cookies are stored on the client-side and can be used for session management.",
+      "Tokens are used for stateless authentication and authorization.",
+      "Tokens are often used in stateless systems like JWT.",
+      "Cookies can be used for storing user preferences or login status."
+    ],
+    "follow_up_seeds": [
+      "Can you compare the security implications of using cookies versus tokens?",
+      "What challenges do you see with using cookies for authentication, and how might tokens address these?"
+    ],
+    "subtopic": "cookies versus tokens",
+    "id": "networking-3-can-you-explain-the-differences-and"
+  },
+  {
+    "topic": "networking",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "In a typical web request, what happens if the server cannot find the requested resource? How does this differ from when the server intentionally returns a 404 status code? Can you describe the process and the implications for the client and server in each case?",
+    "reference_answer": "If the server cannot find the requested resource, it will send a 404 Not Found status code. This means the client should handle this by informing the user of the resource not being found. On the other hand, if the server intentionally returns a 404 status code, it's a deliberate action to indicate that the requested resource does not exist. In this case, the client should also handle the 404 status code by similarly informing the user. In both scenarios, the client can display a message like 'Resource not found' or 'Page not found' to the user.",
+    "expected_points": [
+      "If the server cannot find the requested resource, it sends a 404 Not Found status code.",
+      "If the server intentionally returns a 404 status code, it's a deliberate action to indicate that the requested resource does not exist.",
+      "In both cases, the client should handle the 404 status code by informing the user of the resource not being found.",
+      "The client can display a message like 'Resource not found' or 'Page not found' to the user in both scenarios."
+    ],
+    "follow_up_seeds": [
+      "How might a client handle a 403 Forbidden status code? What are the implications for the user and server?",
+      "Explain the difference between a 404 Not Found and a 401 Unauthorized status code. How do they differ in terms of client and server actions?"
+    ],
+    "subtopic": "HTTP status codes",
+    "id": "networking-4-in-a-typical-web-request-what"
+  },
+  {
+    "topic": "networking",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "Imagine you have an application that needs to communicate with another system. One system uses RESTful APIs and the other uses RPC. What are the key differences in how these systems handle requests and responses? How do these differences impact the design and implementation of your application?",
+    "reference_answer": "RESTful APIs use standard HTTP methods like GET, POST, PUT, DELETE to communicate with the server, while RPC typically involves the client making a direct call to the server using a custom protocol. REST APIs are stateless and use URLs for addressing, whereas RPC often uses a custom protocol with parameters. REST is stateless and uses HTTP headers for context, while RPC maintains a session state. REST is more suitable for distributed systems with a client-server architecture, and RPC is better for systems with a peer-to-peer architecture or when a custom protocol is already in place.",
+    "expected_points": [
+      "RESTful APIs are stateless and use URLs for addressing, while RPC maintains a session state.",
+      "REST is stateless and uses HTTP headers for context, whereas RPC often uses a custom protocol with parameters.",
+      "REST is more suitable for distributed systems with a client-server architecture, and RPC is better for systems with a peer-to-peer architecture or when a custom protocol is already in place.",
+      "RESTful APIs use standard HTTP methods like GET, POST, PUT, DELETE to communicate with the server, while RPC typically involves the client making a direct call to the server using a custom protocol."
+    ],
+    "follow_up_seeds": [
+      "What are the implications of these differences on error handling in your application?",
+      "How do these differences affect the performance and scalability of your application?"
+    ],
+    "subtopic": "REST versus RPC",
+    "id": "networking-3-imagine-you-have-an-application-that"
+  },
+  {
+    "topic": "networking",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "When you type a URL into your browser, what are the steps the browser takes to connect to the server and fetch the requested page? Can you walk me through this process from start to finish?",
+    "reference_answer": "You type a URL into your browser, and it breaks down the URL into its components: the protocol (like HTTP or HTTPS), the domain name, and the path. The browser then resolves the domain name to an IP address using DNS. It constructs a TCP/IP connection to the server's IP address and port. Once connected, it sends a request to the server for the requested page. The server responds with the page content. The browser parses the HTML and other resources, and renders the page on your screen.",
+    "expected_points": [
+      "The browser breaks down the URL into protocol, domain name, and path components.",
+      "The browser uses DNS to resolve the domain name to an IP address.",
+      "The browser establishes a TCP/IP connection to the server's IP address and port.",
+      "The browser sends a request for the requested page to the server."
+    ],
+    "follow_up_seeds": [
+      "Can you elaborate on the process for handling HTTPS connections?",
+      "How does the browser handle redirects during the process?"
+    ],
+    "subtopic": "what happens when you type a URL",
+    "id": "networking-4-when-you-type-a-url-into"
+  },
+  {
+    "topic": "networking",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "Imagine you're setting up a new server in a different country. If the server is 5000 kilometers away from your users, which aspect of network performance—latency or bandwidth—would likely be more critical for ensuring a good user experience? Explain why.",
+    "reference_answer": "Latency would likely be more critical for ensuring a good user experience. Even with very high bandwidth, the distance between the server and users would result in significant latency, which could cause delays in response times and noticeable lag in interactive applications.",
+    "expected_points": [
+      "Latency would be more critical for ensuring a good user experience.",
+      "High bandwidth alone cannot compensate for the 5000 kilometers distance.",
+      "Interactive applications would experience noticeable lag with high latency.",
+      "Users would perceive a delay in response times with significant latency."
+    ],
+    "follow_up_seeds": [
+      "Can you provide an example of an application where high latency might be more problematic than high bandwidth? Explain why.",
+      "How might you mitigate the impact of latency in your application? Consider both hardware and software solutions."
+    ],
+    "subtopic": "latency versus bandwidth",
+    "id": "networking-4-imagine-you-re-setting-up-a"
+  },
+  {
+    "topic": "networking",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "Can you explain the process of DNS resolution and how a DNS server resolves a domain name like 'example.com' to an IP address?",
+    "reference_answer": "DNS resolution involves a client querying a DNS server for the IP address associated with a domain name. When you type 'example.com' in the browser, the client sends a DNS query to a DNS server. The DNS server checks its cache first to see if it already has the IP address for 'example.com'. If not, it queries a higher-level DNS server, which might be a root DNS server. The root DNS server knows the IP address of a top-level domain (TLD) DNS server. The TLD DNS server then queries a DNS server for the specific domain, which might be a DNS server for 'com' or another TLD. Eventually, the DNS server for 'example.com' (or a subdomain of it) returns the IP address, which the client uses to establish a connection to the server hosting 'example.com'. This process is called DNS resolution.",
+    "expected_points": [
+      "DNS resolution involves a client querying a DNS server for the IP address associated with a domain name.",
+      "When you type 'example.com' in the browser, the client sends a DNS query to a DNS server.",
+      "The DNS server checks its cache first to see if it already has the IP address for 'example.com'.",
+      "If not, it queries a higher-level DNS server, which might be a root DNS server."
+    ],
+    "follow_up_seeds": [
+      "How does DNS resolution differ when resolving a subdomain like 'www.example.com'?",
+      "Can you explain how DNS servers handle a domain name that doesn't exist?"
+    ],
+    "subtopic": "DNS resolution",
+    "id": "networking-2-can-you-explain-the-process-of"
+  },
+  {
+    "topic": "networking",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "In a chat application, how would you compare the use of WebSockets versus polling for real-time updates? Which is more efficient in terms of latency and resource usage? Can you explain your reasoning?",
+    "reference_answer": "WebSockets are more efficient for real-time updates in a chat application because they establish a persistent connection, reducing the overhead of establishing and closing connections with polling. This results in lower latency and more efficient use of resources compared to polling, which requires sending frequent requests to the server to check for updates.",
+    "expected_points": [
+      "WebSockets reduce the overhead of establishing and closing connections.",
+      "WebSockets establish a persistent connection for real-time updates.",
+      "Polling requires sending frequent requests to the server to check for updates.",
+      "WebSockets result in lower latency and more efficient use of resources."
+    ],
+    "follow_up_seeds": [
+      "How would you handle WebSocket connection loss in a chat application?",
+      "In what scenarios might polling be more appropriate than WebSockets?"
+    ],
+    "subtopic": "WebSockets versus polling",
+    "id": "networking-2-in-a-chat-application-how-would"
+  },
+  {
+    "topic": "networking",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "Can you explain the purpose and implementation of rate limiting in a network context? How does it help in managing network traffic and what are the potential issues if not implemented correctly?",
+    "reference_answer": "Rate limiting is a technique used to control the amount of data that can be sent over a network within a specific time frame. It helps in managing network traffic by preventing overload on the network infrastructure. For example, if a server can only handle 100 requests per second, rate limiting can be used to limit the number of requests that can be sent to the server within a certain timeframe. If not implemented correctly, it can lead to issues like dropped packets or delays in data transmission.",
+    "expected_points": [
+      "Rate limiting controls the amount of data sent over a network within a specific time frame.",
+      "Rate limiting helps in managing network traffic by preventing overload on the network infrastructure.",
+      "If not implemented correctly, it can lead to issues like dropped packets or delays in data transmission.",
+      "Rate limiting can be used to limit the number of requests that can be sent to a server within a certain timeframe."
+    ],
+    "follow_up_seeds": [
+      "Can you provide an example of a situation where rate limiting might be necessary?",
+      "How does rate limiting differ between inbound and outbound traffic?"
+    ],
+    "subtopic": "rate limiting",
+    "id": "networking-3-can-you-explain-the-purpose-and"
+  },
+  {
+    "topic": "networking",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "Can you explain the HTTP methods GET and PUT in the context of idempotency, and why PUT is considered idempotent while GET is not?",
+    "reference_answer": "PUT is idempotent because it can be used multiple times without changing the outcome. GET, on the other hand, is not idempotent because multiple requests with the same parameters would result in the same outcome, but it could also result in different outcomes if the server's state changes between requests.",
+    "expected_points": [
+      "PUT is idempotent as it can be used multiple times without changing the outcome.",
+      "GET is not idempotent because multiple requests with the same parameters would result in the same outcome, but it could also result in different outcomes if the server's state changes between requests.",
+      "PUT is considered idempotent because it has the same effect regardless of the number of times it is executed.",
+      "GET is not considered idempotent because it can lead to different outcomes if the server's state changes between requests."
+    ],
+    "follow_up_seeds": [
+      "What are some other HTTP methods and their idempotency?",
+      "How does the idempotency of HTTP methods impact the design of a RESTful API?"
+    ],
+    "subtopic": "HTTP methods and idempotency",
+    "id": "networking-2-can-you-explain-the-http-methods"
+  },
+  {
+    "topic": "networking",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "Can you describe a scenario where a network partition might occur and how it could affect the reliability of a distributed system? How does a network partition differ from a network failure in terms of its impact on communication and data integrity?",
+    "reference_answer": "A network partition happens when a network component, such as a router or a network link, fails and isolates part of the network from the rest. This means that the isolated part of the network cannot communicate with the other parts, even though the network as a whole is still up and running. This can lead to data inconsistency and unreliability in a distributed system, as components may not receive updates or messages meant for them. In contrast, a network failure affects the entire network and can cause widespread communication issues, but once fixed, the network can recover. A network partition, however, cannot be fully resolved by fixing a single component, as it requires the re-establishment of communication paths between the isolated parts.",
+    "expected_points": [
+      "A network partition isolates part of the network from the rest, preventing communication between the isolated and non-isolated parts.",
+      "A network partition cannot be fully resolved by fixing a single component, unlike a network failure.",
+      "A network partition can lead to data inconsistency and unreliability in a distributed system.",
+      "A network failure affects the entire network and can cause widespread communication issues, but once fixed, the network can recover."
+    ],
+    "follow_up_seeds": [
+      "Can you provide an example of a distributed system that might be affected by a network partition?",
+      "How does a network partition compare to a network failure in terms of recoverability?"
+    ],
+    "subtopic": "network partitions",
+    "id": "networking-4-can-you-describe-a-scenario-where"
+  },
+  {
+    "topic": "networking",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "Can you explain how round-robin and least connections algorithms differ in their approach to load balancing in a web server environment?",
+    "reference_answer": "Round-robin assigns requests to the next available server in the list. Least connections assigns requests to the server with the fewest active connections, promoting even distribution of load.",
+    "expected_points": [
+      "Round-robin assigns requests to the next available server in the list.",
+      "Least connections assigns requests to the server with the fewest active connections.",
+      "Round-robin does not consider the current load of servers.",
+      "Least connections aims to distribute the load more evenly among servers."
+    ],
+    "follow_up_seeds": [
+      "Can you provide an example of when least connections might be preferred over round-robin?",
+      "How do you ensure that round-robin doesn't cause a bottleneck in a server with varying connection speeds?"
+    ],
+    "subtopic": "load balancing",
+    "id": "networking-4-can-you-explain-how-round-robin"
+  },
+  {
+    "topic": "networking",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "Can you explain the concept of Cross-Origin Resource Sharing (CORS) and how it affects web security, particularly in the context of a modern web application where multiple domains and origins are involved? How does a server need to configure CORS to allow a secure API endpoint to be accessed from a frontend application?",
+    "reference_answer": "CORS is a security feature implemented by web browsers that limits the sources from which a web application can fetch resources. It does this by adding an HTTP header to all requests, which specifies the origin that is allowed to make requests to the server. If the origin is not allowed, the browser will block the request. A server can configure CORS by setting appropriate headers in the response to indicate what origins are allowed to make requests. For example, if an API endpoint needs to be accessible from a frontend app hosted on a different domain, the server should allow that domain by setting the Access-Control-Allow-Origin header to the frontend domain, or by using the wildcard * to allow all origins. This allows the API to be accessed securely while maintaining security and preventing unauthorized access.",
+    "expected_points": [
+      "CORS limits the sources from which a web application can fetch resources.",
+      "CORS is implemented by web browsers through an HTTP header.",
+      "A server can configure CORS by setting appropriate headers in the response.",
+      "The Access-Control-Allow-Origin header is used to specify allowed origins for API endpoints."
+    ],
+    "follow_up_seeds": [
+      "Can you provide an example of a scenario where CORS might cause an issue and how the server could address it?",
+      "How does the use of the wildcard * in CORS headers affect security and performance?"
+    ],
+    "subtopic": "CORS",
+    "id": "networking-4-can-you-explain-the-concept-of"
+  },
+  {
+    "topic": "networking",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "Can you explain the TCP handshake in a simple, step-by-step manner, and then compare the process for establishing a connection between two hosts on a local network versus between two hosts on the internet?",
+    "reference_answer": "The TCP handshake involves three steps: a SYN (synchronize) message from the client to the server, a SYN-ACK (synchronize-acknowledge) message from the server back to the client, and finally an ACK (acknowledge) message from the client to the server. For a connection on a local network, the addresses are usually on the same subnet, and the handshake typically only requires one segment of data to be sent. For a connection between hosts on the internet, the handshake may involve multiple segments and address translation due to the use of IP addresses that are not on the same subnet.",
+    "expected_points": [
+      "TCP handshake consists of a SYN message from the client to the server, a SYN-ACK message from the server, and an ACK message from the client.",
+      "For local network connections, the handshake can be completed with a single segment of data.",
+      "Internet connections require multiple segments of data due to IP addresses not being on the same subnet.",
+      "Local network connections do not involve address translation during the handshake process."
+    ],
+    "follow_up_seeds": [
+      "Can you explain the process of address translation that occurs during the handshake for internet connections?",
+      "How does the TCP keepalive mechanism work in conjunction with the handshake process?"
+    ],
+    "subtopic": "the TCP handshake",
+    "id": "networking-3-can-you-explain-the-tcp-handshake"
+  },
+  {
+    "topic": "networking",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "Explain the difference between a caching layer at the application layer and a caching layer at the transport layer in a web request. How do the cache headers differ between these two layers?",
+    "reference_answer": "A caching layer at the application layer is typically implemented by the client-side browser, which uses HTTP caching headers like `Cache-Control`, `Expires`, and `Pragma` to store responses for a certain period. A caching layer at the transport layer is usually managed by the network infrastructure, such as a CDN (Content Delivery Network), which might use HTTP caching headers or other cache mechanisms like TCP/IP caching. The client-side cache headers are more granular and specific to the resources being fetched, while the transport layer cache headers might be more about managing global cache and global policies.",
+    "expected_points": [
+      "A caching layer at the application layer uses HTTP caching headers for client-side resources.",
+      "A caching layer at the transport layer uses HTTP caching headers or other mechanisms like TCP/IP caching for global policies.",
+      "Client-side cache headers are more specific to resources, while transport layer cache headers are more global.",
+      "Network infrastructure manages the transport layer caching, not the client-side browser."
+    ],
+    "follow_up_seeds": [
+      "How might a CDN implement caching for a resource that is shared across multiple clients?",
+      "Can you explain how the `Max-Age` header is used in both application and transport layer caching?"
+    ],
+    "subtopic": "caching layers and cache headers",
+    "id": "networking-2-explain-the-difference-between-a-caching"
+  }
+]

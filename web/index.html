@@ -1,0 +1,814 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interview Coach</title>
+<style>
+/* ===========================================================================
+   Neumorphism. One surface colour for everything, and depth carried entirely
+   by a pair of shadows: a light one up-left, a dark one down-right, as if a
+   single lamp sat over the reader's left shoulder.
+
+   Two rules make the difference between this and grey mush:
+
+   * **Elements are the same colour as the page.** A card with its own fill
+     stops reading as part of the surface, and the whole effect collapses.
+   * **Raised means available, inset means chosen.** Buttons stand out until
+     you pick them, then they press in. That is the entire interaction
+     language here, so it is used consistently and for nothing else.
+
+   The dark theme is a *soft* dark — slate, not black. Neumorphism needs a
+   lighter-than-surface highlight to exist at all, and on black there is no
+   room above it for one.
+   ========================================================================= */
+
+:root {
+  --bg:#e9edf5;
+  --dark:#c2c9d8;          /* the shadow side */
+  --light:#ffffff;         /* the lit side */
+  --text:#3c4257;
+  --dim:#6f778f;
+  --faint:#98a0b5;
+  --accent:#5866e0;
+  --accent-ink:#ffffff;
+  --ok:#1f9d6b; --mid:#c98a12; --bad:#d9534f;
+  --ok-bg:rgba(31,157,107,.13);
+  --mid-bg:rgba(201,138,18,.14);
+  --bad-bg:rgba(217,83,79,.13);
+}
+
+/* Soft dark: a slate the highlight can still sit above. */
+:root[data-theme="dark"] {
+  --bg:#3d4457;
+  --dark:#333949;
+  --light:#4a5266;
+  --text:#e4e8f2;
+  --dim:#aab2c6;
+  --faint:#868ea3;
+  --accent:#8b97ff;
+  --accent-ink:#232838;
+  --ok:#4cc79a; --mid:#e0b455; --bad:#f08a86;
+  --ok-bg:rgba(76,199,154,.15);
+  --mid-bg:rgba(224,180,85,.15);
+  --bad-bg:rgba(240,138,134,.15);
+}
+
+:root {
+  --out:7px 7px 14px var(--dark), -7px -7px 14px var(--light);
+  --out-sm:4px 4px 9px var(--dark), -4px -4px 9px var(--light);
+  --out-lg:12px 12px 24px var(--dark), -12px -12px 24px var(--light);
+  --in:inset 4px 4px 9px var(--dark), inset -4px -4px 9px var(--light);
+  --in-deep:inset 7px 7px 14px var(--dark), inset -7px -7px 14px var(--light);
+  --r:20px;
+  font-family:"Segoe UI Variable Display","Segoe UI",system-ui,-apple-system,
+              Inter,sans-serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--bg); color:var(--text);
+  font-size:15px; line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  transition:background .25s ease, color .25s ease;
+}
+#app{height:100%;display:flex;flex-direction:column;align-items:center}
+.view{display:none;width:100%;flex:1;min-height:0}
+.view.on{display:flex;flex-direction:column;align-items:center}
+.wrap{width:100%;max-width:720px}
+
+/* ------------------------------------------------------------ primitives */
+.raised{background:var(--bg);border-radius:var(--r);box-shadow:var(--out)}
+.sunken{background:var(--bg);border-radius:var(--r);box-shadow:var(--in)}
+
+h1{font-size:31px;font-weight:600;letter-spacing:-.02em;margin-bottom:6px}
+.sub{color:var(--dim);margin-bottom:32px}
+.label{font-size:11px;letter-spacing:.15em;text-transform:uppercase;
+       color:var(--faint);margin-bottom:14px;font-weight:700}
+.block{margin-bottom:30px}
+.note{color:var(--faint);font-size:13px;margin-top:20px}
+
+/* Every pressable thing shares one behaviour: raised, then pressed in. */
+.chip,.seg button,.btn,.icon{
+  background:var(--bg); color:var(--text); border:0; cursor:pointer;
+  font-family:inherit; box-shadow:var(--out-sm);
+  transition:box-shadow .18s ease, color .18s ease, transform .18s ease;
+}
+.chip:active,.seg button:active,.btn:active,.icon:active{box-shadow:var(--in)}
+.chip:disabled,.btn:disabled{
+  opacity:.45;cursor:not-allowed;box-shadow:var(--out-sm)
+}
+
+.chips{display:flex;flex-wrap:wrap;gap:14px}
+.chip{border-radius:999px;padding:11px 20px;font-size:14px}
+.chip[aria-pressed="true"]{box-shadow:var(--in);color:var(--accent);font-weight:600}
+.chip .n{color:var(--faint);font-size:12px;margin-left:8px;font-weight:400}
+
+/* The segmented control is an inset track holding raised options — the
+   clearest way to say "one of these" without borders. */
+.seg{display:inline-flex;gap:8px;padding:8px;border-radius:999px;
+     box-shadow:var(--in);background:var(--bg)}
+.seg button{border-radius:999px;padding:9px 20px;font-size:14px;
+            box-shadow:none;color:var(--dim)}
+.seg button[aria-pressed="true"]{box-shadow:var(--out-sm);color:var(--accent);
+                                 font-weight:600}
+
+.actions{display:flex;gap:16px;margin-top:36px;flex-wrap:wrap;align-items:center}
+.btn{border-radius:999px;padding:15px 32px;font-size:15px;font-weight:600}
+.btn.primary{color:var(--accent)}
+.btn.primary:not(:disabled):hover{box-shadow:var(--out)}
+.btn.ghost{color:var(--dim);font-weight:500}
+
+.icon{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+      font-size:17px;line-height:1;flex:none}
+
+/* ---------------------------------------------------------------- setup */
+#setup{justify-content:center;padding:44px 24px;overflow-y:auto}
+.head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+
+/* ------------------------------------------------------------ interview */
+#live{justify-content:space-between;padding:20px 24px 26px;gap:18px}
+.topbar{width:100%;max-width:880px;display:flex;justify-content:space-between;
+        align-items:center;gap:12px}
+.pill{border-radius:999px;padding:8px 16px;font-size:12.5px;color:var(--dim);
+      box-shadow:var(--in);background:var(--bg);white-space:nowrap}
+.pill b{color:var(--text);font-weight:600}
+.topbar .left,.topbar .right{display:flex;gap:10px;align-items:center}
+
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;
+       justify-content:center;gap:20px;min-height:0;width:100%}
+
+/* The orb sits in a soft well, so the pulse reads as something happening
+   inside the surface rather than a widget floating on top of it. */
+.orbwell{width:236px;height:236px;border-radius:50%;box-shadow:var(--in-deep);
+         display:grid;place-items:center;flex:none}
+canvas{width:196px;height:196px;display:block}
+
+#status{font-size:11px;letter-spacing:.19em;text-transform:uppercase;
+        color:var(--faint);height:15px;font-weight:700}
+
+/* The caption. Text arrives span by span, timed off the audio clock — see
+   scheduleCaption(). */
+#captionCard{width:100%;max-width:760px;border-radius:var(--r);
+             box-shadow:var(--out);padding:24px 30px;min-height:118px;
+             display:flex;align-items:center;justify-content:center}
+#caption{font-size:20px;line-height:1.55;text-align:center;max-height:190px;
+         overflow-y:auto;width:100%}
+#caption .said{color:var(--dim)}
+#caption .q{color:var(--text);font-weight:600}
+#caption.dim{color:var(--faint);font-size:16px}
+#caption:empty::after{content:"…";color:var(--faint)}
+
+.transcript{width:100%;max-width:760px;max-height:132px;overflow-y:auto;
+            border-radius:var(--r);box-shadow:var(--in);padding:16px 22px;
+            display:flex;flex-direction:column;gap:7px}
+.line{font-size:13px;color:var(--faint)}
+.line b{color:var(--dim);font-weight:600;margin-right:7px}
+.line.me b{color:var(--accent)}
+.controls{display:flex;gap:12px}
+.controls .btn{padding:12px 26px;font-size:14px}
+
+/* --------------------------------------------------------------- report */
+#report,#history{padding:44px 24px;overflow-y:auto}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));
+       gap:18px;margin-bottom:34px}
+.stat{border-radius:var(--r);box-shadow:var(--out);padding:20px}
+.stat .k{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+         color:var(--faint);font-weight:700}
+.stat .v{font-size:27px;font-weight:600;margin-top:5px;letter-spacing:-.02em}
+
+.qa{border-radius:var(--r);box-shadow:var(--out);padding:20px 22px;
+    margin-bottom:16px}
+.qa .q{font-weight:600;margin-bottom:7px}
+.qa .a{color:var(--dim);font-size:14px;margin-bottom:11px}
+.verdict{display:inline-block;font-size:10.5px;letter-spacing:.11em;
+         text-transform:uppercase;border-radius:999px;padding:5px 13px;
+         font-weight:700}
+.v-ok{background:var(--ok-bg);color:var(--ok)}
+.v-mid{background:var(--mid-bg);color:var(--mid)}
+.v-bad{background:var(--bad-bg);color:var(--bad)}
+.missing{margin-top:11px;font-size:13px;color:var(--dim)}
+.missing li{margin-left:20px;margin-top:3px}
+
+.bar{height:8px;border-radius:999px;box-shadow:var(--in);margin-top:9px;
+     overflow:hidden}
+.bar i{display:block;height:100%;border-radius:999px;background:var(--accent);
+       opacity:.85}
+
+.row{display:flex;justify-content:space-between;align-items:center;gap:14px;
+     border-radius:var(--r);box-shadow:var(--out-sm);padding:15px 20px;
+     margin-bottom:12px}
+.row .name{flex:1;font-weight:500;text-transform:capitalize}
+.row .meta{color:var(--faint);font-size:13px}
+.trend{font-size:12.5px;font-weight:700}
+.trend.up{color:var(--ok)} .trend.down{color:var(--bad)}
+.trend.flat{color:var(--faint)}
+
+#err{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+     background:var(--bg);color:var(--bad);box-shadow:var(--out);
+     padding:14px 24px;border-radius:999px;font-size:14px;display:none;
+     font-weight:500}
+
+@media (max-width:640px){
+  .orbwell{width:186px;height:186px} canvas{width:154px;height:154px}
+  #caption{font-size:17px} h1{font-size:25px}
+  #captionCard{padding:20px}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ============================ SETUP ============================ -->
+  <section id="setup" class="view on">
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <h1>Interview Coach</h1>
+          <p class="sub">Spoken practice interviews. Everything runs on this machine.</p>
+        </div>
+        <button class="icon" id="theme" title="Switch theme">◐</button>
+      </div>
+
+      <div class="block">
+        <div class="label">Topics</div>
+        <div class="chips" id="topics"></div>
+      </div>
+
+      <div class="block">
+        <div class="label">Level</div>
+        <div class="seg" id="difficulty"></div>
+      </div>
+
+      <div class="block">
+        <div class="label">Length</div>
+        <div class="seg" id="length"></div>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" id="go" disabled>Start interview</button>
+        <button class="btn ghost" id="random">Random interview</button>
+        <button class="btn ghost" id="viewHistory">Progress</button>
+      </div>
+      <p class="note" id="note"></p>
+    </div>
+  </section>
+
+  <!-- ========================== INTERVIEW =========================== -->
+  <section id="live" class="view">
+    <div class="topbar">
+      <div class="left">
+        <span id="title" class="pill">—</span>
+        <span id="progress" class="pill">—</span>
+      </div>
+      <div class="right">
+        <span id="level" class="pill">—</span>
+        <button class="icon" id="theme2" title="Switch theme">◐</button>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="orbwell"><canvas id="orb"></canvas></div>
+      <div id="status">connecting</div>
+      <div id="captionCard"><div id="caption"></div></div>
+    </div>
+
+    <div class="transcript" id="transcript"></div>
+    <div class="controls">
+      <button class="btn ghost" id="end">End interview</button>
+    </div>
+  </section>
+
+  <!-- ============================ REPORT ============================ -->
+  <section id="report" class="view">
+    <div class="wrap">
+      <h1>Session report</h1>
+      <p class="sub" id="reportSub"></p>
+      <div class="stats" id="stats"></div>
+      <div class="label">Question by question</div>
+      <div id="qas"></div>
+      <div class="actions">
+        <button class="btn primary" id="again">New interview</button>
+        <button class="btn ghost" id="reportHistory">See progress</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================== HISTORY ============================ -->
+  <section id="history" class="view">
+    <div class="wrap">
+      <h1>Progress</h1>
+      <p class="sub" id="histSub"></p>
+      <div class="stats" id="histStats"></div>
+      <div class="label">By topic — weakest first</div>
+      <div id="histTopics" style="margin-bottom:32px"></div>
+      <div class="label">Past sessions</div>
+      <div id="histSessions"></div>
+      <div class="actions"><button class="btn primary" id="backToSetup">Back</button></div>
+    </div>
+  </section>
+</div>
+<div id="err"></div>
+
+<script type="module">
+const $ = (id) => document.getElementById(id);
+const show = (id) => document.querySelectorAll(".view")
+  .forEach((v) => v.classList.toggle("on", v.id === id));
+
+let ws, ctx, mic, stream, playhead = 0;
+let state = "idle", amp = 0, running = false;
+const sel = { topics: new Set(), difficulty: 3, length: 8 };
+let blueprint = null, turns = [], lastQuestion = null;
+
+// ----------------------------------------------------------- theme + orb
+// These two are declared together, and the palette first, because setTheme()
+// re-reads it. A `let` is in its temporal dead zone until the line that
+// declares it runs, so calling setTheme() from above this point threw
+// "Cannot access 'PAL' before initialization" — which aborts module
+// evaluation, so connect() and loadTopics() never ran and the whole page came
+// up empty. Function declarations hoist; `let` and `const` do not.
+const root = document.documentElement;
+
+// The canvas palette is read back out of CSS so it follows the theme instead
+// of holding a second copy of the colours.
+let PAL = {};
+function readPalette() {
+  const cs = getComputedStyle(root);
+  const v = (n) => cs.getPropertyValue(n).trim();
+  PAL = { bg:v("--bg"), dark:v("--dark"), light:v("--light"),
+          accent:v("--accent"), faint:v("--faint"),
+          ok:v("--ok"), mid:v("--mid") };
+}
+
+// Defaults to light. Neumorphism is a light-surface idiom — the dark theme is
+// a slate that still leaves room for a highlight above it, not a black one.
+function setTheme(t) {
+  root.dataset.theme = t;
+  localStorage.setItem("coach-theme", t);
+  readPalette();
+}
+setTheme(localStorage.getItem("coach-theme") || "light");
+const toggle = () => setTheme(root.dataset.theme === "dark" ? "light" : "dark");
+$("theme").onclick = toggle;
+$("theme2").onclick = toggle;
+
+// Drawn rather than styled, because the pulse has to follow the audio and the
+// microphone in real time.
+const orb = $("orb"), g = orb.getContext("2d");
+
+const STATE_COLOR = () => ({
+  idle: PAL.faint, preparing: PAL.accent, listening: PAL.ok,
+  thinking: PAL.mid, speaking: PAL.accent,
+});
+
+// Backing store at device resolution; the soft gradients show banding otherwise.
+function sizeOrb() {
+  const dpr = window.devicePixelRatio || 1;
+  const css = orb.getBoundingClientRect().width || 196;
+  orb.width = orb.height = Math.round(css * dpr);
+  g.setTransform(dpr, 0, 0, dpr, 0, 0);
+  return css;
+}
+let CSS_SIZE = sizeOrb();
+addEventListener("resize", () => { CSS_SIZE = sizeOrb(); });
+
+function draw(t) {
+  const w = CSS_SIZE, cx = w / 2, cy = w / 2;
+  g.clearRect(0, 0, w, w);
+  const c = STATE_COLOR()[state] || PAL.faint;
+
+  const wobble =
+      state === "idle"      ? Math.sin(t / 1100) * 2
+    : state === "thinking"  ? Math.sin(t / 140) * 3
+    : state === "preparing" ? Math.sin(t / 320) * 5
+    : amp * 26;
+  const r = w * 0.34 + wobble;
+
+  // The sphere itself is the page colour, lit from up-left — the same lamp
+  // the CSS shadows assume, so it sits in its well rather than on it.
+  const body = g.createRadialGradient(cx - r * .42, cy - r * .46, r * .06,
+                                      cx, cy, r * 1.08);
+  body.addColorStop(0, PAL.light);
+  body.addColorStop(.62, PAL.bg);
+  body.addColorStop(1, PAL.dark);
+  g.fillStyle = body;
+  g.beginPath(); g.arc(cx, cy, r, 0, 6.284); g.fill();
+
+  // State is carried by a tinted core and a ring, both driven by amplitude,
+  // so the orb visibly breathes with whoever is talking.
+  const tint = g.createRadialGradient(cx, cy, 0, cx, cy, r);
+  tint.addColorStop(0, c + (state === "idle" ? "22" : "66"));
+  tint.addColorStop(1, c + "00");
+  g.fillStyle = tint;
+  g.beginPath(); g.arc(cx, cy, r, 0, 6.284); g.fill();
+
+  g.strokeStyle = c + "55"; g.lineWidth = 1.5;
+  g.beginPath(); g.arc(cx, cy, r + 6 + amp * 12, 0, 6.284); g.stroke();
+
+  if (state === "thinking" || state === "preparing") {
+    g.strokeStyle = c + "cc"; g.lineWidth = 3; g.lineCap = "round";
+    g.beginPath(); g.arc(cx, cy, r + 14, t / 260, t / 260 + 1.9); g.stroke();
+  }
+
+  amp *= 0.9;
+  requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+
+function setState(s) {
+  state = s;
+  $("status").textContent =
+    s === "listening" ? "listening" :
+    s === "thinking"  ? "thinking"  :
+    s === "speaking"  ? "speaking"  :
+    s === "preparing" ? "preparing your interview" : "ready";
+}
+
+// -------------------------------------------------------------- playback
+// Spans are scheduled back to back on the audio clock so consecutive Piper
+// chunks play gapless — see logs.md, Phase 1.
+//
+// The caption rides the same clock. The server emits a `span` event carrying
+// the text and then, immediately after, the audio for exactly that text — one
+// for one. Pairing them here and revealing each line at the moment its buffer
+// starts is what makes the words land with the voice. Setting the caption when
+// the message arrives instead, which is what this used to do, dumps the whole
+// sentence several seconds before it is spoken and then sits there: the text
+// and the voice are never in the same place, which is what read as lag.
+const pending = [];        // span texts waiting for their audio frame
+let freshBlock = true;     // next span starts a new caption
+let parts = [];
+// Caption reveals are timers scheduled seconds ahead. If a turn is abandoned —
+// the socket drops, or the coach is cut off — those timers still fire, and a
+// stale phrase lands in the middle of the next utterance. Everything scheduled
+// carries the generation it belongs to, and a reveal from a spent generation is
+// dropped rather than shown.
+let gen = 0;
+
+function enqueue(rate, bytes) {
+  const n = bytes.length / 2;
+  const dv = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  const buf = ctx.createBuffer(1, n, rate);
+  const ch = buf.getChannelData(0);
+  for (let i = 0; i < n; i++) ch[i] = dv.getInt16(i * 2, true) / 32768;
+
+  const src = ctx.createBufferSource(); src.buffer = buf;
+  const an = ctx.createAnalyser(); an.fftSize = 256;
+  src.connect(an); an.connect(ctx.destination);
+
+  const at = Math.max(ctx.currentTime, playhead);
+  src.start(at); playhead = at + buf.duration;
+
+  const span = pending.shift();
+  if (span) scheduleCaption(span, at);
+
+  const data = new Uint8Array(an.frequencyBinCount);
+  const tick = () => {
+    if (ctx.currentTime > playhead) return;
+    an.getByteTimeDomainData(data);
+    let peak = 0;
+    for (const v of data) peak = Math.max(peak, Math.abs(v - 128) / 128);
+    if (state === "speaking") amp = Math.max(amp, peak);
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
+function scheduleCaption(span, at) {
+  const delay = Math.max(0, (at - ctx.currentTime) * 1000);
+  const mine = gen;
+  setTimeout(() => {
+    if (mine !== gen) return;          // this turn was abandoned
+    if (span.fresh) parts = [];
+    parts.push(span);
+    renderCaption();
+  }, delay);
+}
+
+function renderCaption() {
+  // Feedback is dimmed and the question is not, so the thing you have to
+  // answer is obvious at a glance even when both were spoken in one breath.
+  $("caption").classList.remove("dim");
+  $("caption").innerHTML = parts
+    .map((p) => `<span class="${p.q ? "q" : "said"}">${esc(p.text)}</span>`)
+    .join(" ");
+  $("caption").scrollTop = $("caption").scrollHeight;
+}
+
+function caption(text, dim = false) {
+  gen++; parts = []; pending.length = 0; freshBlock = true;
+  $("caption").textContent = text;
+  $("caption").classList.toggle("dim", dim);
+}
+
+// ---------------------------------------------------------------- setup UI
+async function loadTopics() {
+  const d = await (await fetch("/api/topics")).json();
+  $("topics").innerHTML = "";
+  for (const t of d.topics) {
+    const b = document.createElement("button");
+    b.className = "chip";
+    b.setAttribute("aria-pressed", String(sel.topics.has(t.key)));
+    b.disabled = t.available === 0;
+    b.innerHTML = `${t.label}<span class="n">${t.available}</span>`;
+    b.title = t.available ? t.blurb
+      : `No questions yet — run: python scripts/generate_bank.py --topic ${t.key}`;
+    b.onclick = () => {
+      sel.topics.has(t.key) ? sel.topics.delete(t.key) : sel.topics.add(t.key);
+      b.setAttribute("aria-pressed", String(sel.topics.has(t.key)));
+      $("go").disabled = sel.topics.size === 0;
+    };
+    $("topics").append(b);
+  }
+  $("go").disabled = sel.topics.size === 0;
+  seg("difficulty", d.difficulties.map(x => [x.value, x.label]), sel.difficulty);
+  seg("length", d.lengths.map(n => [n, `${n} questions`]), sel.length);
+
+  const total = Object.values(d.coverage).reduce((a, c) => a + c.count, 0);
+  $("note").textContent = total
+    ? `${total} questions in the bank across ${Object.keys(d.coverage).length} topics. `
+      + `Interviews start easy and get harder as you do well.`
+    : "The question bank is empty. Run scripts/generate_bank.py first.";
+}
+
+function seg(id, opts, initial) {
+  sel[id] = initial;
+  $(id).innerHTML = "";
+  for (const [val, label] of opts) {
+    const b = document.createElement("button");
+    b.textContent = label;
+    b.setAttribute("aria-pressed", String(val === initial));
+    b.onclick = () => {
+      sel[id] = val;
+      [...$(id).children].forEach(c =>
+        c.setAttribute("aria-pressed", String(c === b)));
+    };
+    $(id).append(b);
+  }
+}
+
+// ---------------------------------------------------------------- transport
+function connect() {
+  ws = new WebSocket(`ws://${location.host}/ws`);
+  ws.binaryType = "arraybuffer";
+  ws.onmessage = onMessage;
+  ws.onclose = () => setState("idle");
+  ws.onerror = () => error("Lost connection to the server.");
+}
+
+const LEVEL = { 1:"Basics", 2:"Easy", 3:"Medium", 4:"Hard", 5:"Stretch" };
+
+function onMessage(e) {
+  if (e.data instanceof ArrayBuffer) {
+    enqueue(new DataView(e.data).getUint32(0, true), new Uint8Array(e.data, 4));
+    return;
+  }
+  const m = JSON.parse(e.data);
+  switch (m.type) {
+    case "ready":
+      if (!m.bank) error("Question bank is empty — generate it first.");
+      break;
+
+    case "state":
+      setState(m.state);
+      // Never schedule new speech behind stale silence, and drop any span text
+      // whose audio is no longer coming.
+      if ((m.state === "thinking" || m.state === "preparing") && ctx) {
+        playhead = ctx.currentTime;
+        // Drop span texts whose audio is no longer coming, and retire any
+        // reveal still scheduled — either would shift every later caption by
+        // one and put the wrong words against the wrong voice.
+        pending.length = 0;
+        gen++;
+        // A turn boundary. Whatever is on screen belongs to the last exchange,
+        // so the next thing spoken replaces it rather than being appended to
+        // it — otherwise the feedback lands underneath the question it is
+        // about, and the caption grows all session.
+        freshBlock = true;
+      }
+      break;
+
+    case "blueprint":
+      blueprint = m; turns = [];
+      $("title").textContent = m.title;
+      $("progress").textContent = `0 / ${m.questions.length}`;
+      $("level").textContent = "—";
+      $("transcript").innerHTML = "";
+      caption("");
+      show("live");
+      break;
+
+    case "span":
+      // Queued, not shown. It is revealed by enqueue() when its audio starts.
+      pending.push({ text: m.text, fresh: takeFresh(), q: inQuestion });
+      break;
+
+    case "question":
+      lastQuestion = m;
+      inQuestion = true;
+      freshBlock = true;          // the question replaces the feedback on screen
+      $("progress").textContent =
+        `${m.position} / ${m.total}${m.follow_up ? " · follow-up" : ""}`;
+      // Showing the level, and the move that produced it, makes the adaptation
+      // visible — otherwise the interview quietly gets harder and you are left
+      // wondering whether you imagined it.
+      if (m.difficulty) {
+        const move = m.decision && m.decision.move;
+        const arrow = move === "harder" ? " ↑" : move === "easier" ? " ↓" : "";
+        $("level").innerHTML = `<b>${LEVEL[m.difficulty] || m.difficulty}</b>${arrow}`;
+      }
+      line("Coach", m.text);
+      break;
+
+    case "transcript":
+      if (!m.text) break;
+      if (!m.confident) caption("I didn't catch that — say it again?", true);
+      inQuestion = false;
+      line("You", m.text, true);
+      turns.push({ answer: m.text, question: lastQuestion });
+      break;
+
+    case "evaluation":
+      if (turns.length) Object.assign(turns[turns.length - 1], m);
+      break;
+
+    case "assistant":
+      // The full utterance, after the fact. The caption already showed it in
+      // time with the voice, so this only feeds the running transcript.
+      if (m.text) line("Coach", m.text);
+      break;
+
+    case "finished":
+      renderReport(m.summary);
+      break;
+
+    case "error":
+      error(m.message);
+      show("setup");
+      break;
+  }
+}
+
+let inQuestion = false;
+function takeFresh() { const f = freshBlock; freshBlock = false; return f; }
+
+function line(who, text, me = false) {
+  const d = document.createElement("div");
+  d.className = "line" + (me ? " me" : "");
+  d.innerHTML = `<b>${who}</b>`;
+  d.append(document.createTextNode(text));
+  $("transcript").append(d);
+  $("transcript").scrollTop = $("transcript").scrollHeight;
+}
+
+function error(msg) {
+  $("err").textContent = msg;
+  $("err").style.display = "block";
+  setTimeout(() => ($("err").style.display = "none"), 5000);
+}
+
+// --------------------------------------------------------------------- mic
+async function startMic() {
+  if (running) return;
+  stream = await navigator.mediaDevices.getUserMedia({
+    audio: { channelCount:1, echoCancellation:true,
+             noiseSuppression:true, autoGainControl:true },
+  });
+  ctx = new AudioContext();
+  await ctx.audioWorklet.addModule("/static/mic-worklet.js");
+  playhead = ctx.currentTime;
+
+  mic = new AudioWorkletNode(ctx, "mic-processor");
+  mic.port.onmessage = (e) => {
+    if (ws?.readyState === WebSocket.OPEN) ws.send(e.data);
+    if (state === "listening") {
+      const pcm = new Int16Array(e.data);
+      let peak = 0;
+      for (const v of pcm) peak = Math.max(peak, Math.abs(v) / 32768);
+      amp = Math.max(amp, peak * 1.7);
+    }
+  };
+  ctx.createMediaStreamSource(stream).connect(mic);
+  const mute = ctx.createGain(); mute.gain.value = 0;   // keep the worklet pulled
+  mic.connect(mute).connect(ctx.destination);
+  running = true;
+}
+
+function stopMic() {
+  stream?.getTracks().forEach(t => t.stop());
+  mic?.disconnect(); ctx?.close();
+  running = false;
+}
+
+// ------------------------------------------------------------------ report
+const VCLASS = { correct:"v-ok", strong:"v-ok", partial:"v-mid",
+                 adequate:"v-mid", incorrect:"v-bad", weak:"v-bad",
+                 unclear:"v-mid" };
+
+function renderReport(s) {
+  stopMic();
+  show("report");
+  $("reportSub").textContent =
+    `${s.title} · ${s.questions} questions · ${Math.round((s.duration_s||0)/60)} min`;
+
+  const pct = Math.round((s.mean_score ?? 0) * 100);
+  const topics = Object.entries(s.by_topic || {}).sort((a, b) => a[1] - b[1]);
+  $("stats").innerHTML = `
+    <div class="stat"><div class="k">Overall</div><div class="v">${pct}%</div>
+      <div class="bar"><i style="width:${pct}%"></i></div></div>
+    <div class="stat"><div class="k">Questions</div><div class="v">${s.questions}</div></div>
+    <div class="stat"><div class="k">Follow-ups</div><div class="v">${s.follow_ups ?? 0}</div></div>
+    ${topics.length ? `<div class="stat"><div class="k">Weakest</div>
+      <div class="v" style="font-size:17px;text-transform:capitalize">${topics[0][0]}</div></div>` : ""}`;
+
+  $("qas").innerHTML = turns.map((t) => {
+    const v = t.verdict || "unclear";
+    const miss = (t.missing || []).map(m => `<li>${esc(m)}</li>`).join("");
+    const d = t.question?.difficulty;
+    return `<div class="qa">
+      <div class="q">${esc(t.question?.text || "")}</div>
+      <div class="a">${esc(t.answer || "")}</div>
+      <span class="verdict ${VCLASS[v]||"v-mid"}">${v}</span>
+      ${d ? `<span class="meta" style="margin-left:10px;font-size:12px;color:var(--faint)">${LEVEL[d]||d}</span>` : ""}
+      ${miss ? `<div class="missing">You didn't cover:<ul>${miss}</ul></div>` : ""}
+    </div>`;
+  }).join("");
+}
+
+const esc = (s) => String(s).replace(/[&<>]/g,
+  c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+
+// ----------------------------------------------------------------- actions
+async function begin(mixed) {
+  try { await startMic(); }
+  catch { return error("Microphone access denied."); }
+  show("live");
+  CSS_SIZE = sizeOrb();          // the canvas had no layout size while hidden
+  setState("preparing");
+  caption("");
+  ws.send(JSON.stringify({
+    type:"start", mixed,
+    topics:[...sel.topics], length:sel.length, difficulty:sel.difficulty,
+  }));
+}
+
+async function loadHistory() {
+  const d = await (await fetch("/api/history")).json();
+  const st = d.stats;
+  show("history");
+  $("histSub").textContent = st.sessions
+    ? `${st.sessions} sessions · ${st.questions} questions · ${st.total_minutes} minutes practised`
+    : "No sessions yet. Finish an interview and it will show up here.";
+
+  $("histStats").innerHTML = !st.sessions ? "" : `
+    <div class="stat"><div class="k">Sessions</div><div class="v">${st.sessions}</div></div>
+    <div class="stat"><div class="k">Questions</div><div class="v">${st.questions}</div></div>
+    <div class="stat"><div class="k">Average</div>
+      <div class="v">${Math.round((st.avg_score ?? 0) * 100)}%</div></div>
+    <div class="stat"><div class="k">Time</div><div class="v">${st.total_minutes}m</div></div>`;
+
+  // Weakest first: the list is a study plan, so the thing to work on is at the top.
+  $("histTopics").innerHTML = d.topics.map((t) => {
+    const pct = Math.round(t.avg_score * 100);
+    // Trend compares the later half of your answers with the earlier half.
+    // A single session is noise; improvement over time is the signal.
+    const cls = t.trend === null ? "flat" : t.trend > 0.08 ? "up"
+              : t.trend < -0.08 ? "down" : "flat";
+    const arrow = t.trend === null ? "—"
+                : cls === "up" ? `improving +${Math.round(t.trend * 100)}%`
+                : cls === "down" ? `slipping ${Math.round(t.trend * 100)}%`
+                : "steady";
+    return `<div class="row">
+      <span class="name">${esc(t.topic)}</span>
+      <span class="meta">${t.answered} answered</span>
+      <span class="trend ${cls}">${arrow}</span>
+      <span style="width:60px;text-align:right">${pct}%</span>
+      <span class="bar" style="width:110px;margin:0"><i style="width:${pct}%"></i></span>
+    </div>`;
+  }).join("") || `<p class="note">Nothing recorded yet.</p>`;
+
+  $("histSessions").innerHTML = d.sessions.map((x) => {
+    const when = new Date(x.started_at * 1000).toLocaleString();
+    return `<div class="row">
+      <span class="name">${esc(x.title)}</span>
+      <span class="meta">${when}</span>
+      <span class="meta">${x.answered} answered</span>
+      <span style="width:56px;text-align:right">${Math.round((x.mean_score ?? 0) * 100)}%</span>
+    </div>`;
+  }).join("") || `<p class="note">No finished sessions yet.</p>`;
+}
+
+$("viewHistory").onclick  = loadHistory;
+$("backToSetup").onclick  = () => { show("setup"); loadTopics(); };
+$("go").onclick     = () => begin(false);
+$("random").onclick = () => begin(true);
+$("end").onclick    = () => ws.send(JSON.stringify({type:"end"}));
+$("again").onclick  = () => { show("setup"); loadTopics(); };
+$("reportHistory").onclick = loadHistory;
+
+connect();
+loadTopics();
+</script>
+</body>
+</html>

@@ -1,0 +1,217 @@
+[
+  {
+    "topic": "system_design",
+    "difficulty": 3,
+    "mode": "open_ended",
+    "text": "Can you design a system for a ride-hailing company that efficiently dispatches rides, manages drivers and riders, and handles surge pricing during rush hours? Consider scalability, real-time updates, and how to handle various edge cases like surge pricing algorithms and driver availability.",
+    "reference_answer": "To design a ride-hailing dispatch system, I would consider how to efficiently dispatch rides to drivers while ensuring they have enough work. I would also look at how to manage surge pricing during rush hours, possibly using algorithms that adjust prices based on demand. Additionally, I would think about how to scale the system as the company grows, ensuring that it can handle more drivers and riders. I would also consider how to manage driver availability and integrate real-time updates for both riders and drivers.",
+    "expected_points": [
+      "I would consider how to efficiently dispatch rides to drivers while ensuring they have enough work.",
+      "I would look at how to manage surge pricing during rush hours, possibly using algorithms that adjust prices based on demand.",
+      "I would think about how to scale the system as the company grows, ensuring that it can handle more drivers and riders.",
+      "I would also consider how to manage driver availability and integrate real-time updates for both riders and drivers."
+    ],
+    "follow_up_seeds": [
+      "How would you handle a situation where there are more riders than drivers?",
+      "What mechanisms would you put in place to ensure fair and balanced ride allocation during surge periods?"
+    ],
+    "subtopic": "design a ride-hailing dispatch system",
+    "id": "system_design-3-can-you-design-a-system-for"
+  },
+  {
+    "topic": "system_design",
+    "difficulty": 2,
+    "mode": "open_ended",
+    "text": "How would you design a system that ensures service availability and reliability even when individual components or nodes fail, and how would you handle retries and fallback mechanisms in such a system? Consider aspects like load balancing, redundancy, error handling, and fallback strategies.",
+    "reference_answer": "To design a system that handles failures and retries effectively, I would consider implementing redundancy across different components to ensure availability. Load balancing strategies would be crucial to distribute traffic evenly and handle spikes in demand. Error handling mechanisms would need to be in place to catch and respond to failures, possibly by routing requests to alternative components. For retries, I would set up a mechanism to attempt operations multiple times if they fail, with increased retries for more critical operations. Fallback strategies would be necessary in case the primary system is unavailable, ensuring that users can still access the service even during such times.",
+    "expected_points": [
+      "Consider the trade-offs between redundancy and cost",
+      "How to handle load balancing in a distributed system",
+      "Designing error handling strategies for different types of failures",
+      "Implementing retry mechanisms with appropriate backoff policies",
+      "Ensuring fallback strategies are in place for critical services"
+    ],
+    "follow_up_seeds": [
+      "How would you scale your system to handle a sudden increase in traffic?",
+      "What measures would you take to prevent DDoS attacks and ensure service resilience?"
+    ],
+    "subtopic": "designing for failure and retries",
+    "id": "system_design-2-how-would-you-design-a-system"
+  },
+  {
+    "topic": "system_design",
+    "difficulty": 2,
+    "mode": "open_ended",
+    "text": "Could you design a system that balances consistency and availability, and how would you handle a situation where one is prioritized over the other? Specifically, consider a distributed caching system where data consistency is crucial but availability can be sacrificed during high load times.",
+    "reference_answer": "I would design a distributed caching system that uses a consistent hashing algorithm to distribute data across nodes. When data consistency is critical, the system would prioritize delivering consistent data, even if it means sacrificing some availability. During high load times, the system could allow for some data inconsistency to improve availability, ensuring that the system remains online and responding to requests.",
+    "expected_points": [
+      "Consistency and availability tradeoffs",
+      "Balancing priorities in a distributed system",
+      "Consistent hashing algorithm for data distribution",
+      "High load times and data inconsistency",
+      "Ensuring system availability during high load periods"
+    ],
+    "follow_up_seeds": [
+      "How would you handle network partitions in your system?",
+      "What measures would you take to ensure data consistency during data inconsistency periods?"
+    ],
+    "subtopic": "consistency versus availability tradeoffs",
+    "id": "system_design-2-could-you-design-a-system-that"
+  },
+  {
+    "topic": "system_design",
+    "difficulty": 4,
+    "mode": "open_ended",
+    "text": "Design a system for monitoring and alerting in a distributed microservices environment. How would you ensure that alerts are actionable and observability provides meaningful insights into the system’s health and performance?",
+    "reference_answer": "I would design a monitoring system that collects data from various microservices, including metrics, logs, and traces. For alerts, I'd set up rules that trigger based on thresholds for latency, errors, and resource usage. Observability would be achieved through logs and metrics, and I'd use visualization tools like Grafana to create dashboards that show trends and anomalies. Alerts would be actionable by providing links to relevant microservices, logs, and traces for each alert, so operators can quickly diagnose issues.",
+    "expected_points": [
+      "Alert thresholds and their impact on system stability",
+      "Role of logs and metrics in observability",
+      "Actionability of alerts and its importance",
+      "Use of visualization tools for monitoring",
+      "Integration of alerting with operational workflows"
+    ],
+    "follow_up_seeds": [
+      "How would you handle high cardinality data in your observability solution?",
+      "What steps would you take to ensure alerts don't overwhelm operators with false positives or too many notifications?"
+    ],
+    "subtopic": "observability and alerting",
+    "id": "system_design-4-design-a-system-for-monitoring-and"
+  },
+  {
+    "topic": "system_design",
+    "difficulty": 2,
+    "mode": "open_ended",
+    "text": "How would you design a ride-hailing dispatch system that can handle millions of users and millions of rides per day? Consider scalability, reliability, and user experience.",
+    "reference_answer": "To design a ride-hailing dispatch system, I would focus on ensuring scalability to handle millions of users and rides daily. I would also prioritize reliability, ensuring smooth operations even during peak times. User experience is important too, so I would design features like real-time location tracking and estimated arrival times.",
+    "expected_points": [
+      "Ensures scalability to handle millions of users and rides daily.",
+      "Prioritizes reliability to ensure smooth operations during peak times.",
+      "Designs features like real-time location tracking and estimated arrival times for user experience.",
+      "Does not mention the use of specific technologies or architectures for scalability or reliability."
+    ],
+    "follow_up_seeds": [
+      "How do you ensure the system can handle sudden spikes in demand?",
+      "What measures would you take to maintain system reliability under heavy load?"
+    ],
+    "subtopic": "design a ride-hailing dispatch system",
+    "id": "system_design-2-how-would-you-design-a-ride"
+  },
+  {
+    "topic": "system_design",
+    "difficulty": 3,
+    "mode": "open_ended",
+    "text": "You are designing a system where multiple clients depend on different versions of an API. One client wants version 1.0, another client wants version 2.0, and a third client wants a hybrid of both versions. How would you approach designing and managing these different versions of the API? Please consider scalability, maintainability, and compatibility.",
+    "reference_answer": "I would design the API to be versioned in such a way that each version has its own endpoints and namespaces, allowing each client to consume the exact version they need. For the hybrid client, I would add a parameter in the request that specifies which version to use. This would allow for different versions of the API to coexist while being maintained separately. I would also consider implementing a service registry that tracks which clients are using which versions and can help manage the API's behavior accordingly. For compatibility, I would ensure that all breaking changes are clearly marked and that clients can opt into new features if they choose to.",
+    "expected_points": [
+      "Design each version of the API with its own endpoints and namespaces.",
+      "For the hybrid client, add a parameter in the request to specify the desired version.",
+      "Implement a service registry to track client usage of different versions.",
+      "Ensure all breaking changes are clearly marked and clients can opt into new features."
+    ],
+    "follow_up_seeds": [
+      "How do you handle a situation where a client requests version 2.0, but they also need to use some features from version 1.0?",
+      "What if a client decides to upgrade from version 1.0 to version 2.0 halfway through their usage? How would you ensure a smooth transition?"
+    ],
+    "subtopic": "API design and versioning",
+    "id": "system_design-3-you-are-designing-a-system-where"
+  },
+  {
+    "topic": "system_design",
+    "difficulty": 4,
+    "mode": "open_ended",
+    "text": "Imagine you are designing a file storage service that needs to support both small files (under 1MB) and large files (over 1GB). How would you structure your system to ensure high availability, scalability, and data integrity?",
+    "reference_answer": "To design this file storage service, I would consider a multi-tier architecture with a client interface, a file system, and a backend storage layer. I would use a distributed file system like GlusterFS or Ceph for storing files, which can scale horizontally across multiple nodes. For small files, I might use a simpler, more efficient storage layer. For large files, I would ensure they are chunked and stored redundantly across the network for high availability. Data integrity would be maintained through checksums and replication. The client interface would be responsible for handling requests, including file uploads, downloads, and metadata operations.",
+    "expected_points": [
+      "client interface design",
+      "storage layer architecture (distributed vs local)",
+      "handling of file sizes (small vs large)",
+      "data integrity mechanisms (checksums, replication)",
+      "scalability considerations (horizontal scaling, redundancy)",
+      "availability considerations (replication, network distribution)"
+    ],
+    "follow_up_seeds": [
+      "How would you handle a failure of a single node in the storage layer?",
+      "What if the client requests a file that is too large for the current design?"
+    ],
+    "subtopic": "design a file storage service",
+    "id": "system_design-4-imagine-you-are-designing-a-file"
+  },
+  {
+    "topic": "system_design",
+    "difficulty": 2,
+    "mode": "open_ended",
+    "text": "Imagine you are tasked with designing a search autocomplete system for a mobile app. The app’s users frequently search for products, and you need to provide suggestions as the user types. How would you design such a system? Consider scalability, user experience, and potential failure modes.",
+    "reference_answer": "To design a search autocomplete system, I would first ensure the system is highly scalable to handle a large number of concurrent users. I would use a data structure like a Trie (prefix tree) to efficiently store and retrieve autocomplete suggestions. For user experience, I would ensure the suggestions are relevant and appear quickly as the user types. I would also consider potential failure modes such as handling typos and providing suggestions even if the user has not typed enough characters to provide a clear search term.",
+    "expected_points": [
+      "Ensures the system is scalable to handle a large number of concurrent users.",
+      "Uses a Trie (prefix tree) to store and retrieve autocomplete suggestions efficiently.",
+      "Ensures suggestions are relevant and appear quickly as the user types.",
+      "Considers potential failure modes such as handling typos and providing suggestions even if the user has not typed enough characters to provide a clear search term."
+    ],
+    "follow_up_seeds": [
+      "How do you ensure the autocomplete suggestions are relevant?",
+      "What measures would you take to handle a large number of concurrent users?"
+    ],
+    "subtopic": "design a search autocomplete",
+    "id": "system_design-2-imagine-you-are-tasked-with-designing"
+  },
+  {
+    "topic": "system_design",
+    "difficulty": 4,
+    "mode": "open_ended",
+    "text": "Given a high-traffic e-commerce platform with millions of products and users, you need to design a database system. The platform handles real-time product updates, user interactions, and complex queries. How would you design the database system to handle this workload efficiently and ensure data consistency? Consider scalability, failure modes, and performance.",
+    "reference_answer": "I would design a database system with a combination of distributed databases and database replication. For real-time product updates, I would use a database that supports ACID transactions to ensure data consistency. For user interactions, I would use a database that supports high concurrency and low latency. I would also consider database replication to ensure data availability in case of a failure. For complex queries, I would use a database that supports indexing and query optimization. The system would be designed to scale horizontally by adding more database nodes and vertically by upgrading the database hardware. I would also consider a hybrid approach where some operations are performed in-memory for speed and others are stored in a distributed database for scalability.",
+    "expected_points": [
+      "Design the database system with a combination of distributed databases and database replication.",
+      "Use a database that supports ACID transactions for real-time product updates to ensure data consistency.",
+      "Consider database replication to ensure data availability in case of a failure.",
+      "Use a database that supports high concurrency and low latency for user interactions to handle real-time user interactions efficiently."
+    ],
+    "follow_up_seeds": [
+      "What are the failure modes you would consider and how would you handle them?",
+      "How would you ensure the database system can handle millions of users and products efficiently?"
+    ],
+    "subtopic": "database choice for a given workload",
+    "id": "system_design-4-given-a-high-traffic-e-commerce"
+  },
+  {
+    "topic": "system_design",
+    "difficulty": 2,
+    "mode": "open_ended",
+    "text": "Imagine you are designing a caching strategy for a popular e-commerce website. The site has a product catalog that changes frequently and users frequently request the same products. How would you design a caching strategy that ensures the cache remains up-to-date and minimizes the number of invalidations while keeping the system efficient?",
+    "reference_answer": "I would design a dual-layer caching strategy. The first layer would be a cache that stores the product catalog in its entirety, updated every hour or so. This ensures that the cache is always up-to-date with the most recent changes. The second layer would be a per-product cache that stores the specific product details for a longer period, like a day. This reduces the number of invalidations and keeps the cache size manageable. To minimize invalidations, I would use a hybrid strategy where the per-product cache uses the full product catalog as a fallback. This way, if the per-product cache misses, it can quickly fetch the product details from the full catalog cache, reducing the hit rate of the per-product cache.",
+    "expected_points": [
+      "trade-offs between cache hit rate and update frequency",
+      "considering the impact of cache invalidation on system performance",
+      "handling edge cases like concurrent updates to the product catalog",
+      "balancing cache size and the need for frequent updates",
+      "considering the scalability of the caching strategy as the site grows"
+    ],
+    "follow_up_seeds": [
+      "What happens if a user requests a product that has just been updated in the catalog?",
+      "How would you handle a situation where a user requests a product that is not in the per-product cache but is in the full catalog cache?"
+    ],
+    "subtopic": "caching strategy and invalidation",
+    "id": "system_design-2-imagine-you-are-designing-a-caching"
+  },
+  {
+    "topic": "system_design",
+    "difficulty": 3,
+    "mode": "open_ended",
+    "text": "Imagine you are designing a distributed caching system. You want to ensure that most clients get the most up-to-date data, but you also want to maintain consistency with the database. How would you balance these goals? Consider both consistency and availability tradeoffs, and discuss how you might handle edge cases or failures.",
+    "reference_answer": "I would design a caching system that prioritizes consistency over availability for the most part, but gracefully handles inconsistencies by providing a fallback to the database. For example, I might use a hybrid approach where the cache is refreshed periodically from the database, and for reads, I would try to get the most recent data from the cache. For writes, I would ensure the cache is updated with the latest data from the database to maintain consistency. I would also consider edge cases like network partitions or system failures and design the system to handle these situations gracefully, possibly by implementing a fallback strategy or using distributed consensus algorithms to ensure data integrity.",
+    "expected_points": [
+      "I would design a caching system that prioritizes consistency over availability for the most part.",
+      "For reads, I would try to get the most recent data from the cache.",
+      "For writes, I would ensure the cache is updated with the latest data from the database to maintain consistency.",
+      "I would also consider edge cases like network partitions or system failures and design the system to handle these situations gracefully."
+    ],
+    "follow_up_seeds": [
+      "How would you handle a situation where the database is temporarily unavailable?",
+      "What happens if multiple clients request data that should be consistent, but the cache is stale?"
+    ],
+    "subtopic": "consistency versus availability tradeoffs",
+    "id": "system_design-3-imagine-you-are-designing-a-distributed"
+  }
+]

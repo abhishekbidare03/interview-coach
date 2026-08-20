@@ -1,0 +1,106 @@
+# =========================================================================== #
+# What must not go to GitHub, and why.
+#
+# The rule of thumb for this repo: commit anything that was *written*, ignore
+# anything that was *downloaded, generated, or measured on this machine*. The
+# question bank is written, so it is committed — it is most of the value here.
+# =========================================================================== #
+
+
+# --- Would be rejected by GitHub outright --------------------------------- #
+
+# The Piper voice is a 113.9 MB ONNX file. GitHub hard-rejects any file over
+# 100 MB, so pushing this does not merely bloat the repo, it fails the push.
+# Re-download it from `rhasspy/piper-voices` on HuggingFace:
+#   en_US-lessac-high.onnx  ->  data/voices/
+data/voices/*.onnx
+
+# The matching config is 5 KB and the app needs it, so it stays. Piper reads
+# the sample rate and phoneme map from here, and it is not derivable.
+!data/voices/*.onnx.json
+
+
+# --- Big, and reproducible from a lockfile -------------------------------- #
+
+# 2.8 GB, and machine-specific: the CUDA wheels inside it are pinned to this
+# box's driver. `uv sync` rebuilds it from pyproject.toml + uv.lock.
+.venv/
+venv/
+env/
+
+
+# --- Personal data -------------------------------------------------------- #
+
+# Every interview ever taken: the questions, the transcribed answers, the
+# verdicts, and the scores. This is a record of what its owner did and did not
+# know, which is nobody else's business. It is also recreated empty on first
+# run, so nothing breaks by leaving it out.
+data/sessions.db
+data/*.db-journal
+data/*.db-wal
+
+
+# --- Generated or measured on this machine -------------------------------- #
+
+# Per-phase verification output. Real numbers, but they describe this GTX
+# 1650 Ti on this evening — committing them invites someone to read a stale
+# latency figure as a promise. Regenerate by running the harness. Nothing in
+# bench/ is hand-written JSON, so the whole extension goes.
+bench/*.json
+
+# Scratch files the harnesses drop as they run: server and Ollama logs, and the
+# synthesized answer audio the Phase 1 and Phase 5 tests speak into the socket.
+# Those two WAVs alone were 1 MB, more than half of everything else combined.
+# They all use a leading underscore, which is what makes one rule enough.
+bench/_*
+*.log
+
+# Backup of the generated Python bank, kept only while the hand-written
+# replacement was being written. The real one is data/bank/python.json.
+*.bak
+*.orig
+
+
+# --- Python ---------------------------------------------------------------- #
+
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+
+# --- Editors and OS -------------------------------------------------------- #
+
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+desktop.ini
+.DS_Store
+
+
+# --- Secrets ---------------------------------------------------------------- #
+
+# Nothing here needs a key today — the whole point of this project is that it
+# runs locally with no API. The rule stays anyway, so that the day something
+# does need one, it is not one `git add .` away from being public.
+.env
+.env.*
+*.key
+*.pem
+
+
+# =========================================================================== #
+# Deliberately NOT ignored, so the repo is useful to clone:
+#
+#   data/bank/*.json      the question bank — 197 questions, and the 66 Python
+#                         ones are hand-written. This is the project's content,
+#                         not a build artifact. 308 KB total.
+#   uv.lock               pins the exact dependency set, including the CPU-only
+#                         torch index. Without it a fresh `uv sync` pulls the
+#                         CUDA torch build and wastes 2 GB on a package that is
+#                         only there for Silero VAD.
+#   web/                  hand-written; there is no build step and no bundler.
+# =========================================================================== #

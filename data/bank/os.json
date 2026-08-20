@@ -1,0 +1,439 @@
+[
+  {
+    "topic": "os",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "Can you explain the difference between user space and kernel space in an operating system, and why it's important to have these two separate areas? Can you give an example of a function that should be in user space and why it shouldn't be in kernel space?",
+    "reference_answer": "User space is the part of the memory where applications run. Kernel space is reserved for the operating system and its critical services. User space is safer because it's isolated from kernel space, which contains hardware drivers and system services. For example, a function that handles user input, like a function to read a key press from the keyboard, should be in user space because it doesn't need access to low-level hardware and can't cause system instability.",
+    "expected_points": [
+      "User space is separate from kernel space in an operating system.",
+      "Kernel space is reserved for the operating system and its critical services.",
+      "User space is safer because it's isolated from kernel space.",
+      "A function that handles user input, like a function to read a key press from the keyboard, should be in user space because it doesn't need access to low-level hardware and can't cause system instability."
+    ],
+    "follow_up_seeds": [
+      "Can you explain the security implications of having user space and kernel space separate?",
+      "How does the concept of user space and kernel space relate to the concept of privilege separation in operating systems?"
+    ],
+    "subtopic": "user space versus kernel space",
+    "id": "os-3-can-you-explain-the-difference-between"
+  },
+  {
+    "topic": "os",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "What is the main disadvantage of the Least Recently Used (LRU) page replacement algorithm, and how does it differ from the First-In-First-Out (FIFO) algorithm in terms of page replacement performance?",
+    "reference_answer": "The main disadvantage of the Least Recently Used (LRU) page replacement algorithm is that it can lead to a lot of thrashing, where the CPU spends a lot of time swapping pages in and out of memory, even when the pages are not actually needed. In contrast, the First-In-First-Out (FIFO) algorithm, where the oldest page is replaced first, tends to have less thrashing but can also lead to high memory usage if pages are replaced too frequently, which is why LRU is generally considered more efficient in practice.",
+    "expected_points": [
+      "LRU can lead to significant thrashing.",
+      "FIFO tends to have less thrashing but can lead to high memory usage.",
+      "LRU is generally considered more efficient in practice.",
+      "FIFO is simpler to implement and requires fewer memory resources."
+    ],
+    "follow_up_seeds": [
+      "Can you give an example of a situation where LRU might be less effective than FIFO?",
+      "How does LRU address the issue of pages being replaced too frequently compared to FIFO?"
+    ],
+    "subtopic": "page replacement policies",
+    "id": "os-2-what-is-the-main-disadvantage-of"
+  },
+  {
+    "topic": "os",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "How do inter-process communication mechanisms like pipes and shared memory differ in terms of security and performance, and what are the trade-offs between them?",
+    "reference_answer": "Pipes are a simple form of IPC where a process writes to a pipe, and another process reads from it. Shared memory is a mechanism where multiple processes can access a common memory space. Pipes are generally less secure because they can be easily intercepted or tampered with. Shared memory is more secure but can lead to race conditions if not properly synchronized. Pipes are more efficient in terms of performance because they require fewer system calls. Shared memory is less efficient because it involves more system calls and synchronization.",
+    "expected_points": [
+      "Pipes are less secure than shared memory.",
+      "Pipes require fewer system calls than shared memory.",
+      "Shared memory is more secure but can lead to race conditions.",
+      "Pipes are more efficient in terms of performance."
+    ],
+    "follow_up_seeds": [
+      "Can you provide an example of a scenario where using a pipe might be more appropriate than shared memory?",
+      "How do you synchronize access to shared memory to avoid race conditions?"
+    ],
+    "subtopic": "inter-process communication",
+    "id": "os-4-how-do-inter-process-communication-mechanisms"
+  },
+  {
+    "topic": "os",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "Explain the difference between the Shortest Job Next (SJN) and Shortest Remaining Time (SRT) scheduling algorithms. How do they prioritize processes and what are the main trade-offs between them?",
+    "reference_answer": "Shortest Job Next (SJN) prioritizes processes based on the length of their remaining execution time. If two processes have the same remaining time, it selects them based on their arrival time. Shortest Remaining Time (SRT) does the same but uses the length of the next CPU burst. SJN can lead to starvation for long jobs, while SRT can cause a high CPU utilization at the expense of fairness.",
+    "expected_points": [
+      "SJN prioritizes processes based on the length of their remaining execution time.",
+      "SRT uses the length of the next CPU burst for prioritization.",
+      "SJN can lead to starvation for long jobs.",
+      "SRT can cause a high CPU utilization at the expense of fairness."
+    ],
+    "follow_up_seeds": [
+      "Can you provide an example where SJN might starve a long job?",
+      "How might you modify SRT to prevent starvation for short jobs?"
+    ],
+    "subtopic": "CPU scheduling algorithms",
+    "id": "os-2-explain-the-difference-between-the-shortest"
+  },
+  {
+    "topic": "os",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "Can you explain the primary factors that contribute to the costs of context switching in a multi-threaded environment, and how do these costs vary between user-space and kernel-space context switches?",
+    "reference_answer": "Context switching costs are primarily due to the overhead of saving and restoring the state of the CPU, such as the program counter, registers, and stack. In a multi-threaded environment, these costs are higher because more data needs to be saved and restored. Between user-space and kernel-space context switches, the kernel-space switch is generally more costly because it involves more complex operations and may require hardware assistance.",
+    "expected_points": [
+      "Context switching costs are due to saving and restoring CPU state such as the program counter, registers, and stack.",
+      "In a multi-threaded environment, context switching costs are higher because more data needs to be saved and restored.",
+      "Kernel-space context switches are more costly than user-space context switches.",
+      "Kernel-space switches involve more complex operations and may require hardware assistance."
+    ],
+    "follow_up_seeds": [
+      "How do context switch costs impact performance in a system with a high degree of concurrency?",
+      "Can you describe any techniques to mitigate context switching costs in a multi-threaded application?"
+    ],
+    "subtopic": "context switching costs",
+    "id": "os-3-can-you-explain-the-primary-factors"
+  },
+  {
+    "topic": "os",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "In a multi-threaded environment, what is a race condition and why is atomicity important to prevent race conditions? Can you give an example of a race condition and how atomicity could be used to fix it?",
+    "reference_answer": "A race condition happens when two threads access and modify shared data simultaneously, leading to unpredictable results. Atomicity ensures that a series of operations either all happen or none happen, preventing race conditions. For example, if two threads try to increment a counter at the same time, without atomicity, the counter could end up with the wrong value. By using atomic increments, you ensure the counter is always updated correctly.",
+    "expected_points": [
+      "A race condition occurs when two threads access and modify shared data simultaneously, resulting in unpredictable outcomes.",
+      "Atomicity guarantees that a series of operations are either all completed or none are completed, thereby preventing race conditions.",
+      "Without atomicity, a counter incremented by two threads could end up with an incorrect value.",
+      "Using atomic increments ensures that the counter is always updated correctly in a multi-threaded environment."
+    ],
+    "follow_up_seeds": [
+      "Can you explain the difference between a volatile variable and a non-volatile variable in the context of race conditions and atomicity?",
+      "How does the concept of thread safety relate to race conditions and atomicity? Can you give an example of a thread-safe implementation?"
+    ],
+    "subtopic": "race conditions and atomicity",
+    "id": "os-4-in-a-multi-threaded-environment-what"
+  },
+  {
+    "topic": "os",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "Can you explain how memory fragmentation occurs and why it's a problem in operating systems, and how can it be mitigated? Can you give an example of a memory allocation strategy that helps reduce fragmentation?",
+    "reference_answer": "Memory fragmentation happens when free memory chunks are too small to allocate a requested block, and the allocator has to use multiple free chunks, leading to inefficient use of memory. This can cause the system to run out of memory. Strategies like buddy systems, and using a combination of contiguous and non-contiguous memory allocation (e.g., using a linked list of free blocks) can help reduce fragmentation.",
+    "expected_points": [
+      "Memory fragmentation occurs when free memory chunks are too small to allocate a requested block.",
+      "This can lead to inefficient use of memory and cause the system to run out of memory.",
+      "Strategies like buddy systems and using a combination of contiguous and non-contiguous memory allocation can help reduce fragmentation.",
+      "A memory allocation strategy that helps reduce fragmentation is the use of a linked list of free blocks."
+    ],
+    "follow_up_seeds": [
+      "Can you elaborate on the difference between internal and external fragmentation?",
+      "How does memory fragmentation affect system performance and how can it be measured?"
+    ],
+    "subtopic": "memory fragmentation",
+    "id": "os-3-can-you-explain-how-memory-fragmentation"
+  },
+  {
+    "topic": "os",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "Can you explain the difference between a race condition and an atomic operation in the context of multi-threaded systems and how they relate to the concept of atomicity?",
+    "reference_answer": "A race condition occurs when two or more threads access and modify shared resources without proper synchronization, leading to unpredictable and inconsistent results. An atomic operation, on the other hand, is a sequence of operations that must be completed as a single unit of work without interference from other threads. Atomicity ensures that either all the operations happen or none of them happen, guaranteeing data consistency. Race conditions are often a manifestation of issues with atomicity, as they can result in inconsistent states due to the interleaving of operations.",
+    "expected_points": [
+      "A race condition can lead to inconsistent results due to the interleaving of operations in a multi-threaded system.",
+      "Atomic operations ensure that a sequence of operations is completed as a single unit of work without interference from other threads.",
+      "Race conditions often arise from issues with atomicity, as they can result in inconsistent states.",
+      "Atomicity guarantees that either all the operations happen or none of them happen, ensuring data consistency."
+    ],
+    "follow_up_seeds": [
+      "Can you provide an example of a race condition in a multi-threaded environment and how it could be resolved using atomic operations?",
+      "How does the concept of atomicity differ between sequential and concurrent access to resources?"
+    ],
+    "subtopic": "race conditions and atomicity",
+    "id": "os-2-can-you-explain-the-difference-between"
+  },
+  {
+    "topic": "os",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "Can you explain the difference between a file descriptor and a file handle in an operating system?",
+    "reference_answer": "A file descriptor is an integer that the operating system uses to identify a file. A file handle is a way of referring to a file within a programming language or application, often an integer that corresponds to a file descriptor.",
+    "expected_points": [
+      "A file descriptor is used by the operating system to identify a file.",
+      "A file handle is a way of referring to a file within a programming language or application.",
+      "A file descriptor corresponds to a file handle in terms of being an integer.",
+      "A file descriptor is not a part of a programming language or application, whereas a file handle is."
+    ],
+    "follow_up_seeds": [
+      "Can you give an example of how a file descriptor is used in a Unix-like system?",
+      "How does a file descriptor relate to file locks and file permissions?"
+    ],
+    "subtopic": "file descriptors",
+    "id": "os-2-can-you-explain-the-difference-between"
+  },
+  {
+    "topic": "os",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "How does virtual memory and paging work together to manage memory in an operating system? Can you explain the process of page fault handling and its impact on system performance?",
+    "reference_answer": "Virtual memory and paging work together to manage memory by dividing the virtual address space into fixed-size segments called pages. The operating system maps each page to a physical memory location. When a program tries to access a memory location, it looks up the virtual address in a page table to find the physical address. If the page is not already in physical memory, a page fault occurs. The operating system retrieves the page from secondary storage and updates the page table. The page fault handler then updates the page table and re-schedules the process. This process can impact system performance due to the time it takes to retrieve the page from secondary storage and the time required to update the page table.",
+    "expected_points": [
+      "Virtual memory and paging divide the virtual address space into fixed-size segments called pages.",
+      "When a program accesses a memory location, it looks up the virtual address in a page table to find the physical address.",
+      "If the page is not in physical memory, a page fault occurs, and the operating system retrieves the page from secondary storage.",
+      "The page fault handler updates the page table and re-schedules the process, impacting system performance due to the time required for these operations."
+    ],
+    "follow_up_seeds": [
+      "Can you describe the difference between a page fault and a segmentation fault?",
+      "How does the page size and the page table size affect the efficiency of virtual memory and paging?"
+    ],
+    "subtopic": "virtual memory and paging",
+    "id": "os-4-how-does-virtual-memory-and-paging"
+  },
+  {
+    "topic": "os",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "Can you explain when you would use a mutex over a semaphore in a multi-threaded application and why one might be preferred over the other in terms of performance and simplicity?",
+    "reference_answer": "A mutex is used when you need to control access to a shared resource by a single thread at a time, preventing multiple threads from accessing the resource simultaneously. A semaphore is used for controlling access by multiple threads, possibly with a queue of waiting threads. For performance, a mutex is simpler and faster, but a semaphore may offer better scalability and resource utilization in a multi-threaded environment.",
+    "expected_points": [
+      "A mutex is used for exclusive access control.",
+      "A semaphore is used for shared access control with a queue.",
+      "A mutex is simpler and faster.",
+      "A semaphore may offer better scalability and resource utilization."
+    ],
+    "follow_up_seeds": [
+      "Can you give an example where a semaphore's queue would be beneficial?",
+      "How does the implementation of a mutex compare to a semaphore in terms of complexity?"
+    ],
+    "subtopic": "mutexes versus semaphores",
+    "id": "os-4-can-you-explain-when-you-would"
+  },
+  {
+    "topic": "os",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "Can you describe the costs associated with context switching in an operating system, and how these costs vary between user-space and kernel-space contexts?",
+    "reference_answer": "Context switching in an operating system involves saving and restoring the state of a process. In user-space, this is relatively cheap because the state is typically simple and only includes things like the program counter and a small stack. In kernel-space, context switching is more expensive because the state includes a lot more, such as all system registers, memory mappings, and possibly even some hardware state like the processor's internal state. The cost in user-space is mainly due to the small amount of data that needs to be saved and restored, while in kernel-space, the cost is due to the larger amount of data that must be saved and restored, along with the overhead of potentially changing the processor's internal state.",
+    "expected_points": [
+      "Can be relatively cheap in user-space due to simple state.",
+      "In kernel-space, context switching is more expensive due to larger state.",
+      "User-space context switching cost is mainly due to small amount of data.",
+      "Kernel-space context switching cost includes saving and restoring more data and potentially changing processor's internal state."
+    ],
+    "follow_up_seeds": [
+      "How does the cost of context switching affect scheduling decisions in an operating system?",
+      "Can you compare the costs of context switching between multi-core processors and single-core processors?"
+    ],
+    "subtopic": "context switching costs",
+    "id": "os-3-can-you-describe-the-costs-associated"
+  },
+  {
+    "topic": "os",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "Can you explain the difference between hardware and software interrupts in an operating system, and provide an example of each.",
+    "reference_answer": "Hardware interrupts are generated by hardware components, such as I/O devices, and are used for tasks like disk I/O or keyboard input. Software interrupts, on the other hand, are generated by software, like exceptions and system calls. For example, a hardware interrupt might be a USB device's interrupt signaling that data is available to be read, while a software interrupt could be a system call like malloc() in C.",
+    "expected_points": [
+      "Hardware interrupts are generated by hardware components.",
+      "Software interrupts are generated by software.",
+      "A hardware interrupt example is a USB device's interrupt.",
+      "A software interrupt example is a system call like malloc()."
+    ],
+    "follow_up_seeds": [
+      "What is the difference between a maskable and non-maskable interrupt?",
+      "Can you explain the process of handling an interrupt in an operating system?"
+    ],
+    "subtopic": "interrupts",
+    "id": "os-4-can-you-explain-the-difference-between"
+  },
+  {
+    "topic": "os",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "Can you explain how copy-on-write works to improve memory usage and performance in an operating system?",
+    "reference_answer": "Copy-on-write is a technique used in memory management where when a child process is created from a parent process, instead of creating a copy of the memory pages, a pointer to the original memory pages is given to the child process. When the child process attempts to modify a page, the parent process will copy that page to another location and give the child process a pointer to the copy. This way, the original memory pages are not duplicated until a modification is actually made.",
+    "expected_points": [
+      "Copy-on-write avoids duplicating memory pages.",
+      "Instead of copying, a pointer to the original memory pages is given to the child process.",
+      "Memory pages are only duplicated when the child process attempts to modify them.",
+      "This technique helps in improving memory usage and performance in an operating system."
+    ],
+    "follow_up_seeds": [
+      "Can you give an example of when copy-on-write would be beneficial?",
+      "How does copy-on-write affect the lifetime of a process? What happens if a child process is reused?"
+    ],
+    "subtopic": "copy-on-write",
+    "id": "os-2-can-you-explain-how-copy-on"
+  },
+  {
+    "topic": "os",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "How do processes and threads differ in terms of their isolation and control? Can you explain the concept of a thread within a process and how it affects the system's resource management?",
+    "reference_answer": "Processes are independent units of execution that have their own memory space, which means they can execute independently of other processes. Threads, on the other hand, are lightweight units of execution within a process. A thread shares the same memory space as its parent process, which allows for more efficient resource management and easier parallelization of tasks. Threads are controlled by the parent process, which means that changes made by one thread do not affect the memory space of other threads within the same process.",
+    "expected_points": [
+      "Processes are independent units of execution.",
+      "Threads are lightweight units of execution within a process.",
+      "Threads share the same memory space as their parent process.",
+      "Changes made by one thread do not affect the memory space of other threads within the same process."
+    ],
+    "follow_up_seeds": [
+      "Can you give an example where a thread within a process might be more advantageous than a process?",
+      "How does the concept of a thread differ between user-space and kernel-space threads?"
+    ],
+    "subtopic": "processes versus threads",
+    "id": "os-2-how-do-processes-and-threads-differ"
+  },
+  {
+    "topic": "os",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "Compare and contrast the benefits and drawbacks of using Shortest Job Next (SJN) and First-Come, First-Served (FCFS) scheduling algorithms in a CPU context.",
+    "reference_answer": "SJN schedules the process with the shortest estimated run time next. This can minimize average waiting time but introduces more complexity and overhead. FCFS schedules processes in the order they arrive. It's simpler and fairer but can lead to longer waiting times for processes with longer run times.",
+    "expected_points": [
+      "SJN can reduce average waiting time.",
+      "SJN requires estimation of job run times.",
+      "FCFS is simpler to implement.",
+      "FCFS can cause long waits for long-running jobs."
+    ],
+    "follow_up_seeds": [
+      "What happens if job run times are very uneven? How does SJN and FCFS handle this?",
+      "How might SJN and FCFS perform on a system with a wide range of job sizes and run times?"
+    ],
+    "subtopic": "CPU scheduling algorithms",
+    "id": "os-3-compare-and-contrast-the-benefits-and"
+  },
+  {
+    "topic": "os",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "Can you explain the difference between user space and kernel space in an operating system, and why does this distinction matter for security and performance?",
+    "reference_answer": "User space is where applications run, while kernel space is reserved for the operating system itself. Security-wise, user space accesses kernel space through special mechanisms like system calls, which can be monitored and controlled. Performance-wise, user space is isolated from kernel space to prevent applications from causing system-wide crashes. This isolation is crucial for both security and performance reasons.",
+    "expected_points": [
+      "User space is where applications run.",
+      "Kernel space is reserved for the operating system.",
+      "User space accesses kernel space through special mechanisms like system calls.",
+      "This isolation is crucial for both security and performance reasons."
+    ],
+    "follow_up_seeds": [
+      "Can you give an example of a security breach that could happen if user space and kernel space were not isolated?",
+      "How does the concept of user space and kernel space affect multi-threading in an operating system?"
+    ],
+    "subtopic": "user space versus kernel space",
+    "id": "os-4-can-you-explain-the-difference-between"
+  },
+  {
+    "topic": "os",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "Imagine two threads, one with a higher priority than the other. How could their execution lead to a situation where the lower priority thread gets to run before the higher priority one, even though it's supposed to run next? Can you describe an example where this happens in a real system?",
+    "reference_answer": "When a lower priority thread is blocked in a resource it needs, and a higher priority thread is ready to run but is waiting for the resource, the lower priority thread might get to run before the higher priority one, due to the way the scheduler handles priorities and waiting threads. This is called priority inversion. I can give you an example where a lower priority thread that is waiting for a lock gets preempted by a higher priority thread that is ready to run and needs the same lock, leading to the lower priority thread running first.",
+    "expected_points": [
+      "A lower priority thread can get to run before a higher priority thread if the lower priority thread is blocked in a resource it needs.",
+      "A higher priority thread is ready to run but is waiting for the same resource.",
+      "This scenario is known as priority inversion.",
+      "A real system example could involve a printer queue where a lower priority document is waiting for the printer, and a higher priority document is ready to print but is waiting for the printer to be available."
+    ],
+    "follow_up_seeds": [
+      "Can you provide a code snippet that demonstrates priority inversion in a simple threading model?",
+      "How can a system avoid priority inversion to ensure threads run in the correct order based on their priority?"
+    ],
+    "subtopic": "priority inversion",
+    "id": "os-3-imagine-two-threads-one-with-a"
+  },
+  {
+    "topic": "os",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "How does inter-process communication (IPC) differ between shared memory and message passing in an operating system, and why might one be preferred over the other in a system with high concurrency and low latency requirements?",
+    "reference_answer": "Shared memory allows processes to share data directly by accessing the same memory space, which can be faster since it avoids the overhead of passing messages. Message passing, on the other hand, involves processes sending messages to each other, which can be more reliable and easier to manage, especially in systems with high concurrency and low latency requirements where data integrity and synchronization are critical.",
+    "expected_points": [
+      "Shared memory allows processes to share data directly by accessing the same memory space.",
+      "Message passing involves processes sending messages to each other.",
+      "Message passing can be more reliable and easier to manage in systems with high concurrency and low latency requirements.",
+      "Shared memory can be faster since it avoids the overhead of passing messages."
+    ],
+    "follow_up_seeds": [
+      "Can you elaborate on how message passing might introduce delays and what mechanisms are used to mitigate these?",
+      "In a system with a high number of concurrent processes, what are the potential challenges with shared memory IPC and how might message passing address these?"
+    ],
+    "subtopic": "inter-process communication",
+    "id": "os-2-how-does-inter-process-communication-ipc"
+  },
+  {
+    "topic": "os",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "Can you explain why a producer-consumer problem can lead to deadlock in a system with multiple threads sharing a single buffer and a mutex for synchronization?",
+    "reference_answer": "Producer-consumer problem can lead to deadlock if there are multiple threads and the mutex is used for synchronization. Deadlock happens when a thread (producer) acquires the mutex while another thread (consumer) is waiting for it, creating a cycle where no thread can proceed without waiting for another. The key condition for deadlock in this scenario is that all threads need the mutex and each thread acquires it in a fixed order, leading to a deadlock if two threads are waiting for each other.",
+    "expected_points": [
+      "A producer-consumer problem can lead to deadlock if multiple threads are involved and use a mutex for synchronization.",
+      "All threads need the mutex and acquire it in a fixed order, which is a condition for deadlock in this scenario.",
+      "Deadlock occurs when a thread (producer) acquires the mutex while another thread (consumer) is waiting for it.",
+      "The key condition for deadlock is that all threads are waiting for each other, creating a cycle where no thread can proceed without waiting for another."
+    ],
+    "follow_up_seeds": [
+      "Can you explain how to prevent deadlock in such a system?",
+      "How does the system handle a deadlock if it occurs in the producer-consumer scenario?"
+    ],
+    "subtopic": "deadlock conditions and prevention",
+    "id": "os-3-can-you-explain-why-a-producer"
+  },
+  {
+    "topic": "os",
+    "difficulty": 4,
+    "mode": "factual",
+    "text": "Can you explain the difference between a zombie process and an orphan process, and how they are handled by the operating system?",
+    "reference_answer": "A zombie process is a terminated child process whose parent process has not yet collected its exit status. An orphan process is a child process whose parent process has been terminated. When a process is orphaned, the operating system assigns it to the init process, which is a special process that runs as the parent of all other processes in the system.",
+    "expected_points": [
+      "A zombie process is a terminated child process whose parent process has not yet collected its exit status.",
+      "An orphan process is a child process whose parent process has been terminated.",
+      "When a process is orphaned, the operating system assigns it to the init process.",
+      "The init process, as the parent of all other processes, handles orphaned processes."
+    ],
+    "follow_up_seeds": [
+      "Can you provide an example of when a process might be orphaned or become a zombie?",
+      "How does the init process handle zombie processes? Does it have any impact on system performance?"
+    ],
+    "subtopic": "zombie and orphan processes",
+    "id": "os-4-can-you-explain-the-difference-between"
+  },
+  {
+    "topic": "os",
+    "difficulty": 2,
+    "mode": "factual",
+    "text": "Compare and contrast the Least Recently Used (LRU) and Least Frequently Used (LFU) page replacement policies. Which one is better in terms of performance and why?",
+    "reference_answer": "Least Recently Used (LRU) is a page replacement policy that removes the page from the memory that has been used the least recently. Least Frequently Used (LFU) removes the page that has been used the least frequently. LRU is generally considered better because it predicts future usage based on past usage, which helps in keeping the most frequently used pages in memory longer.",
+    "expected_points": [
+      "LRU considers the time-based access frequency of pages.",
+      "LFU considers the count-based access frequency of pages.",
+      "LRU is better for performance because it can predict future access patterns based on past access patterns.",
+      "LFU is less effective in terms of performance because it doesn't consider the time-based access frequency."
+    ],
+    "follow_up_seeds": [
+      "Can you describe a scenario where LFU might outperform LRU?",
+      "How does the implementation complexity of LRU and LFU compare?"
+    ],
+    "subtopic": "page replacement policies",
+    "id": "os-2-compare-and-contrast-the-least-recently"
+  },
+  {
+    "topic": "os",
+    "difficulty": 3,
+    "mode": "factual",
+    "text": "In the context of thrashing, why might a virtual memory system prefer using a larger swap space over a smaller one? Can you provide an example where a larger swap space would be more advantageous?",
+    "reference_answer": "A larger swap space can be more advantageous in scenarios where the system has frequent and large page faults, as it can accommodate more pages that need to be swapped out. This can reduce the frequency of page thrashing, which is when the system spends more time swapping pages back and forth between memory and swap space than actually running the program. For example, if a program requires a large dataset that fits better in swap space than in physical memory, a larger swap space can help manage this dataset more efficiently.",
+    "expected_points": [
+      "A larger swap space can reduce the frequency of page thrashing.",
+      "A large dataset that fits better in swap space than in physical memory can be managed more efficiently with a larger swap space.",
+      "A larger swap space can accommodate more pages that need to be swapped out, thus reducing the time spent swapping pages.",
+      "A larger swap space can help manage a program that requires a large dataset that fits better in swap space than in physical memory."
+    ],
+    "follow_up_seeds": [
+      "Can you think of another scenario where a larger swap space would be beneficial?",
+      "How does the concept of page size affect the decision on whether to use a larger swap space?"
+    ],
+    "subtopic": "thrashing",
+    "id": "os-3-in-the-context-of-thrashing-why"
+  }
+]
